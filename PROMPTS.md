@@ -4,6 +4,7 @@ All Sonnet 5.5. Effort level is set per prompt to save usage: low for mechanical
 
 | Prompt | Effort | Time |
 |---|---|---|
+| Run next: replace Mapbox with a free SVG map | Medium | As needed |
 | 1. Scaffold | Low | 45 min |
 | 2a. Race list | Medium | 1 hr incl. your check |
 | 2b. FEC spending and symmetry test | Medium | 1.5 hrs |
@@ -15,9 +16,17 @@ All Sonnet 5.5. Effort level is set per prompt to save usage: low for mechanical
 
 If a low-effort prompt fails twice on the same problem, rerun it at medium rather than retrying a third time.
 
+## Run next: replace Mapbox with a free SVG map (medium)
+
+Read `CLAUDE.md`, `docs/SPEC.md`, and the current scaffold. This prompt supersedes their Mapbox instructions. Replace Mapbox GL JS with an interactive SVG map of U.S. states built from Census cartographic boundary data. The map must have no per-visitor map API, tile requests, map token, or mapping service bill. Keep the existing Vite/React/TypeScript app and static Vercel deployment.
+
+First update `CLAUDE.md`, `docs/SPEC.md`, and the remaining prompts in this file so they consistently specify the SVG map. Remove Mapbox and `VITE_MAPBOX_TOKEN` from the code, dependencies, environment types, and setup instructions. Use a locally stored, simplified boundary asset with state identifiers; do not fetch boundaries in the browser. Preserve the neutral spending fill scale, party symmetry, support/oppose separation, source and as-of labels, and identical voting link for everyone. Make states clickable and keyboard accessible, with visible focus and selection, and keep the map usable at 390px. If state detail needs zoom, use SVG `viewBox` or another local SVG technique.
+
+Keep FEC fetching in the build-time script and serve precomputed JSON as static files. Browser visits must not call FEC or another paid data API. Do not add a database, serverless function, or polling/results feature in this change. Run typecheck, tests, and build; show desktop and 390px screenshots. Report the removed Mapbox packages and the final number of external map requests per visit (target: zero).
+
 ## 1. Scaffold (low)
 
-Read CLAUDE.md and docs/SPEC.md. Scaffold Vite, React, TypeScript strict, Mapbox GL JS v3, vitest, tsx. Create a types file for races, candidates, and expenditure totals. Add symmetry.test.ts as a failing stub. Render an empty dark map with the token colors. Nothing else.
+Read CLAUDE.md and docs/SPEC.md. Scaffold Vite, React, TypeScript strict, a local SVG map, vitest, tsx. Create a types file for races, candidates, and expenditure totals. Add symmetry.test.ts as a failing stub. Render an empty dark map with the token colors. Nothing else.
 
 ## 2a. Race list (medium)
 

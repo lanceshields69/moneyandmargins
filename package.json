@@ -8,21 +8,26 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "build:geometry": "tsx scripts/build-us-states.ts"
   },
   "dependencies": {
-    "mapbox-gl": "^3.9.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@types/mapbox-gl": "^3.4.1",
+    "@types/d3-geo": "^3.1.0",
+    "@types/node": "^22.10.2",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
+    "@types/topojson-client": "^3.1.5",
     "@vitejs/plugin-react": "^4.3.4",
+    "d3-geo": "^3.1.1",
     "jsdom": "^25.0.1",
+    "topojson-client": "^3.1.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
+    "us-atlas": "^3.0.1",
     "vite": "^6.0.5",
     "vitest": "^2.1.8"
   }

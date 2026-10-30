@@ -22,7 +22,7 @@ A thin footer: one sentence on what the map does and does not show, and "Find of
 - FEC independent expenditures for 2026 Senate general election candidates. Use FEC's processed data only (aggregate by-candidate endpoints if their fields fit; verify against current docs). No raw e-filings today, so nothing can be double counted. Label the map "as of FEC's latest processed data."
 - Nominee list: general election major candidates per race, built by Claude Code from FEC candidate data, then checked by Lance by hand before use.
 - Citizen voting-age population by state from the Census ACS CVAP special tabulation, committed as a small static CSV with its vintage noted.
-- State boundaries: Mapbox's built-in boundaries or a Census cartographic file.
+- State boundaries: a Census cartographic boundary file, simplified and converted to SVG paths once at build time and committed to `data/`. No runtime map API, tile requests, or map token.
 
 Run the fetch script once, commit the JSON, deploy. Refresh by rerunning the script by hand. No cron, no database, no serverless functions.
 

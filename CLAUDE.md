@@ -12,7 +12,7 @@ One-day build. Read `docs/SPEC.md` first. Ignore `docs/later/` unless asked.
 
 ## Stack
 
-Vite, React, TypeScript strict, Mapbox GL JS v3, vitest. A one-off fetch script in `scripts/` run with `tsx` writes JSON to `data/`. Static deploy to a Vercel preview. Secrets: `FEC_API_KEY`, `VITE_MAPBOX_TOKEN`. Never commit or log them.
+Vite, React, TypeScript strict, a local SVG map of U.S. states built from Census cartographic boundary data (generated once by a build script, no runtime map API), vitest. A one-off fetch script in `scripts/` run with `tsx` writes JSON to `data/`. Static deploy to a Vercel preview. Secrets: `FEC_API_KEY`. Never commit or log it.
 
 ## How to work
 
