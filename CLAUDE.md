@@ -22,7 +22,7 @@ Plan mode first, wait for approval. Verify FEC field names against current FEC A
 
 | Token | Hex | Use |
 |---|---|---|
-| ground | #181714 | page, basemap land |
+| ground | #181714 | page, and fill for states with no race |
 | panel | #22221E | side panel |
 | rule | #393834 | hairlines |
 | text | #E9E8E2 | primary text |
@@ -32,4 +32,4 @@ Plan mode first, wait for approval. Verify FEC field names against current FEC A
 | ind | #3EAF86 | Independent |
 | brass | #D4BC79 | selection and focus only |
 
-Party colors share OKLCH lightness 0.68 and chroma 0.12. Change all or none. The state fill uses a neutral grey-to-brass ramp, never party colors. Basemap water and roads neutral grey. Type: Public Sans, tabular figures. Sentence case, no all-caps labels.
+Party colors share OKLCH lightness 0.68 and chroma 0.12. Change all or none. The state fill uses a neutral grey-to-brass ramp, never party colors. State borders use the rule color. No basemap, water, or road layers. Type: Public Sans, tabular figures. Sentence case, no all-caps labels.

@@ -20,9 +20,11 @@ A thin footer: one sentence on what the map does and does not show, and "Find of
 ## Data
 
 - FEC independent expenditures for 2026 Senate general election candidates. Use FEC's processed data only (aggregate by-candidate endpoints if their fields fit; verify against current docs). No raw e-filings today, so nothing can be double counted. Label the map "as of FEC's latest processed data."
-- Nominee list: general election major candidates per race, built by Claude Code from FEC candidate data, then checked by Lance by hand before use.
+- Nominee list: built from each state's certified general election ballot (Ballotpedia where a state site is unavailable), one source URL per race, then matched to FEC candidate IDs. FEC alone cannot supply nominees: it returns every filer, including primary losers, retirees, and people who have left office, and it omits any nominee who never crossed FEC's registration threshold. Inclusion rule, identical for every race: all major-party nominees, plus any independent or minor-party candidate on the ballot who has independent expenditures reported for or against them. A nominee with no FEC record stays in the race with a "no FEC filing found" flag, so no race shows one side only.
+- Party codes come from one lookup table: DFL maps to D, IND and NPA map to I, every other third party maps to other. A blank code fails the run.
+- Race count: 35 races in 35 states (33 regular elections plus the Florida and Ohio specials). One race per state, no splits.
 - Citizen voting-age population by state from the Census ACS CVAP special tabulation, committed as a small static CSV with its vintage noted.
-- State boundaries: a Census cartographic boundary file, simplified and converted to SVG paths once at build time and committed to `data/`. No runtime map API, tile requests, or map token.
+- State boundaries: a simplified Census cartographic boundary file, converted once by a build script into a local SVG asset with state identifiers. No tiles, map token, or mapping service. Target: zero external map requests per visit.
 
 Run the fetch script once, commit the JSON, deploy. Refresh by rerunning the script by hand. No cron, no database, no serverless functions.
 

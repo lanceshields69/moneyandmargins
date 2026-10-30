@@ -13,6 +13,10 @@ export interface Race {
   isSpecial: boolean
   incumbentName: string | null
   incumbentParty: Party | null
+  sourceUrl: string
+  sourceTier: 'official' | 'secondary_wikipedia'
+  retrievedAt: string
+  note?: string
 }
 
 export interface Candidate {
@@ -20,6 +24,17 @@ export interface Candidate {
   raceId: string
   name: string
   party: Party
+  fecIds: string[]
+  fecMatchNote?: string
+  provisional?: boolean
+  provisionalReason?: string
+}
+
+export interface NomineesFile {
+  fetchedAt: string
+  source: string
+  races: Race[]
+  candidates: Candidate[]
 }
 
 export interface Committee {

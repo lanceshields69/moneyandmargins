@@ -6,7 +6,7 @@ All Sonnet 5.5. Effort level is set per prompt to save usage: low for mechanical
 |---|---|---|
 | Run next: replace Mapbox with a free SVG map | Medium | As needed |
 | 1. Scaffold | Low | 45 min |
-| 2a. Race list | Medium | 1 hr incl. your check |
+| 2a. Race list and nominees | Medium | 1.5 hrs incl. your check |
 | 2b. FEC spending and symmetry test | Medium | 1.5 hrs |
 | 2c. Census population join | Low | 30 min |
 | 3. Map and panel | Medium | 2.5 hrs |
@@ -28,9 +28,13 @@ Keep FEC fetching in the build-time script and serve precomputed JSON as static 
 
 Read CLAUDE.md and docs/SPEC.md. Scaffold Vite, React, TypeScript strict, a local SVG map, vitest, tsx. Create a types file for races, candidates, and expenditure totals. Add symmetry.test.ts as a failing stub. Render an empty dark map with the token colors. Nothing else.
 
-## 2a. Race list (medium)
+## 2a. Race list and nominees (medium)
 
-Write scripts/fetch-races.ts. Build the list of 2026 Senate general election races and their major candidates from FEC candidate data, including special elections. Verify endpoints and field names against current FEC docs first. Stop and show me the list as a table so I can check it by hand. Save to data/races.json only after I approve.
+The first FEC pull returned all 206 filers, not nominees. Do not write data/races.json yet. Build data/nominees.json for the 35 races in 35 states (33 regular elections plus the Florida and Ohio specials, one race per state, no splits). Source each race from the state's certified general election ballot, or Ballotpedia where the state site is unavailable, and store a source URL per race. Inclusion rule, the same for every race: all major-party nominees, plus any independent or minor-party candidate on the ballot who has independent expenditures reported for or against them. Exclude write-ins, primary losers, and anyone who withdrew, retired, resigned, or died.
+
+Match each nominee to an FEC candidate ID by name, state, office, and cycle. If a nominee has no FEC record, keep them in the race with fec_id null and a "no FEC filing found" flag. Fix party coding with one lookup table used everywhere: DFL maps to D, IND and NPA map to I, all other third parties map to other, and a blank code fails the run. Dedupe by FEC candidate ID.
+
+Stop and show me two tables: nominees (race, candidate, party, FEC ID, source URL) and every filer you excluded with the reason. Save only after I approve.
 
 ## 2b. FEC spending and symmetry test (medium)
 
