@@ -39,9 +39,14 @@ a {
   padding: 20px 16px 8px;
 }
 .header h1 {
-  margin: 0 0 4px;
-  font-size: 1.5rem;
-  font-weight: 700;
+  margin: 0 0 8px;
+  line-height: 0;
+}
+.logo {
+  display: block;
+  height: 40px;
+  width: auto;
+  max-width: 100%;
 }
 .header p {
   margin: 0;

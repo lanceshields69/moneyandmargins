@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import UsStatesMap, { rampColor } from './components/UsStatesMap'
 import RacePanel from './components/RacePanel'
 import { allRaces } from './data'
+import logo from '../images/logo.png'
 import { formatDate, formatMoney } from './format'
 
 function stateFromUrl(valid: Set<string>): string | null {
@@ -31,7 +32,9 @@ export default function App() {
         Skip to race details
       </a>
       <header className="header">
-        <h1>Money &amp; Margins</h1>
+        <h1>
+          <img className="logo" src={logo} alt="Money & Margins" width={483} height={66} />
+        </h1>
         <p className="muted">
           Independent expenditures reported to the FEC in 2026 Senate races, by candidate state.
         </p>
