@@ -112,7 +112,7 @@ a {
 }
 .legend-title {
   margin: 0 0 6px;
-  font-weight: 700;
+  font-weight: 500;
 }
 .ramp {
   height: 10px;
@@ -160,7 +160,7 @@ a {
 }
 .tag {
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 500;
   border: 1px solid var(--color-muted);
   color: var(--color-muted);
   border-radius: 3px;
@@ -200,7 +200,7 @@ a {
   flex: none;
 }
 .name {
-  font-weight: 700;
+  font-weight: 500;
 }
 .party {
   font-size: 0.8125rem;
@@ -245,19 +245,20 @@ a {
   outline-offset: -1px;
 }
 .amount {
+  font-weight: 500;
   text-align: right;
   font-size: 0.875rem;
 }
 
 .incomplete {
   margin: 8px 0 0;
-  font-weight: 700;
+  font-weight: 500;
   display: flex;
   flex-direction: column;
 }
 .reason {
   font-size: 0.8125rem;
-  font-weight: 500;
+  font-weight: 300;
 }
 
 details {
@@ -273,7 +274,7 @@ details h4 {
   margin: 8px 0 4px;
   font-size: 0.75rem;
   color: var(--color-muted);
-  font-weight: 700;
+  font-weight: 500;
 }
 .committees {
   margin: 0;
@@ -331,4 +332,8 @@ details h4 {
   .footer {
     padding: 12px 32px 24px;
   }
+}
+
+strong {
+  font-weight: 500;
 }

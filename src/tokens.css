@@ -27,7 +27,7 @@ body {
   background: var(--color-ground);
   color: var(--color-text);
   font-family: var(--font-sans);
-  font-weight: 500;
+  font-weight: 300;
   font-variant-numeric: tabular-nums;
 }
 
