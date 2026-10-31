@@ -114,6 +114,12 @@ export default function App() {
             vote.gov
           </a>
         </p>
+        <p>
+          Created by{' '}
+          <a href="https://www.lanceshields.design/" target="_blank" rel="noreferrer">
+            Lance Shields
+          </a>
+        </p>
       </footer>
     </div>
   )
