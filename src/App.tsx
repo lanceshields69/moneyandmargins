@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import ErrorBoundary from './components/ErrorBoundary'
 import MapCallout from './components/MapCallout'
+import MethodologyModal from './components/MethodologyModal'
 import NationalCard from './components/NationalCard'
 import RacePanel from './components/RacePanel'
 import ContactFooter from './components/ContactFooter'
@@ -10,8 +11,11 @@ import UsStatesMap, { rampColor } from './components/UsStatesMap'
 import { buildNationalCard } from './computeNational'
 import { allRaces, callouts, forecastSnapshot, labelPoints, mapViewBox, stateNames } from './data'
 import logo from '../images/logo.png'
+import { DATA_VERIFIED } from './config'
+import { DATA_CHECK_NOTICE, LIMITS_SENTENCE } from './copy'
 import { formatDate, formatMoney, formatMonthDay } from './format'
 import { initialSelection, parseHashState } from './defaultState'
+import { fillMethodology, isHowHash, methodologySource, parseMethodology } from './methodology'
 import { usePhone } from './usePhone'
 
 export default function App() {
@@ -23,6 +27,13 @@ export default function App() {
   )
   const [active, setActive] = useState<string | null>(initial.state)
   const [isDefault, setIsDefault] = useState(initial.isDefault)
+  const [howOpen, setHowOpen] = useState(() => isHowHash(window.location.hash))
+  const openHow = useCallback(() => {
+    setHowOpen(true)
+    const url = new URL(window.location.href)
+    url.hash = 'how-it-works'
+    window.history.replaceState(null, '', url)
+  }, [])
 
   // Any choice by the visitor replaces the rule's pick. Focus is never moved here.
   const choose = useCallback((state: string | null) => {
@@ -33,10 +44,17 @@ export default function App() {
     window.history.replaceState(null, '', state ? url : url.pathname + url.search)
   }, [])
   const close = useCallback(() => choose(null), [choose])
+  const closeHow = useCallback(() => {
+    setHowOpen(false)
+    const url = new URL(window.location.href)
+    url.hash = active ?? ''
+    window.history.replaceState(null, '', active ? url : url.pathname + url.search)
+  }, [active])
   const phone = usePhone()
 
   useEffect(() => {
     const onHashChange = () => {
+      if (isHowHash(window.location.hash)) setHowOpen(true)
       const fromHash = parseHashState(window.location.hash, validStates)
       if (fromHash) {
         setActive(fromHash)
@@ -54,6 +72,21 @@ export default function App() {
   const [vx, vy, vw, vh] = mapViewBox
   const anchor = point ? { x: (point[0] - vx) / vw, y: (point[1] - vy) / vh } : null
   const snapshotHost = new URL(forecastSnapshot.sourceUrl).host
+  const methodologyBlocks = useMemo(
+    () =>
+      parseMethodology(
+        fillMethodology(methodologySource(DATA_VERIFIED), {
+          updated: allRaces.fetchedAt,
+          forecastFrozen: forecastSnapshot.fetchedAt,
+          latestFiling: null,
+          unattributedTotal: null,
+          approxCommitteeCount: null,
+          approxTotal: null,
+          primarySentence: null,
+        }),
+      ),
+    [],
+  )
 
   return (
     <div className="page">
@@ -71,6 +104,7 @@ export default function App() {
           <img className="logo" src={logo} alt="Money & Margins" width={399} height={59} />
         </h1>
         <p className="muted">The ads are everywhere. The receipts are here.</p>
+        {!DATA_VERIFIED && <p className="data-check">{DATA_CHECK_NOTICE}</p>}
       </header>
 
       <main className="layout">
@@ -89,7 +123,7 @@ export default function App() {
               ))}
             </select>
           </label>
-            <NationalCard card={national} stateName={active ? (stateNames.get(active) ?? active) : null} fetchedAt={allRaces.fetchedAt} />
+            {DATA_VERIFIED && <NationalCard card={national} stateName={active ? (stateNames.get(active) ?? active) : null} fetchedAt={allRaces.fetchedAt} />}
           </div>
 
         <div className="map-wrap" id="map">
@@ -120,6 +154,11 @@ export default function App() {
               <span>$0</span>
               <span>{formatMoney(allRaces.maxTotal)}</span>
             </div>
+            <p className="how-link">
+              <button type="button" className="link-button" onClick={openHow}>
+                How is this counted?
+              </button>
+            </p>
           </div>
         </div>
 
@@ -180,14 +219,18 @@ export default function App() {
               ), frozen {formatDate(forecastSnapshot.fetchedAt)}. A 55% chance is not a prediction that someone will win.{' '}
               <strong>Spent on ads:</strong> each party&apos;s share of independent expenditures reported to the FEC in the
               2026 cycle that support its nominee or oppose the other nominee. Includes primary-season spending and
-              excludes candidate and party-coordinated spending. Processed FEC data as of {formatDate(allRaces.fetchedAt)};
-              recent 24- and 48-hour reports may not be included.
+              excludes candidate and party-coordinated spending. Processed FEC data as of {formatDate(allRaces.fetchedAt)}. {LIMITS_SENTENCE}
             </p>
             <p>
               Official voting information:{' '}
               <a href="https://vote.gov" target="_blank" rel="noreferrer">
                 vote.gov
               </a>
+            </p>
+            <p>
+              <button type="button" className="link-button" onClick={openHow}>
+                How this map works
+              </button>
             </p>
           </div>
           <section className="faq" aria-labelledby="faq-heading">
@@ -228,6 +271,7 @@ export default function App() {
           </div>
         </div>
       </footer>
+      {howOpen && <MethodologyModal blocks={methodologyBlocks} onClose={closeHow} />}
     </div>
   )
 }

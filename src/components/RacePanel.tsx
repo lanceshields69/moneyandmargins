@@ -1,5 +1,6 @@
 import type { Committee } from '../types'
 import { PARTY_DISPLAY, type RaceView, type RowView, type SideView } from '../computeSpending'
+import { LIMITS_SENTENCE } from '../copy'
 import { formatDate, formatMoney, formatMoneyFull } from '../format'
 import { CONTACT_EMAIL } from '../config'
 import { buildMailto } from '../corrections'
@@ -127,8 +128,7 @@ export default function RacePanel({ race, fetchedAt }: RacePanelProps) {
       )}
       <p className="muted disclaimer">
         Independent expenditures reported to the FEC for the 2026 cycle, including primary-season spending. Excludes
-        candidate committee and party-coordinated spending. Processed FEC data as of {formatDate(fetchedAt)}; recent{' '}
-        {'24- and 48-hour'} reports may not be included.{' '}
+        candidate committee and party-coordinated spending. Processed FEC data as of {formatDate(fetchedAt)}. {LIMITS_SENTENCE}{' '}
         <a href={FEC_SOURCE_URL} target="_blank" rel="noreferrer">
           FEC source
         </a>

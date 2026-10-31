@@ -1,3 +1,5 @@
+import { GLOBAL_PARTIAL_NOTICE } from '../config'
+import { PARTIAL_CALLOUT_NOTICE } from '../copy'
 import { useEffect, useState, type ReactNode } from 'react'
 import leaderUrl from '../assets/callout-leader.svg'
 import type { Callout, CalloutSide } from '../computeCallout'
@@ -99,6 +101,7 @@ export default function MapCallout({ callout, stateName, anchor, isDefault, deta
           {note}
         </p>
       ))}
+      {GLOBAL_PARTIAL_NOTICE && <p className="cc-partial">{PARTIAL_CALLOUT_NOTICE}</p>}
     </div>
   )
   const live = <p className="sr-only" aria-live="polite">{summary(stateName, callout)}</p>

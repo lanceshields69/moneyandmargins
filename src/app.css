@@ -1024,3 +1024,195 @@ details h4 {
   line-height: normal;
   color: #fff;
 }
+
+/* Partial-data hotfix lines. */
+.cc-partial {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 300;
+  color: var(--color-muted);
+}
+.data-check {
+  margin: 8px 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--color-muted);
+}
+
+/* Methodology modal (Figma "modal"): a 640px dialog with a fixed header, a scrolling body and a bottom fade;
+   a full-height sheet on phones. */
+.how-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.6);
+}
+.how-dialog {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(640px, 100%);
+  height: auto;
+  max-height: min(85vh, 720px);
+  overflow: hidden;
+  border: 1px solid var(--color-panel-rule);
+  border-radius: 8px;
+  background: var(--color-panel);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08), 0 4px 4px rgba(0, 0, 0, 0.05), 0 11px 34px rgba(0, 0, 0, 0.15);
+  color: var(--color-text);
+}
+.how-head {
+  flex: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 20px 16px 32px;
+  border-bottom: 1px solid var(--color-panel-rule);
+}
+.how-head h2 {
+  margin: 8px 0 0;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  word-spacing: -0.12em;
+  line-height: 1.2;
+}
+.how-close {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.how-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 20px 32px 56px;
+  font-size: 1rem;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+.how-body p,
+.how-body ul {
+  margin: 0 0 1.3rem;
+}
+.how-body ul {
+  padding-left: 1.25rem;
+}
+.how-body li {
+  margin-bottom: 0.4rem;
+}
+.how-body strong {
+  font-weight: 500;
+  color: #fff;
+}
+.how-body h3 {
+  margin: 1.6rem 0 0.8rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+.how-body .how-updated {
+  font-size: 0.875rem;
+}
+.how-more > summary {
+  display: inline-block;
+  margin: 0 0 1.3rem;
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.how-more > summary::-webkit-details-marker {
+  display: none;
+}
+.how-more > summary::marker {
+  content: '';
+}
+.how-more-open,
+.how-more[open] .how-more-closed {
+  display: none;
+}
+.how-more[open] .how-more-open {
+  display: inline;
+}
+.how-more[open] > summary {
+  margin-bottom: 0.4rem;
+}
+.how-fade {
+  position: absolute;
+  left: 0;
+  right: 4px;
+  bottom: 0;
+  height: 48px;
+  border-radius: 0 0 8px 8px;
+  background: linear-gradient(to bottom, transparent, var(--color-panel));
+  pointer-events: none;
+}
+.how-close:focus-visible,
+.how-more > summary:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+.how-link {
+  margin: 6px 0 0;
+  font-size: 0.8125rem;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .how-backdrop {
+    animation: how-fade-in 160ms ease-in both;
+  }
+  @keyframes how-fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+}
+@media (max-width: 600px) {
+  .how-backdrop {
+    padding: 0;
+  }
+  .how-dialog {
+    width: 100%;
+    height: 100dvh;
+    max-height: none;
+    border: 0;
+    border-radius: 0;
+  }
+  .how-head {
+    padding: 12px 8px 12px 20px;
+  }
+  .how-body {
+    padding: 20px 20px 56px;
+  }
+  .how-fade {
+    border-radius: 0;
+  }
+}
+/* The race panel's generic details/summary rules must not shrink the modal's expanded text. */
+.how-body details.how-more {
+  margin-top: 0;
+  font-size: 1rem;
+}
+.how-body details.how-more > summary {
+  padding: 0;
+  color: #fff;
+}
+.how-body h3 {
+  font-family: var(--font-sans);
+  word-spacing: -0.12em;
+  letter-spacing: -0.01em;
+}
