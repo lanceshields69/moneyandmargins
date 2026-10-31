@@ -447,8 +447,8 @@ details h4 {
 .faq h3 {
   margin: 12px 0 2px;
   font-size: 0.8125rem;
-  font-weight: 700;
-  color: var(--color-text);
+  font-weight: 500;
+  color: #fff;
 }
 .faq h3:first-of-type {
   margin-top: 0;
