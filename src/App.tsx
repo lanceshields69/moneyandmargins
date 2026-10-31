@@ -4,6 +4,7 @@ import MapCallout from './components/MapCallout'
 import NationalCard from './components/NationalCard'
 import RacePanel from './components/RacePanel'
 import ContactFooter from './components/ContactFooter'
+import Vote411Banner from './components/Vote411Banner'
 import ShareMenu from './components/ShareMenu'
 import UsStatesMap, { rampColor } from './components/UsStatesMap'
 import { buildNationalCard } from './computeNational'
@@ -152,6 +153,10 @@ export default function App() {
           </aside>
         )}
       </main>
+
+      <div className="vote411-wrap">
+        <Vote411Banner />
+      </div>
 
       <footer className="footer muted">
         <div className="footer-grid">

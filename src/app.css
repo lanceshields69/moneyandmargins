@@ -949,3 +949,86 @@ details h4 {
     white-space: nowrap;
   }
 }
+
+/* Vote411 banner: one link, left aligned above the footer on desktop, full width on phones. */
+.vote411-wrap {
+  padding: 0 16px 48px;
+}
+.vote411 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+  background: #523074;
+  color: var(--color-text);
+  font-size: 13px;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+.vote411-text {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.vote411-date {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-position: from-font;
+}
+.vote411:hover .vote411-date,
+.vote411:focus-visible .vote411-date {
+  text-decoration-thickness: 2px;
+}
+.vote411:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+.vote411-logo {
+  position: relative;
+  flex: none;
+  width: 125px;
+  height: 45.154px;
+}
+.vote411-logo img {
+  position: absolute;
+  display: block;
+  max-width: none;
+}
+.v411-bubble {
+  inset: 0 41.97% 0 0;
+  width: 58.03%;
+  height: 100%;
+}
+.v411-vote {
+  left: 3.73%;
+  top: 18.69%;
+  width: 49.91%;
+  height: 38.21%;
+}
+.v411-num {
+  left: 61.9%;
+  top: 17.83%;
+  width: 29.52%;
+  height: 40.37%;
+}
+.v411-sm {
+  position: absolute;
+  left: 93.39%;
+  top: 15.85%;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 5.5px;
+  font-weight: 600;
+  line-height: normal;
+  color: #fff;
+}
+@media (min-width: 900px) {
+  .vote411-wrap {
+    padding: 0 32px 48px;
+  }
+  .vote411 {
+    width: 612px;
+    max-width: 100%;
+  }
+}
