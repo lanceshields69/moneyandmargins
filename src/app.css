@@ -227,7 +227,7 @@ strong {
 }
 .cc-title {
   margin: 0;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 10px;
   font-weight: 700;
 }
@@ -303,7 +303,7 @@ strong {
 }
 .faq h2 {
   margin: 0 0 8px;
-  font-size: 0.9375rem;
+  font-size: 1.0625rem;
   font-weight: 700;
   color: var(--color-text);
 }
@@ -377,7 +377,7 @@ strong {
     margin-top: 4px;
   }
   .cc-sheet .cc-title {
-    font-size: 16px;
+    font-size: 18px;
     line-height: 20px;
   }
   .cc-sheet .cc-square {
@@ -477,7 +477,7 @@ strong {
 }
 .national h2 {
   margin: 0;
-  font-size: 0.9375rem;
+  font-size: 1.0625rem;
   font-weight: 700;
 }
 .nat-line {
@@ -563,7 +563,7 @@ strong {
 }
 .panel h2 {
   margin: 0 0 4px;
-  font-size: 1.25rem;
+  font-size: 1.375rem;
   font-weight: 700;
   display: flex;
   flex-wrap: wrap;
