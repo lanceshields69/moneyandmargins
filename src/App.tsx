@@ -17,7 +17,7 @@ import { DATA_VERIFIED, SHARES_VERIFIED } from './config'
 import { DATA_CHECK_NOTICE, FINAL_FORECAST_TAG, forecastPhrase } from './copy'
 import corrections from '../data/corrections.json'
 import { correctionsBlocks, isCorrectionsHash, type CorrectionEntry } from './corrections'
-import { formatDate, formatMoney, formatMonthDay } from './format'
+import { formatDate, formatDateOnly, formatMoney, formatMonthDay } from './format'
 import { initialSelection, parseHashState } from './defaultState'
 import verification from '../data/verification.json'
 import { doubleCountSentence, fillMethodology, incompleteRacesSentence, isHowHash, methodologySource, parseMethodology } from './methodology'
@@ -91,7 +91,7 @@ export default function App() {
   const [vx, vy, vw, vh] = mapViewBox
   const anchor = point ? { x: (point[0] - vx) / vw, y: (point[1] - vy) / vh } : null
   const snapshotHost = new URL(forecastSnapshot.sourceUrl).host
-  const dataThrough = allRaces.latestDissemination ? formatDate(`${allRaces.latestDissemination}T00:00:00Z`) : undefined
+  const dataThrough = allRaces.latestDissemination ? formatDateOnly(`${allRaces.latestDissemination}T00:00:00Z`) : undefined
   const correctionBlocks = useMemo(() => correctionsBlocks(corrections as CorrectionEntry[]), [])
   const methodologyBlocks = useMemo(
     () =>

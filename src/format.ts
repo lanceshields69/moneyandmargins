@@ -26,3 +26,8 @@ export function formatDateTime(iso: string): string {
   const time = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'UTC' })
   return `${date}, ${time} UTC`
 }
+
+/** "Oct 31, 2026": a date with no time zone suffix, for lines that must stay short. */
+export function formatDateOnly(iso: string): string {
+  return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' })
+}

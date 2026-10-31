@@ -214,7 +214,7 @@ describe('panel, labels and header fixes', () => {
     support: { value: 0, widthPct: 0 }, oppose: { value: 0, widthPct: 0 }, topSupportCommittees: [], topOpposeCommittees: [], sourceUrl: 'https://x.test', asOf: '2026-10-31T00:00:00Z', ...over,
   })
   const raceOf = (rows: unknown[]) => ({ raceId: 'XX-2026', state: 'XX', raceName: 'Test Senate 2026', isSpecial: false, rows, scaleMax: 1, total: 10, incompleteCount: 0, missingMajor: [] }) as never
-  const panel = (race: never) => renderToStaticMarkup(<RacePanel race={race} fetchedAt={allRaces.fetchedAt} dataThrough="Oct 31, 2026 UTC" dataVerified />)
+  const panel = (race: never) => renderToStaticMarkup(<RacePanel race={race} fetchedAt={allRaces.fetchedAt} dataThrough="Oct 31, 2026" dataVerified />)
 
   it('lists by party name with a note, and collapses candidates with no reported spending into one line', () => {
     for (const race of allRaces.races) {
