@@ -9,8 +9,7 @@ export default function Vote411Banner() {
   return (
     <a className="vote411" href={VOTE411_URL} target="_blank" rel="noopener noreferrer">
       <span className="vote411-text">
-        Election Day is <span className="vote411-date">Tuesday, November 3</span>. Find your ballot and polling place at
-        Vote411 or get official information at vote.gov.
+        Election Day is <span className="vote411-date">Tuesday, November 3</span>. Find your ballot and polling place at Vote411.
       </span>
       <span className="vote411-logo" role="img" aria-label="Vote411 logo">
         <img className="v411-bubble" src={bubble} alt="" />
