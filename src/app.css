@@ -922,3 +922,13 @@ details h4 {
   border-top: 1px solid var(--color-rule);
   max-width: 720px;
 }
+
+/* Bold headings use Halyard Display Bold (weight 700 in the Typekit kit). */
+.cc-title,
+.faq h2,
+.national h2,
+.panel h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  word-spacing: -0.12em;
+}

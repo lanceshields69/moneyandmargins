@@ -14,6 +14,7 @@
   --color-focus: #d4bc79;
 
   --font-sans: 'halyard-micro', system-ui, sans-serif;
+  --font-display: 'halyard-display', 'halyard-micro', system-ui, sans-serif;
 }
 
 * {
