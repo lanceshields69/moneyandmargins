@@ -39,16 +39,15 @@ function Row({ group, selected }: { group: PartyAligned; selected: boolean }) {
 interface NationalCardProps {
   card: NationalCardData
   stateName: string | null
-  asOf: string
 }
 
-export default function NationalCard({ card, stateName, asOf }: NationalCardProps) {
+export default function NationalCard({ card, stateName }: NationalCardProps) {
   const selected = card.stateCode !== null
   return (
     <section className="national" aria-label="Spending aligned with each party's nominees">
       <h2>Spending aligned with each party&apos;s nominees</h2>
       <p className="muted nat-sub">
-        Across the {card.includedRaces + card.excludedRaces} races, 2026 cycle, FEC data: {asOf}
+        Across the {card.includedRaces + card.excludedRaces} races, 2026 cycle
       </p>
       {card.groups.map((group) => (
         <Row key={group.party} group={group} selected={selected} />

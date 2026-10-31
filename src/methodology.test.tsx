@@ -6,9 +6,8 @@ import partialMd from '../docs/methodology-partial.md?raw'
 import verifiedMd from '../docs/methodology.md?raw'
 import MapCallout from './components/MapCallout'
 import MethodologyModal from './components/MethodologyModal'
-import RacePanel from './components/RacePanel'
 import { DATA_VERIFIED, GLOBAL_PARTIAL_NOTICE, IS_PREVIEW_BUILD, SHARES_VERIFIED } from './config'
-import { CALLOUT_SPENT_NOTE, DATA_CHECK_NOTICE, LIMITS_SENTENCE, LIMITS_VERIFIED_SENTENCE, PARTIAL_CALLOUT_NOTICE } from './copy'
+import { DATA_CHECK_NOTICE, PARTIAL_CALLOUT_NOTICE } from './copy'
 import { allRaces, callouts } from './data'
 import { doubleCountSentence, fillMethodology, incompleteRacesSentence, isHowHash, methodologySource, parseMethodology, splitMethodology, type MethodologyValues } from './methodology'
 
@@ -181,16 +180,18 @@ describe('dialog', () => {
 describe('partial-data hotfix text is identical for every race and party', () => {
   window.matchMedia = ((query: string) => ({ matches: false, media: query, addEventListener: () => {}, removeEventListener: () => {}, addListener: () => {}, removeListener: () => {}, onchange: null, dispatchEvent: () => false })) as typeof window.matchMedia
 
-  it('shows the primary-season and contrast-ad note under the Spent on ads row in every race, and not the partial-data line', () => {
+  it('shows only the two rows in every race: no caveat sentence, and an info button next to "Spent on ads"', () => {
     expect(GLOBAL_PARTIAL_NOTICE).toBe(false)
     expect(callouts.size).toBe(allRaces.races.length)
     for (const [state, callout] of callouts) {
-      const html = renderToStaticMarkup(<MapCallout callout={callout} stateName={state} anchor={{ x: 0.5, y: 0.5 }} isDefault={false} onClose={() => {}} sharesVerified />)
-      expect(html.split(CALLOUT_SPENT_NOTE).length - 1).toBe(1)
+      const html = renderToStaticMarkup(<MapCallout callout={callout} stateName={state} anchor={{ x: 0.5, y: 0.5 }} isDefault={false} onClose={() => {}} onOpenHow={() => {}} sharesVerified />)
+      expect(html).not.toContain('primary-season')
+      expect(html).not.toContain('Contrast ads')
       expect(html).not.toContain(PARTIAL_CALLOUT_NOTICE)
-      expect(html).toContain('Spent on ads')
-      // the note sits under the Spent on ads row, before the Predicted to win row is followed by it
-      expect(html.indexOf('Spent on ads')).toBeLessThan(html.indexOf(CALLOUT_SPENT_NOTE))
+      expect(html).not.toContain('class="cc-partial"')
+      expect(html.split('class="cc-row').length - 1).toBe(2)
+      expect(html.match(/<button[^>]*class="cc-info"[^>]*aria-label="How this is counted"/g) ?? []).toHaveLength(1)
+      expect(html.indexOf('Spent on ads')).toBeLessThan(html.indexOf('cc-info'))
     }
   })
 
@@ -198,24 +199,11 @@ describe('partial-data hotfix text is identical for every race and party', () =>
     const [state, callout] = [...callouts][0]
     const html = renderToStaticMarkup(<MapCallout callout={callout} stateName={state} anchor={{ x: 0.5, y: 0.5 }} isDefault={false} onClose={() => {}} sharesVerified globalPartialNotice />)
     expect(html).toContain(PARTIAL_CALLOUT_NOTICE)
-    expect(html).not.toContain(CALLOUT_SPENT_NOTE)
-  })
-
-  it('shows the same limits sentence in the panel for every race, whichever way the data flag is set', () => {
-    for (const race of allRaces.races) {
-      const unverified = renderToStaticMarkup(<RacePanel race={race} fetchedAt={allRaces.fetchedAt} dataVerified={false} />)
-      expect(unverified).toContain(LIMITS_SENTENCE)
-      const verified = renderToStaticMarkup(<RacePanel race={race} fetchedAt={allRaces.fetchedAt} dataVerified />)
-      expect(verified).toContain(LIMITS_VERIFIED_SENTENCE)
-      expect(verified).not.toContain('are not included')
-    }
   })
 
   it('uses the exact wording asked for', () => {
-    expect(CALLOUT_SPENT_NOTE).toBe('Includes primary-season spending as labeled by the filer. Contrast ads may be counted twice.')
     expect(PARTIAL_CALLOUT_NOTICE).toBe('Partial data: recent filings missing. Shares may change.')
     expect(DATA_CHECK_NOTICE).toBe('Data check in progress: totals for some races are being corrected.')
-    expect(LIMITS_SENTENCE).toBe('24- and 48-hour reports are not included, and most recent spending is filed that way.')
   })
 })
 

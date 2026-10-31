@@ -17,7 +17,7 @@ import { DATA_VERIFIED, SHARES_VERIFIED } from './config'
 import { DATA_CHECK_NOTICE, FINAL_FORECAST_TAG, forecastPhrase } from './copy'
 import corrections from '../data/corrections.json'
 import { correctionsBlocks, isCorrectionsHash, type CorrectionEntry } from './corrections'
-import { formatAsOf, formatDate, formatMoney, formatMonthDay } from './format'
+import { formatDate, formatMoney, formatMonthDay } from './format'
 import { initialSelection, parseHashState } from './defaultState'
 import verification from '../data/verification.json'
 import { doubleCountSentence, fillMethodology, incompleteRacesSentence, isHowHash, methodologySource, parseMethodology } from './methodology'
@@ -91,7 +91,7 @@ export default function App() {
   const [vx, vy, vw, vh] = mapViewBox
   const anchor = point ? { x: (point[0] - vx) / vw, y: (point[1] - vy) / vh } : null
   const snapshotHost = new URL(forecastSnapshot.sourceUrl).host
-  const asOf = formatAsOf(allRaces.latestDissemination, allRaces.fetchedAt, DATA_VERIFIED)
+  const dataThrough = allRaces.latestDissemination ? formatDate(`${allRaces.latestDissemination}T00:00:00Z`) : undefined
   const correctionBlocks = useMemo(() => correctionsBlocks(corrections as CorrectionEntry[]), [])
   const methodologyBlocks = useMemo(
     () =>
@@ -152,7 +152,7 @@ export default function App() {
               ))}
             </select>
           </label>
-            {SHARES_VERIFIED && <NationalCard card={national} stateName={active ? (stateNames.get(active) ?? active) : null} asOf={asOf} />}
+            {SHARES_VERIFIED && <NationalCard card={national} stateName={active ? (stateNames.get(active) ?? active) : null} />}
           </div>
 
         <div className="map-wrap" id="map">
@@ -167,7 +167,7 @@ export default function App() {
           {callout && anchor && active && (
             <ErrorBoundary key={active}>
               <MapCallout sharesVerified={SHARES_VERIFIED} onOpenHow={openHow} callout={callout} stateName={stateNames.get(active) ?? active} anchor={anchor} isDefault={isDefault}
-                detail={phone ? <RacePanel race={race} fetchedAt={allRaces.fetchedAt} asOf={asOf} dataVerified={DATA_VERIFIED} onOpenHow={openHow} /> : undefined}
+                detail={phone ? <RacePanel race={race} fetchedAt={allRaces.fetchedAt} dataThrough={dataThrough} dataVerified={DATA_VERIFIED} onOpenHow={openHow} /> : undefined}
                 onClose={close}
               />
             </ErrorBoundary>
@@ -208,8 +208,8 @@ export default function App() {
         <div className="map-notes muted">
           <p>
             {DATA_VERIFIED
-              ? `Support plus oppose, all candidates in the race. Color scale is square root. Dark states have no 2026 Senate race. FEC data: ${asOf}.`
-              : `Dark states have no 2026 Senate race. Spending amounts are being verified. FEC processed data as of ${formatDate(allRaces.fetchedAt)}.`}
+              ? 'Support plus oppose, all candidates in the race. Dark states have no 2026 Senate race.'
+              : 'Dark states have no 2026 Senate race. Spending amounts are being verified.'}
           </p>
           <p className="legend-hatch">
             <svg width="18" height="12" aria-hidden="true">
@@ -233,7 +233,7 @@ export default function App() {
 
         {!phone && (
           <aside className="panel-column">
-            <RacePanel race={race} fetchedAt={allRaces.fetchedAt} asOf={asOf} dataVerified={DATA_VERIFIED} onOpenHow={openHow} />
+            <RacePanel race={race} fetchedAt={allRaces.fetchedAt} dataThrough={dataThrough} dataVerified={DATA_VERIFIED} onOpenHow={openHow} />
           </aside>
         )}
       </main>
@@ -289,8 +289,8 @@ export default function App() {
             </p>
             <h3>How fresh is this data?</h3>
             <p>
-              It refreshes every few hours from FEC filings, and each page shows the latest filing date and when the
-              data was fetched, so very recent filings may not appear yet.
+              It refreshes every few hours from FEC filings, and each race panel shows the date of the latest filing in
+              the data, so very recent filings may not appear yet.
             </p>
             <h3>Who made this?</h3>
             <p>

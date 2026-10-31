@@ -2,8 +2,8 @@ import type { Committee } from '../types'
 import { pickPair } from '../computeCallout'
 import { PARTY_DISPLAY, type RaceView, type RowView, type SideView } from '../computeSpending'
 import { DATA_VERIFIED } from '../config'
-import { AMOUNTS_PENDING_LEAD, LIMITS_SENTENCE, LIMITS_VERIFIED_SENTENCE, PANEL_PRIMARY_NOTE, SHARES_PENDING_LINK } from '../copy'
-import { formatDate, formatMoney, formatMoneyFull } from '../format'
+import { AMOUNTS_PENDING_LEAD, SHARES_PENDING_LINK } from '../copy'
+import { formatMoney, formatMoneyFull } from '../format'
 import { CONTACT_EMAIL } from '../config'
 import { buildMailto } from '../corrections'
 
@@ -92,8 +92,8 @@ function Nominee({ row, index, dataVerified }: { row: RowView; index: number; da
 interface RacePanelProps {
   race: RaceView | null
   fetchedAt: string
-  /** The as-of label: "itemized data through [date]; fetched [time]" once the data is verified. */
-  asOf?: string
+  /** The latest filing date in the data, shown once in the panel's top line. */
+  dataThrough?: string
   /** Whether per-candidate dollar amounts and top committees may be shown. Defaults to the DATA_VERIFIED flag. */
   dataVerified?: boolean
   /** Opens the methodology modal from the "how this is counted" link. */
@@ -111,7 +111,7 @@ export function splitRows(race: RaceView, collapse: boolean): { listed: RowView[
   return { listed: race.rows.filter((r) => !quiet.includes(r)), quiet }
 }
 
-export default function RacePanel({ race, fetchedAt, asOf = formatDate(fetchedAt), dataVerified = DATA_VERIFIED, onOpenHow }: RacePanelProps) {
+export default function RacePanel({ race, fetchedAt, dataThrough, dataVerified = DATA_VERIFIED, onOpenHow }: RacePanelProps) {
   const { listed, quiet } = race ? splitRows(race, dataVerified) : { listed: [], quiet: [] }
   return (
     <section id="race-details" className="panel" aria-label="Race details" tabIndex={-1}>
@@ -134,19 +134,9 @@ export default function RacePanel({ race, fetchedAt, asOf = formatDate(fetchedAt
                 .
               </>
             ) : (
-              <>
-                {race.total === null
-                  ? 'Incomplete data'
-                  : `Total independent expenditures, support plus oppose: ${formatMoney(race.total)}${
-                      race.incompleteCount > 0
-                        ? `. Leaves out ${race.incompleteCount} nominee${race.incompleteCount === 1 ? '' : 's'} with incomplete data, so this total may be low`
-                        : ''
-                    }.`}
-                {race.total !== null && ` ${PANEL_PRIMARY_NOTE}`}
-              </>
+              `Total reported: ${race.total === null ? 'incomplete data' : formatMoney(race.total)}.${dataThrough ? ` Data through ${dataThrough}.` : ''}`
             )}
           </p>
-          {dataVerified && asOf && <p className="muted summary asof">{`${asOf.charAt(0).toUpperCase()}${asOf.slice(1)}.`}</p>}
           {race.missingMajor.map((party) => (
             <p key={party} className="muted summary">
               No {PARTY_DISPLAY[party].label} nominee listed in the source data.
@@ -163,8 +153,10 @@ export default function RacePanel({ race, fetchedAt, asOf = formatDate(fetchedAt
         </>
       )}
       <p className="muted disclaimer">
-        Independent expenditures reported to the FEC for the 2026 cycle, including primary-season spending. Excludes
-        candidate committee and party-coordinated spending. {dataVerified ? LIMITS_VERIFIED_SENTENCE : `Processed FEC data as of ${formatDate(fetchedAt)}. ${LIMITS_SENTENCE}`}{' '}
+        <button type="button" className="link-button" onClick={onOpenHow}>
+          How this map works
+        </button>
+        {' · '}
         <a href={FEC_SOURCE_URL} target="_blank" rel="noreferrer">
           FEC source
         </a>
@@ -172,7 +164,7 @@ export default function RacePanel({ race, fetchedAt, asOf = formatDate(fetchedAt
           <>
             {' · '}
             <a href={buildMailto(race ? race.raceName.replace(/ Senate( special election)? 2026$/, '') : null, window.location.href, fetchedAt)}>
-              See an error? Report it
+              Report an error
             </a>
           </>
         )}

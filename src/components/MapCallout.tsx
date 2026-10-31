@@ -1,5 +1,6 @@
 import { GLOBAL_PARTIAL_NOTICE, SHARES_VERIFIED } from '../config'
-import { CALLOUT_SPENT_NOTE, PARTIAL_CALLOUT_NOTICE, SHARES_PENDING_LEAD, SHARES_PENDING_LINK } from '../copy'
+import infoIcon from '../assets/info.svg'
+import { PARTIAL_CALLOUT_NOTICE, SHARES_PENDING_LEAD, SHARES_PENDING_LINK } from '../copy'
 import { useEffect, useState, type ReactNode } from 'react'
 import leaderUrl from '../assets/callout-leader.svg'
 import type { Callout, CalloutSide } from '../computeCallout'
@@ -22,8 +23,10 @@ function Square({ side }: { side: CalloutSide }) {
   )
 }
 
-function Row({ label, sides, pick, flag }: {
+function Row({ label, sides, pick, flag, onInfo }: {
   label: string
+  /** An info button next to the label that opens the methodology. */
+  onInfo?: () => void
   sides: CalloutSide[]
   pick: (side: CalloutSide) => number | null
   flag: { label: string; reason: string | null } | null
@@ -31,7 +34,10 @@ function Row({ label, sides, pick, flag }: {
   if (flag) {
     return (
       <div className="cc-row cc-row-flag">
-        <span className="cc-label">{label}</span>
+        <span className="cc-label">
+          {label}
+          {onInfo && <InfoButton onClick={onInfo} />}
+        </span>
         <span className="cc-flag">
           {flag.label}
           {flag.reason && <span className="cc-reason"> ({flag.reason})</span>}
@@ -41,13 +47,24 @@ function Row({ label, sides, pick, flag }: {
   }
   return (
     <div className="cc-row">
-      <span className="cc-label">{label}</span>
+      <span className="cc-label">
+        {label}
+        {onInfo && <InfoButton onClick={onInfo} />}
+      </span>
       {sides.map((side) => (
         <span key={side.candidateId} className="cc-value">
           {pick(side)}%
         </span>
       ))}
     </div>
+  )
+}
+
+function InfoButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button type="button" className="cc-info" aria-label="How this is counted" onClick={onClick}>
+      <img src={infoIcon} alt="" width={11} height={11} />
+    </button>
   )
 }
 
@@ -118,7 +135,7 @@ export default function MapCallout({ callout, stateName, anchor, isDefault, deta
         ))}
       </div>
       {sharesVerified ? (
-        <Row label="Spent on ads:" sides={callout.sides} pick={(s) => s.adPct} flag={callout.adFlag} />
+        <Row label="Spent on ads:" sides={callout.sides} pick={(s) => s.adPct} flag={callout.adFlag} onInfo={onOpenHow} />
       ) : (
         <PendingRow onOpenHow={onOpenHow} />
       )}
@@ -128,7 +145,7 @@ export default function MapCallout({ callout, stateName, anchor, isDefault, deta
           {note}
         </p>
       ))}
-      {sharesVerified && <p className="cc-partial">{globalPartialNotice ? PARTIAL_CALLOUT_NOTICE : CALLOUT_SPENT_NOTE}</p>}
+      {sharesVerified && globalPartialNotice && <p className="cc-partial">{PARTIAL_CALLOUT_NOTICE}</p>}
     </div>
   )
   const live = <p className="sr-only" aria-live="polite">{summary(stateName, callout, sharesVerified)}</p>

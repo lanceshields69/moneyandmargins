@@ -26,14 +26,3 @@ export function formatDateTime(iso: string): string {
   const time = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'UTC' })
   return `${date}, ${time} UTC`
 }
-
-/**
- * The as-of label. Verified data: "itemized data through Oct 30, 2026 UTC; fetched Oct 31, 2026, 16:09 UTC", where the
- * date is the latest dissemination date among the rows that count. Otherwise: "latest filing ...; fetched ...".
- */
-export function formatAsOf(latestDissemination: string | null, fetchedAt: string, itemized = false): string {
-  const fetched = `fetched ${formatDateTime(fetchedAt)}`
-  if (!latestDissemination) return fetched
-  const through = formatDate(`${latestDissemination}T00:00:00Z`)
-  return itemized ? `itemized data through ${through}; ${fetched}` : `latest filing ${through}; ${fetched}`
-}

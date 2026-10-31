@@ -10,7 +10,7 @@ import RacePanel from './components/RacePanel'
 import { forecastPhrase } from './copy'
 import { formatMoney } from './format'
 import { fillMethodology } from './methodology'
-import { AMOUNTS_PENDING_LEAD, CALLOUT_SPENT_NOTE, PANEL_PRIMARY_NOTE, PARTIAL_CALLOUT_NOTICE, SHARES_PENDING_LEAD, SHARES_PENDING_LINK } from './copy'
+import { AMOUNTS_PENDING_LEAD, PARTIAL_CALLOUT_NOTICE, SHARES_PENDING_LEAD, SHARES_PENDING_LINK } from './copy'
 import { allRaces, callouts } from './data'
 import verifiedMd from '../docs/methodology.md?raw'
 
@@ -39,7 +39,6 @@ describe('SHARES_VERIFIED gates the "Spent on ads" percentages', () => {
       expect(text(html)).toContain(SHARES_MESSAGE)
       expect(html).toContain('Spent on ads:')
       expect(html).not.toContain(PARTIAL_CALLOUT_NOTICE)
-      expect(html).not.toContain(CALLOUT_SPENT_NOTE)
       // only the "Predicted to win" row carries percentages
       expect(html.split('cc-value').length - 1).toBe(c.winFlag ? 0 : c.sides.length)
       seen.add(row.split('Predicted')[0])
@@ -51,7 +50,6 @@ describe('SHARES_VERIFIED gates the "Spent on ads" percentages', () => {
     const state = [...callouts].find(([, c]) => !c.adFlag && !c.winFlag)![0]
     const html = callout(state, true)
     expect(text(html)).not.toContain(SHARES_MESSAGE)
-    expect(html).toContain(CALLOUT_SPENT_NOTE)
     expect(html).not.toContain(PARTIAL_CALLOUT_NOTICE)
     expect(html.split('cc-value').length - 1).toBe(callouts.get(state)!.sides.length * 2)
   })
@@ -67,18 +65,16 @@ describe('DATA_VERIFIED gates per-candidate amounts and top committees', () => {
       expect(text(html)).not.toMatch(/\$\d/)
       expect(html).not.toContain('Top committees')
       expect(html).not.toContain('class="bars"')
-      expect(html).not.toContain(PANEL_PRIMARY_NOTE)
       const summary = /<p class="muted summary">(.*?)<\/p>/.exec(html)?.[1] ?? ''
       lines.add(text(summary))
     }
     expect([...lines]).toEqual([`${AMOUNTS_PENDING_LEAD}${SHARES_PENDING_LINK}.`])
   })
 
-  it('shows amounts, committees and the primary-season note when data is verified', () => {
+  it('shows amounts and committees when data is verified', () => {
     for (const race of withAmounts) {
       const html = renderToStaticMarkup(<RacePanel race={race} fetchedAt={allRaces.fetchedAt} dataVerified />)
       expect(text(html)).toMatch(/\$\d/)
-      expect(text(html)).toContain(PANEL_PRIMARY_NOTE)
       expect(text(html)).not.toContain(AMOUNTS_PENDING_LEAD)
     }
   })
@@ -130,8 +126,9 @@ describe('each flag combination on the whole page', () => {
       expect(page.querySelector('#race-details')?.textContent?.includes('Top committees') ?? false).toBe(flags.data)
       expect(/\$\d/.test(page.querySelector('#race-details')?.textContent ?? '')).toBe(flags.data)
       expect(page.querySelector('.ramp') !== null).toBe(flags.data)
-      // as-of label: "itemized data through [date]" once the data is verified
-      expect(body.includes('itemized data through')).toBe(flags.data)
+      // the data-through date shows in the panel's top line when data is verified, and the fetch time never shows on the page
+      expect((page.querySelector('#race-details')?.textContent ?? '').includes('Data through')).toBe(flags.data)
+      expect(body.includes('fetched')).toBe(false)
       // map fill: one neutral color for every race state when data is unverified
       const fills = new Set([...page.querySelectorAll('path.state-race')].map((p) => p.getAttribute('fill')))
       expect(fills.size === 1).toBe(!flags.data)
@@ -217,8 +214,7 @@ describe('panel, labels and header fixes', () => {
     support: { value: 0, widthPct: 0 }, oppose: { value: 0, widthPct: 0 }, topSupportCommittees: [], topOpposeCommittees: [], sourceUrl: 'https://x.test', asOf: '2026-10-31T00:00:00Z', ...over,
   })
   const raceOf = (rows: unknown[]) => ({ raceId: 'XX-2026', state: 'XX', raceName: 'Test Senate 2026', isSpecial: false, rows, scaleMax: 1, total: 10, incompleteCount: 0, missingMajor: [] }) as never
-  const panel = (race: never, asOf = 'itemized data through Oct 31, 2026 UTC; fetched Oct 31, 2026, 21:57 UTC') =>
-    renderToStaticMarkup(<RacePanel race={race} fetchedAt={allRaces.fetchedAt} asOf={asOf} dataVerified />)
+  const panel = (race: never) => renderToStaticMarkup(<RacePanel race={race} fetchedAt={allRaces.fetchedAt} dataThrough="Oct 31, 2026 UTC" dataVerified />)
 
   it('lists by party name with a note, and collapses candidates with no reported spending into one line', () => {
     for (const race of allRaces.races) {
@@ -244,11 +240,23 @@ describe('panel, labels and header fixes', () => {
     expect(html).toContain('no reported spending: Ivy Ind')
   })
 
-  it('shows the data label once near the top, and each candidate line says just "FEC record"', () => {
+  it('opens with one line, "Total reported: $X. Data through [date].", and each candidate line says just "FEC record"', () => {
     const html = panel(allRaces.races.find((r) => r.state === 'OH') as never)
-    expect(html.split('tem' + 'ized data through').length - 1).toBe(1)
-    expect(html.indexOf('temized data through')).toBeLessThan(html.indexOf('class="nominees"'))
+    const top = text(/<p class="muted summary">(.*?)<\/p>/.exec(html)?.[1] ?? '')
+    expect(top).toMatch(/^Total reported: \$[\d.,]+[KMB]?\. Data through Oct 31, 2026 UTC\.$/)
+    expect(html.split('Data through').length - 1).toBe(1)
+    expect(html).not.toContain('fetched')
+    expect(html).not.toContain('Includes primary-season')
     for (const m of html.matchAll(/<p class="source muted">(.*?)<\/p>/g)) expect(text(m[1])).toBe('FEC record')
+  })
+
+  it('ends with one line of links: How this map works · FEC source · Report an error', () => {
+    const html = panel(allRaces.races.find((r) => r.state === 'TX') as never)
+    const bottom = /<p class="muted disclaimer">(.*?)<\/p>/.exec(html)?.[1] ?? ''
+    expect(text(bottom)).toBe('How this map works · FEC source · Report an error')
+    expect(bottom).toContain('mailto:')
+    expect(bottom).toContain('https://www.fec.gov/data/independent-expenditures/')
+    expect(html).not.toContain('24- and 48-hour')
   })
 
   it('draws opposing bars outlined and unfilled, never hatched', () => {
@@ -293,8 +301,29 @@ describe('panel, labels and header fixes', () => {
     expect(footerLine.textContent).toContain('latest as of')
     act(() => footerLine.querySelector<HTMLButtonElement>('button')!.click())
     expect(host.querySelector('[role="dialog"]')).not.toBeNull()
+    // the map legend note, and the fetch time nowhere on the page outside the modal
+    const notes = host.querySelector('.map-notes p')?.textContent
+    expect(notes).toBe('Support plus oppose, all candidates in the race. Dark states have no 2026 Senate race.')
     act(() => root.unmount())
     host.remove()
     vi.doUnmock('./config')
+  })
+})
+
+describe('the info button in the callout', () => {
+  it('opens the methodology when pressed', () => {
+    window.matchMedia = ((q: string) => ({ matches: false, media: q, addEventListener() {}, removeEventListener() {}, addListener() {}, removeListener() {}, onchange: null, dispatchEvent: () => false })) as typeof window.matchMedia
+    const host = document.createElement('div')
+    document.body.appendChild(host)
+    const root = createRoot(host)
+    const opened = vi.fn()
+    const [state, callout] = [...callouts][0]
+    act(() => root.render(<MapCallout callout={callout} stateName={state} anchor={{ x: 0.5, y: 0.5 }} isDefault={false} onClose={() => {}} onOpenHow={opened} sharesVerified />))
+    const button = host.querySelector<HTMLButtonElement>('button.cc-info')!
+    expect(button.getAttribute('aria-label')).toBe('How this is counted')
+    act(() => button.click())
+    expect(opened).toHaveBeenCalledTimes(1)
+    act(() => root.unmount())
+    host.remove()
   })
 })

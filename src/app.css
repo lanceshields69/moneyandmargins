@@ -1314,3 +1314,24 @@ details h4 {
     height: 22px;
   }
 }
+
+/* Callout info button next to "Spent on ads". */
+.cc-info {
+  display: inline-grid;
+  place-items: center;
+  width: 14px;
+  height: 14px;
+  margin-left: 3px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  vertical-align: -2px;
+  cursor: pointer;
+}
+.cc-info img {
+  display: block;
+}
+.cc-info:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 1px;
+}
