@@ -36,7 +36,7 @@ a {
 }
 
 .header {
-  padding: 20px 16px 8px;
+  padding: 20px 16px 28px;
 }
 .header h1 {
   margin: 0 0 8px;
@@ -451,7 +451,7 @@ details h4 {
 
 @media (min-width: 900px) {
   .header {
-    padding: 24px 32px 8px;
+    padding: 24px 32px 28px;
   }
   .layout {
     grid-template-columns: minmax(0, 1fr) 420px;

@@ -38,9 +38,7 @@ export default function App() {
         <h1>
           <img className="logo" src={logo} alt="Money & Margins" width={483} height={66} />
         </h1>
-        <p className="muted">
-          Independent expenditures reported to the FEC in 2026 Senate races, by candidate state.
-        </p>
+        <p className="muted">The ads are everywhere. The receipts are here.</p>
       </header>
 
       <main className="layout">
