@@ -5,6 +5,7 @@ import MethodologyModal from './components/MethodologyModal'
 import NationalCard from './components/NationalCard'
 import RacePanel from './components/RacePanel'
 import ContactFooter from './components/ContactFooter'
+import PreviewBadge from './components/PreviewBadge'
 import Vote411Banner from './components/Vote411Banner'
 import ShareMenu from './components/ShareMenu'
 import UsStatesMap, { rampColor } from './components/UsStatesMap'
@@ -122,7 +123,7 @@ export default function App() {
           <img className="logo" src={logo} alt="Money & Margins" width={399} height={59} />
         </h1>
         <p className="muted">The ads are everywhere. The receipts are here.</p>
-        {(!DATA_VERIFIED || !SHARES_VERIFIED) && <p className="data-check">{DATA_CHECK_NOTICE}</p>}
+        {!DATA_VERIFIED && <p className="data-check">{DATA_CHECK_NOTICE}</p>}
       </header>
 
       <main className="layout">
@@ -302,6 +303,7 @@ export default function App() {
           </div>
         </div>
       </footer>
+      <PreviewBadge />
       {howOpen && <MethodologyModal blocks={methodologyBlocks} onClose={closeHow} />}
       {corrOpen && <MethodologyModal blocks={correctionBlocks} onClose={closeCorr} />}
     </div>

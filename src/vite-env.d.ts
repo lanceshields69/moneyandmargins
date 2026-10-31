@@ -2,3 +2,4 @@
 
 declare const __DATA_VERIFIED__: boolean
 declare const __SHARES_VERIFIED__: boolean
+declare const __VERCEL_ENV__: string

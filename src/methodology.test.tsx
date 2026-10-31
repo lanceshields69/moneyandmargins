@@ -7,7 +7,7 @@ import verifiedMd from '../docs/methodology.md?raw'
 import MapCallout from './components/MapCallout'
 import MethodologyModal from './components/MethodologyModal'
 import RacePanel from './components/RacePanel'
-import { DATA_VERIFIED, GLOBAL_PARTIAL_NOTICE } from './config'
+import { DATA_VERIFIED, GLOBAL_PARTIAL_NOTICE, IS_PREVIEW_BUILD, SHARES_VERIFIED } from './config'
 import { DATA_CHECK_NOTICE, LIMITS_SENTENCE, LIMITS_VERIFIED_SENTENCE, PARTIAL_CALLOUT_NOTICE } from './copy'
 import { allRaces, callouts } from './data'
 import { fillMethodology, isHowHash, methodologySource, parseMethodology, splitMethodology, type MethodologyValues } from './methodology'
@@ -32,8 +32,12 @@ describe('which text renders', () => {
     expect(verifiedMd).not.toBe(partialMd)
     expect(partialMd).toContain('24- and 48-hour reports are not included')
   })
-  it('ships with DATA_VERIFIED off, so the partial text', () => {
-    expect(DATA_VERIFIED).toBe(false)
+  it('defaults both flags to true when no environment variable is set, so the verified view needs no setup', () => {
+    expect(process.env.DATA_VERIFIED).toBeUndefined()
+    expect(process.env.SHARES_VERIFIED).toBeUndefined()
+    expect(DATA_VERIFIED).toBe(true)
+    expect(SHARES_VERIFIED).toBe(true)
+    expect(IS_PREVIEW_BUILD).toBe(false)
   })
 })
 

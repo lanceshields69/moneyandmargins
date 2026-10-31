@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import MapCallout from './components/MapCallout'
+import PreviewBadge from './components/PreviewBadge'
 import RacePanel from './components/RacePanel'
 import { AMOUNTS_PENDING_LEAD, PANEL_PRIMARY_NOTE, PARTIAL_CALLOUT_NOTICE, SHARES_PENDING_LEAD, SHARES_PENDING_LINK } from './copy'
 import { allRaces, callouts } from './data'
@@ -97,9 +98,9 @@ describe('each flag combination on the whole page', () => {
     window.history.replaceState(null, '', '/')
   })
 
-  async function renderPage(flags: { data: boolean; shares: boolean }, hash = '') {
+  async function renderPage(flags: { data: boolean; shares: boolean }, hash = '', preview = false) {
     vi.resetModules()
-    vi.doMock('./config', () => ({ CONTACT_EMAIL: 'a@b.test', DATA_VERIFIED: flags.data, SHARES_VERIFIED: flags.shares, GLOBAL_PARTIAL_NOTICE: true }))
+    vi.doMock('./config', () => ({ CONTACT_EMAIL: 'a@b.test', DATA_VERIFIED: flags.data, SHARES_VERIFIED: flags.shares, GLOBAL_PARTIAL_NOTICE: true, IS_PREVIEW_BUILD: preview }))
     window.history.replaceState(null, '', `/${hash}`)
     const { default: App } = await import('./App')
     const root = createRoot(host)
@@ -115,8 +116,9 @@ describe('each flag combination on the whole page', () => {
       expect(body.includes("Spending aligned with each party's nominees")).toBe(flags.shares)
       // spent-on-ads row: shares only
       expect(body.includes(SHARES_MESSAGE)).toBe(!flags.shares)
-      // slim notice under the subhead while either flag is off
-      expect(body.includes('Data check in progress')).toBe(!(flags.data && flags.shares))
+      // slim notice under the subhead only while the data is unverified; the panel's pending text likewise
+      expect(body.includes('Data check in progress')).toBe(!flags.data)
+      expect(body.includes('Dollar amounts are being verified')).toBe(!flags.data)
       // dollar amounts and top committees in the panel, and the map legend ramp: data only
       expect(page.querySelector('#race-details')?.textContent?.includes('Top committees') ?? false).toBe(flags.data)
       expect(/\$\d/.test(page.querySelector('#race-details')?.textContent ?? '')).toBe(flags.data)
@@ -171,5 +173,29 @@ describe('corrections log', () => {
   it('puts the newest entry first', async () => {
     const { latestCorrections } = await import('./corrections')
     expect(latestCorrections([{ date: '2026-10-01', text: 'a' }, { date: '2026-10-20', text: 'b' }]).map((e) => e.text)).toEqual(['b', 'a'])
+  })
+})
+
+describe('the Preview badge', () => {
+  it('prints the compiled flag values, and renders nothing outside Preview builds', () => {
+    expect(renderToStaticMarkup(<PreviewBadge show dataVerified sharesVerified={false} />)).toContain('DATA_VERIFIED=true · SHARES_VERIFIED=false')
+    expect(renderToStaticMarkup(<PreviewBadge show={false} dataVerified sharesVerified />)).toBe('')
+  })
+
+  it('shows on the page only when the build is a Preview build', async () => {
+    window.matchMedia = ((q: string) => ({ matches: false, media: q, addEventListener() {}, removeEventListener() {}, addListener() {}, removeListener() {}, onchange: null, dispatchEvent: () => false })) as typeof window.matchMedia
+    for (const preview of [true, false]) {
+      vi.resetModules()
+      vi.doMock('./config', () => ({ CONTACT_EMAIL: 'a@b.test', DATA_VERIFIED: true, SHARES_VERIFIED: true, GLOBAL_PARTIAL_NOTICE: true, IS_PREVIEW_BUILD: preview }))
+      const host = document.createElement('div')
+      document.body.appendChild(host)
+      const { default: App } = await import('./App')
+      const root = createRoot(host)
+      act(() => root.render(<App />))
+      expect(host.querySelector('.preview-badge') !== null).toBe(preview)
+      act(() => root.unmount())
+      host.remove()
+      vi.doUnmock('./config')
+    }
   })
 })
