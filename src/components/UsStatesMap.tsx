@@ -11,12 +11,22 @@ interface StateFeature {
 
 const { viewBox, states } = usStatesData as { viewBox: string; states: StateFeature[] }
 
-// Neutral grey to a muted brass. Pure brass (--color-brass) is reserved for selection and focus.
-const RAMP_LOW: [number, number, number] = [0x4a, 0x49, 0x45]
-const RAMP_HIGH: [number, number, number] = [0xb0, 0xa2, 0x6c]
+// Spend ramp from the project palette: indigo, purple, pink, then a lighter pink shade for the highest totals.
+// Never party colors: the fill combines both sides. Teal (--color-focus) is reserved for selection and focus.
+const RAMP_STOPS: { at: number; rgb: [number, number, number] }[] = [
+  { at: 0, rgb: [0x3a, 0x33, 0x6a] },
+  { at: 0.4, rgb: [0x8a, 0x27, 0x8d] },
+  { at: 0.8, rgb: [0xf0, 0x02, 0x8d] },
+  { at: 1, rgb: [0xff, 0x96, 0xcd] },
+]
 
 export function rampColor(fraction: number): string {
-  const [r, g, b] = RAMP_LOW.map((low, i) => Math.round(low + (RAMP_HIGH[i] - low) * fraction))
+  const f = Math.min(Math.max(fraction, 0), 1)
+  const upper = RAMP_STOPS.findIndex((stop) => stop.at >= f)
+  const hi = RAMP_STOPS[Math.max(upper, 1)]
+  const lo = RAMP_STOPS[Math.max(upper, 1) - 1]
+  const t = (f - lo.at) / (hi.at - lo.at)
+  const [r, g, b] = lo.rgb.map((low, i) => Math.round(low + (hi.rgb[i] - low) * t))
   return `rgb(${r}, ${g}, ${b})`
 }
 
@@ -28,7 +38,7 @@ interface UsStatesMapProps {
 }
 
 export default function UsStatesMap({ raceByState, maxTotal, selected, onSelect }: UsStatesMapProps) {
-  // Selected state is drawn last so its brass outline is not covered by neighbors.
+  // Selected state is drawn last so its teal outline is not covered by neighbors.
   const ordered = [...states].sort((a, b) => Number(a.usps === selected) - Number(b.usps === selected))
 
   return (

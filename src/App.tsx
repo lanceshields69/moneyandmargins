@@ -64,7 +64,7 @@ export default function App() {
             <p className="legend-title">Total dollars, not per voter</p>
             <div
               className="ramp"
-              style={{ background: `linear-gradient(to right, ${rampColor(0)}, ${rampColor(0.5)}, ${rampColor(1)})` }}
+              style={{ background: `linear-gradient(to right, ${[0, 0.2, 0.4, 0.6, 0.8, 1].map(rampColor).join(', ')})` }}
               role="img"
               aria-label="Color scale from low to high total independent expenditures"
             />
@@ -78,7 +78,7 @@ export default function App() {
             </p>
             <p className="legend-hatch muted">
               <svg width="18" height="12" aria-hidden="true">
-                <rect width="18" height="12" fill={rampColor(0.5)} />
+                <rect width="18" height="12" fill={rampColor(0.6)} />
                 <rect width="18" height="12" fill="url(#incomplete-hatch)" />
               </svg>
               Hatched: at least one nominee has incomplete data, so the total may be low.

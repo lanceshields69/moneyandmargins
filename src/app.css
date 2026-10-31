@@ -98,7 +98,7 @@ a {
 }
 .state-selected,
 .state-race:focus-visible {
-  stroke: var(--color-brass);
+  stroke: var(--color-focus);
   stroke-width: 2.5;
   outline: none;
 }
@@ -142,7 +142,7 @@ a {
 
 .panel {
   background: var(--color-panel);
-  border: 1px solid var(--color-rule);
+  border: 1px solid var(--color-panel-rule);
   border-radius: 6px;
   padding: 16px;
 }
@@ -183,7 +183,7 @@ a {
   padding: 0;
 }
 .nominee {
-  border-top: 1px solid var(--color-rule);
+  border-top: 1px solid var(--color-panel-rule);
   padding: 12px 0;
 }
 .nominee-head {
@@ -230,7 +230,7 @@ a {
 }
 .track {
   height: 12px;
-  background: var(--color-ground);
+  background: var(--color-track);
   border-radius: 2px;
   overflow: hidden;
 }
@@ -298,7 +298,7 @@ details h4 {
   line-height: 1.45;
 }
 .disclaimer {
-  border-top: 1px solid var(--color-rule);
+  border-top: 1px solid var(--color-panel-rule);
   padding-top: 12px;
 }
 
