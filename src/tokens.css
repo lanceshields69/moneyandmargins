@@ -2,14 +2,15 @@
   --color-ground: #181714;
   --color-panel: #3a336a;
   --color-panel-rule: #5f5896;
-  --color-track: #0a2540;
+  --color-callout: #544a99;
+  --color-callout-rule: #7771b8;
   --color-rule: #393834;
   --color-text: #e9e8e2;
   --color-muted: #b8b6c4;
   --color-dem: #6f97e2;
   --color-rep: #d87972;
   --color-ind: #3eaf86;
-  --color-focus: #12cab5;
+  --color-focus: #d4bc79;
 
   --font-sans: 'halyard-micro', system-ui, sans-serif;
 }

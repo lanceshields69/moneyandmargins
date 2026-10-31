@@ -35,9 +35,10 @@ interface UsStatesMapProps {
   maxTotal: number
   selected: string | null
   onSelect: (usps: string) => void
+  onFocusState: (usps: string) => void
 }
 
-export default function UsStatesMap({ raceByState, maxTotal, selected, onSelect }: UsStatesMapProps) {
+export default function UsStatesMap({ raceByState, maxTotal, selected, onSelect, onFocusState }: UsStatesMapProps) {
   // Selected state is drawn last so its teal outline is not covered by neighbors.
   const ordered = [...states].sort((a, b) => Number(a.usps === selected) - Number(b.usps === selected))
 
@@ -70,6 +71,9 @@ export default function UsStatesMap({ raceByState, maxTotal, selected, onSelect 
             aria-label={`${state.name}${race.isSpecial ? ' special election' : ''}, ${summary}`}
             aria-pressed={isSelected}
             onClick={() => onSelect(state.usps)}
+            onFocus={(event) => {
+              if (event.currentTarget.matches(':focus-visible')) onFocusState(state.usps)
+            }}
             onKeyDown={(event) => {
               if (event.key === 'Enter' || event.key === ' ') {
                 event.preventDefault()
