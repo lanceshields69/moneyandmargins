@@ -200,6 +200,11 @@ a {
   width: 85%;
   height: auto;
 }
+@media (max-width: 899px) {
+  .map {
+    width: 100%;
+  }
+}
 .state {
   stroke: var(--color-rule);
   stroke-width: 0.75;
