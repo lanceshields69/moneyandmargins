@@ -69,7 +69,7 @@ export default function App() {
       <header className="header">
         <ShareMenu />
         <h1>
-          <img className="logo" src={logo} alt="Money & Margins" width={483} height={66} />
+          <img className="logo" src={logo} alt="Money & Margins" width={399} height={59} />
         </h1>
         <p className="muted">The ads are everywhere. The receipts are here.</p>
       </header>
