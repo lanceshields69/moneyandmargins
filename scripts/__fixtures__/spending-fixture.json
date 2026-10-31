@@ -1,0 +1,168 @@
+{
+  "fetchedAt": "2026-10-31T06:55:38.801Z",
+  "source": "FEC Schedule E independent expenditures, by-candidate aggregate (/schedules/schedule_e/by_candidate/), cycle=2026, election_full=false (the two-year 2026 cycle).",
+  "totals": [
+    {
+      "candidateId": "OH-2026--JON-HUSTED",
+      "status": "queried_with_rows",
+      "fecIds": [
+        "S6OH00304"
+      ],
+      "support": {
+        "value": 5108041.170000001,
+        "sourceUrl": "https://www.fec.gov/data/candidate/S6OH00304/?tab=independent-expenditures&cycle=2026&election_full=false",
+        "asOf": "2026-10-31T06:55:38.801Z"
+      },
+      "oppose": {
+        "value": 1149433.0499999998,
+        "sourceUrl": "https://www.fec.gov/data/candidate/S6OH00304/?tab=independent-expenditures&cycle=2026&election_full=false",
+        "asOf": "2026-10-31T06:55:38.801Z"
+      },
+      "topSupportCommittees": [
+        {
+          "id": "C00687103",
+          "name": "AMERICANS FOR PROSPERITY ACTION, INC. (AFP ACTION) DBA CVA ACTION AND DBA LIBRE ACTION",
+          "fecUrl": "https://www.fec.gov/data/committee/C00687103/",
+          "amount": 3632209.7
+        },
+        {
+          "id": "C00571703",
+          "name": "SLF PAC",
+          "fecUrl": "https://www.fec.gov/data/committee/C00571703/",
+          "amount": 617775.95
+        },
+        {
+          "id": "C00875039",
+          "name": "HIGH PLAINS PAC",
+          "fecUrl": "https://www.fec.gov/data/committee/C00875039/",
+          "amount": 515000
+        },
+        {
+          "id": "C00844613",
+          "name": "WIN IT BACK PAC",
+          "fecUrl": "https://www.fec.gov/data/committee/C00844613/",
+          "amount": 250340.91
+        },
+        {
+          "id": "C00608943",
+          "name": "CLEARPATH ACTION FUND, INC.",
+          "fecUrl": "https://www.fec.gov/data/committee/C00608943/",
+          "amount": 92660
+        }
+      ],
+      "topOpposeCommittees": [
+        {
+          "id": "C90011172",
+          "name": "AFSCME WORKING FAMILIES FUND",
+          "fecUrl": "https://www.fec.gov/data/committee/C90011172/",
+          "amount": 1000000
+        },
+        {
+          "id": "C00418897",
+          "name": "VOTEVETS",
+          "fecUrl": "https://www.fec.gov/data/committee/C00418897/",
+          "amount": 120000
+        },
+        {
+          "id": "C00678839",
+          "name": "INDIVISIBLE ACTION",
+          "fecUrl": "https://www.fec.gov/data/committee/C00678839/",
+          "amount": 15475.83
+        },
+        {
+          "id": "C00640300",
+          "name": "ACTIVATE AMERICA",
+          "fecUrl": "https://www.fec.gov/data/committee/C00640300/",
+          "amount": 6558.9
+        },
+        {
+          "id": "C00865444",
+          "name": "WINSENATE",
+          "fecUrl": "https://www.fec.gov/data/committee/C00865444/",
+          "amount": 5625
+        }
+      ]
+    },
+    {
+      "candidateId": "OH-2026--SHERROD-BROWN",
+      "status": "queried_with_rows",
+      "fecIds": [
+        "S6OH00163"
+      ],
+      "support": {
+        "value": 288280.4,
+        "sourceUrl": "https://www.fec.gov/data/candidate/S6OH00163/?tab=independent-expenditures&cycle=2026&election_full=false",
+        "asOf": "2026-10-31T06:55:38.801Z"
+      },
+      "oppose": {
+        "value": 4179198.09,
+        "sourceUrl": "https://www.fec.gov/data/candidate/S6OH00163/?tab=independent-expenditures&cycle=2026&election_full=false",
+        "asOf": "2026-10-31T06:55:38.801Z"
+      },
+      "topSupportCommittees": [
+        {
+          "id": "C00580068",
+          "name": "PROGRESSIVE TURNOUT PROJECT",
+          "fecUrl": "https://www.fec.gov/data/committee/C00580068/",
+          "amount": 144386.79
+        },
+        {
+          "id": "C90020231",
+          "name": "THOMAS PAINE SOCIETY L.L.C.",
+          "fecUrl": "https://www.fec.gov/data/committee/C90020231/",
+          "amount": 34074.1
+        },
+        {
+          "id": "C00909994",
+          "name": "FIELD TEAM 6, INC.",
+          "fecUrl": "https://www.fec.gov/data/committee/C00909994/",
+          "amount": 32775.33
+        },
+        {
+          "id": "C90021726",
+          "name": "OHIO CITIZEN ACTION",
+          "fecUrl": "https://www.fec.gov/data/committee/C90021726/",
+          "amount": 31768.46
+        },
+        {
+          "id": "C00835041",
+          "name": "FORWARD BLUE",
+          "fecUrl": "https://www.fec.gov/data/committee/C00835041/",
+          "amount": 19131.1
+        }
+      ],
+      "topOpposeCommittees": [
+        {
+          "id": "C00687103",
+          "name": "AMERICANS FOR PROSPERITY ACTION, INC. (AFP ACTION) DBA CVA ACTION AND DBA LIBRE ACTION",
+          "fecUrl": "https://www.fec.gov/data/committee/C00687103/",
+          "amount": 1773374.66
+        },
+        {
+          "id": "C00912865",
+          "name": "OHIO FLYER PAC",
+          "fecUrl": "https://www.fec.gov/data/committee/C00912865/",
+          "amount": 1706777.13
+        },
+        {
+          "id": "C00571703",
+          "name": "SLF PAC",
+          "fecUrl": "https://www.fec.gov/data/committee/C00571703/",
+          "amount": 416239.01
+        },
+        {
+          "id": "C99002396",
+          "name": "AMERICAN POLITICAL ACTION COMMITTEE",
+          "fecUrl": "https://www.fec.gov/data/committee/C99002396/",
+          "amount": 272805
+        },
+        {
+          "id": "C00747121",
+          "name": "RED SENATE",
+          "fecUrl": "https://www.fec.gov/data/committee/C00747121/",
+          "amount": 10002.29
+        }
+      ]
+    }
+  ]
+}
