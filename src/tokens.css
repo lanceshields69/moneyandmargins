@@ -9,7 +9,7 @@
   --color-ind: #3eaf86;
   --color-brass: #d4bc79;
 
-  --font-sans: 'Public Sans', sans-serif;
+  --font-sans: 'Public Sans', system-ui, sans-serif;
 }
 
 * {
