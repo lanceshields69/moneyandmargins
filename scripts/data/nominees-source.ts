@@ -37,13 +37,8 @@ export const SOURCE_RACES: SourceRace[] = [
         provisional: true,
         provisionalReason: 'Second Republican advancer under Alaska\'s top-four primary system.',
       },
-      {
-        name: 'Daniel J. Sullivan Jr.',
-        ballotParty: 'Independent',
-        provisional: true,
-        provisionalReason:
-          'No ballot party listed by source; same name as incumbent, subject of a reported spoiler-candidate lawsuit. Flagged for your review before inclusion.',
-      },
+      // Daniel J. Sullivan Jr. (Undeclared; certified on the Alaska general ballot) is
+      // left out of the MVP: not a major-party nominee. FEC ID S6AK00326 is released.
     ],
   },
   {

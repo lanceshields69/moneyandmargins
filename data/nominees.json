@@ -12,7 +12,7 @@
       "sourceUrl": "https://en.wikipedia.org/w/index.php?title=2026_United_States_Senate_election_in_Alaska&oldid=1382905118",
       "sourceTier": "secondary_wikipedia",
       "retrievedAt": "2026-10-30",
-      "note": "Alaska uses a top-four nonpartisan primary; all four advancers appear on one ranked-choice general ballot, so two Republicans (Sullivan, Heikes) are both nominees. Daniel J. Sullivan Jr. advanced with no listed party and is reportedly the subject of a name-confusion/spoiler-candidate lawsuit — needs your attention before inclusion."
+      "note": "Alaska uses a top-four nonpartisan primary; two Republicans (Sullivan, Heikes) advanced. Daniel J. Sullivan Jr. (Undeclared, certified on the general ballot) is not shown in this version."
     },
     {
       "id": "AL-2026",
@@ -418,10 +418,24 @@
       "name": "Dan Sullivan",
       "party": "R",
       "fecIds": [
-        "S4AK00214",
-        "S6AK00326"
+        "S4AK00214"
       ],
-      "fecMatchNote": "matched 2 FEC candidate IDs — not merged, verify same person"
+      "fecMatches": [
+        {
+          "id": "S4AK00214",
+          "fecName": "SULLIVAN, DAN",
+          "cycles": [
+            2014,
+            2016,
+            2018,
+            2020,
+            2022,
+            2024,
+            2026
+          ],
+          "method": "manual-assignment"
+        }
+      ]
     },
     {
       "id": "AK-2026--MARY-PELTOLA",
@@ -430,6 +444,16 @@
       "party": "D",
       "fecIds": [
         "S6AK00276"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6AK00276",
+          "fecName": "PELTOLA, MARY",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -441,28 +465,37 @@
         "S8AK00140"
       ],
       "provisional": true,
-      "provisionalReason": "Second Republican advancer under Alaska's top-four primary system."
-    },
-    {
-      "id": "AK-2026--DANIEL-J-SULLIVAN-JR",
-      "raceId": "AK-2026",
-      "name": "Daniel J. Sullivan Jr.",
-      "party": "I",
-      "fecIds": [
-        "S4AK00214",
-        "S6AK00326"
-      ],
-      "fecMatchNote": "matched 2 FEC candidate IDs — not merged, verify same person",
-      "provisional": true,
-      "provisionalReason": "No ballot party listed by source; same name as incumbent, subject of a reported spoiler-candidate lawsuit. Flagged for your review before inclusion."
+      "provisionalReason": "Second Republican advancer under Alaska's top-four primary system.",
+      "fecMatches": [
+        {
+          "id": "S8AK00140",
+          "fecName": "HEIKES, GERALD L. (JERRY)",
+          "cycles": [
+            2008,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "AL-2026--BARRY-MOORE",
       "raceId": "AL-2026",
       "name": "Barry Moore",
       "party": "R",
-      "fecIds": [],
-      "fecMatchNote": "no FEC filing found"
+      "fecIds": [
+        "S6AL00476"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6AL00476",
+          "fecName": "MOORE, FELIX BARRY",
+          "cycles": [
+            2026
+          ],
+          "method": "fec-name-search"
+        }
+      ]
     },
     {
       "id": "AL-2026--EVERETT-WESS",
@@ -471,6 +504,16 @@
       "party": "D",
       "fecIds": [
         "S6AL00518"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6AL00518",
+          "fecName": "WESS, EVERETT W",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -480,6 +523,22 @@
       "party": "R",
       "fecIds": [
         "S4AR00103"
+      ],
+      "fecMatches": [
+        {
+          "id": "S4AR00103",
+          "fecName": "COTTON, THOMAS",
+          "cycles": [
+            2014,
+            2016,
+            2018,
+            2020,
+            2022,
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -489,6 +548,16 @@
       "party": "D",
       "fecIds": [
         "S6AR00199"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6AR00199",
+          "fecName": "SHOFFNER, HALLIE",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -496,9 +565,20 @@
       "raceId": "AR-2026",
       "name": "Jeff Wadlin",
       "party": "I",
-      "fecIds": [],
-      "fecMatchNote": "no FEC filing found",
-      "provisional": true
+      "fecIds": [
+        "S6AR00223"
+      ],
+      "provisional": true,
+      "fecMatches": [
+        {
+          "id": "S6AR00223",
+          "fecName": "WADLIN, JEFFREY FRANCIS",
+          "cycles": [
+            2026
+          ],
+          "method": "fec-name-search"
+        }
+      ]
     },
     {
       "id": "CO-2026--JOHN-HICKENLOOPER",
@@ -507,6 +587,19 @@
       "party": "D",
       "fecIds": [
         "S0CO00575"
+      ],
+      "fecMatches": [
+        {
+          "id": "S0CO00575",
+          "fecName": "HICKENLOOPER, JOHN W.",
+          "cycles": [
+            2020,
+            2022,
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -516,6 +609,16 @@
       "party": "R",
       "fecIds": [
         "S6CO00507"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6CO00507",
+          "fecName": "BAISLEY, MARK",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -527,9 +630,27 @@
         "S6CO00549",
         "S6CO00556"
       ],
-      "fecMatchNote": "matched 2 FEC candidate IDs — not merged, verify same person",
       "provisional": true,
-      "provisionalReason": "Well-funded minor-party candidate (~$3.6M raised)."
+      "provisionalReason": "Well-funded minor-party candidate (~$3.6M raised).",
+      "fecMatches": [
+        {
+          "id": "S6CO00549",
+          "fecName": "CHEW, ROBERT",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        },
+        {
+          "id": "S6CO00556",
+          "fecName": "CHEW, BOB",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ],
+      "fecMatchNote": "matched 2 FEC candidate IDs — not merged, verify same person"
     },
     {
       "id": "CO-2026--BLAKE-HUBER",
@@ -537,8 +658,9 @@
       "name": "Blake Huber",
       "party": "I",
       "fecIds": [],
-      "fecMatchNote": "no FEC filing found",
-      "provisional": true
+      "provisional": true,
+      "fecMatches": [],
+      "fecMatchNote": "no FEC filing found"
     },
     {
       "id": "CO-2026--ADAM-WITHROW",
@@ -548,7 +670,17 @@
       "fecIds": [
         "S6CO00564"
       ],
-      "provisional": true
+      "provisional": true,
+      "fecMatches": [
+        {
+          "id": "S6CO00564",
+          "fecName": "WITHROW, ADAM",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "CO-2026--CHRISTOPHER-BAUM",
@@ -556,8 +688,9 @@
       "name": "Christopher Baum",
       "party": "I",
       "fecIds": [],
-      "fecMatchNote": "no FEC filing found",
-      "provisional": true
+      "provisional": true,
+      "fecMatches": [],
+      "fecMatchNote": "no FEC filing found"
     },
     {
       "id": "DE-2026--CHRIS-COONS",
@@ -566,6 +699,24 @@
       "party": "D",
       "fecIds": [
         "S0DE00092"
+      ],
+      "fecMatches": [
+        {
+          "id": "S0DE00092",
+          "fecName": "COONS, CHRISTOPHER A.",
+          "cycles": [
+            2010,
+            2012,
+            2014,
+            2016,
+            2018,
+            2020,
+            2022,
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -575,6 +726,16 @@
       "party": "R",
       "fecIds": [
         "S6DE00206"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6DE00206",
+          "fecName": "KATZ, MICHAEL S DR.",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -584,6 +745,16 @@
       "party": "R",
       "fecIds": [
         "S6FL00640"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6FL00640",
+          "fecName": "MOODY, ASHLEY",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -591,8 +762,19 @@
       "raceId": "FL-2026",
       "name": "Angie Nixon",
       "party": "D",
-      "fecIds": [],
-      "fecMatchNote": "no FEC filing found"
+      "fecIds": [
+        "S6FL00830"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6FL00830",
+          "fecName": "NIXON, ANGELA",
+          "cycles": [
+            2026
+          ],
+          "method": "fec-name-search"
+        }
+      ]
     },
     {
       "id": "FL-2026--NEIL-J-GILLESPIE",
@@ -603,15 +785,39 @@
         "S6FL00863"
       ],
       "provisional": true,
-      "provisionalReason": "Ballot qualification ambiguous in source — confirm before final inclusion."
+      "provisionalReason": "Ballot qualification ambiguous in source — confirm before final inclusion.",
+      "fecMatches": [
+        {
+          "id": "S6FL00863",
+          "fecName": "GILESPIE, NEIL JOSEPH",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "GA-2026--JON-OSSOFF",
       "raceId": "GA-2026",
       "name": "Jon Ossoff",
       "party": "D",
-      "fecIds": [],
-      "fecMatchNote": "no FEC filing found"
+      "fecIds": [
+        "S8GA00180"
+      ],
+      "fecMatches": [
+        {
+          "id": "S8GA00180",
+          "fecName": "OSSOFF, T. JONATHAN",
+          "cycles": [
+            2020,
+            2022,
+            2024,
+            2026
+          ],
+          "method": "fec-name-search"
+        }
+      ]
     },
     {
       "id": "GA-2026--MIKE-COLLINS",
@@ -620,6 +826,16 @@
       "party": "R",
       "fecIds": [
         "S6GA00390"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6GA00390",
+          "fecName": "COLLINS, MICHAEL A JR",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -627,8 +843,19 @@
       "raceId": "IA-2026",
       "name": "Ashley Hinson",
       "party": "R",
-      "fecIds": [],
-      "fecMatchNote": "no FEC filing found"
+      "fecIds": [
+        "S6IA00314"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6IA00314",
+          "fecName": "ARENHOLZ, ASHLEY HINSON",
+          "cycles": [
+            2026
+          ],
+          "method": "fec-name-search"
+        }
+      ]
     },
     {
       "id": "IA-2026--JOSH-TUREK",
@@ -637,6 +864,16 @@
       "party": "D",
       "fecIds": [
         "S6IA00298"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6IA00298",
+          "fecName": "TUREK, JOSHUA",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -647,7 +884,18 @@
       "fecIds": [
         "S6IA00181"
       ],
-      "provisional": true
+      "provisional": true,
+      "fecMatches": [
+        {
+          "id": "S6IA00181",
+          "fecName": "LAEHN, THOMAS RAYMOND DR.",
+          "cycles": [
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "ID-2026--JIM-RISCH",
@@ -656,6 +904,25 @@
       "party": "R",
       "fecIds": [
         "S8ID00092"
+      ],
+      "fecMatches": [
+        {
+          "id": "S8ID00092",
+          "fecName": "RISCH, JAMES E MR.",
+          "cycles": [
+            2008,
+            2010,
+            2012,
+            2014,
+            2016,
+            2018,
+            2020,
+            2022,
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -667,7 +934,17 @@
         "S6ID00146"
       ],
       "provisional": true,
-      "provisionalReason": "Main challenger to Risch, competitive polling."
+      "provisionalReason": "Main challenger to Risch, competitive polling.",
+      "fecMatches": [
+        {
+          "id": "S6ID00146",
+          "fecName": "ACHILLES, TODD BAKER",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "ID-2026--NATALIE-FLEMING",
@@ -677,7 +954,20 @@
       "fecIds": [
         "S0ID00172"
       ],
-      "provisional": true
+      "provisional": true,
+      "fecMatches": [
+        {
+          "id": "S0ID00172",
+          "fecName": "FLEMING, NATALIE M",
+          "cycles": [
+            2020,
+            2022,
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "ID-2026--MATT-LOESBY",
@@ -687,7 +977,17 @@
       "fecIds": [
         "S6ID00187"
       ],
-      "provisional": true
+      "provisional": true,
+      "fecMatches": [
+        {
+          "id": "S6ID00187",
+          "fecName": "LOESBY, MATT",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "IL-2026--JULIANA-STRATTON",
@@ -696,6 +996,16 @@
       "party": "D",
       "fecIds": [
         "S6IL00458"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6IL00458",
+          "fecName": "STRATTON, JULIANA",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -705,6 +1015,16 @@
       "party": "R",
       "fecIds": [
         "S6IL00615"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6IL00615",
+          "fecName": "TRACY, DON",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -715,7 +1035,17 @@
       "fecIds": [
         "S6IL00680"
       ],
-      "provisional": true
+      "provisional": true,
+      "fecMatches": [
+        {
+          "id": "S6IL00680",
+          "fecName": "HARRINGTON, WHITFIELD MR JR",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "KS-2026--ROGER-MARSHALL",
@@ -724,6 +1054,19 @@
       "party": "R",
       "fecIds": [
         "S0KS00315"
+      ],
+      "fecMatches": [
+        {
+          "id": "S0KS00315",
+          "fecName": "MARSHALL, ROGER W",
+          "cycles": [
+            2020,
+            2022,
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -733,6 +1076,16 @@
       "party": "D",
       "fecIds": [
         "S6KS00312"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6KS00312",
+          "fecName": "HAMILTON, ADAM",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -743,15 +1096,37 @@
       "fecIds": [
         "S2KS00154"
       ],
-      "provisional": true
+      "provisional": true,
+      "fecMatches": [
+        {
+          "id": "S2KS00154",
+          "fecName": "GRAHAM, DAVID C.",
+          "cycles": [
+            2022,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "KY-2026--ANDY-BARR",
       "raceId": "KY-2026",
       "name": "Andy Barr",
       "party": "R",
-      "fecIds": [],
-      "fecMatchNote": "no FEC filing found"
+      "fecIds": [
+        "S6KY00286"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6KY00286",
+          "fecName": "BARR, GARLAND ANDY",
+          "cycles": [
+            2026
+          ],
+          "method": "fec-name-search"
+        }
+      ]
     },
     {
       "id": "KY-2026--CHARLES-BOOKER",
@@ -760,6 +1135,16 @@
       "party": "D",
       "fecIds": [
         "S6KY00385"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6KY00385",
+          "fecName": "BOOKER, CHARLES",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -770,7 +1155,17 @@
       "fecIds": [
         "S6KY00377"
       ],
-      "provisional": true
+      "provisional": true,
+      "fecMatches": [
+        {
+          "id": "S6KY00377",
+          "fecName": "CAMPBELL, CHRISTOPHER TODD",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "LA-2026--JULIA-LETLOW",
@@ -779,6 +1174,16 @@
       "party": "R",
       "fecIds": [
         "S6LA00664"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6LA00664",
+          "fecName": "LETLOW, JULIA",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -788,6 +1193,16 @@
       "party": "D",
       "fecIds": [
         "S6LA00615"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6LA00615",
+          "fecName": "DAVIS, JAMIE",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -797,6 +1212,25 @@
       "party": "D",
       "fecIds": [
         "S4MA00028"
+      ],
+      "fecMatches": [
+        {
+          "id": "S4MA00028",
+          "fecName": "MARKEY, EDWARD SEN.",
+          "cycles": [
+            1984,
+            1986,
+            1988,
+            2014,
+            2016,
+            2018,
+            2020,
+            2022,
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -806,6 +1240,16 @@
       "party": "R",
       "fecIds": [
         "S6MA00304"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6MA00304",
+          "fecName": "DEATON, JOHN",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -817,7 +1261,17 @@
         "S6MA00288"
       ],
       "provisional": true,
-      "provisionalReason": "Received a debate invitation, polled 1-3%."
+      "provisionalReason": "Received a debate invitation, polled 1-3%.",
+      "fecMatches": [
+        {
+          "id": "S6MA00288",
+          "fecName": "TACHE, JOSEPH",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "MA-2026--SHIVA-AYYADURAI",
@@ -828,7 +1282,21 @@
         "S8MA00268"
       ],
       "provisional": true,
-      "provisionalReason": "Perennial statewide candidate."
+      "provisionalReason": "Perennial statewide candidate.",
+      "fecMatches": [
+        {
+          "id": "S8MA00268",
+          "fecName": "AYYADURAI, SHIVA DR",
+          "cycles": [
+            2018,
+            2020,
+            2022,
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "ME-2026--SUSAN-COLLINS",
@@ -837,6 +1305,31 @@
       "party": "R",
       "fecIds": [
         "S6ME00159"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6ME00159",
+          "fecName": "COLLINS, SUSAN M.",
+          "cycles": [
+            1996,
+            1998,
+            2000,
+            2002,
+            2004,
+            2006,
+            2008,
+            2010,
+            2012,
+            2014,
+            2016,
+            2018,
+            2020,
+            2022,
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -846,6 +1339,16 @@
       "party": "D",
       "fecIds": [
         "S6ME00464"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6ME00464",
+          "fecName": "JACKSON, TROY DALE",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -853,8 +1356,19 @@
       "raceId": "MI-2026",
       "name": "Abdul El-Sayed",
       "party": "D",
-      "fecIds": [],
-      "fecMatchNote": "no FEC filing found"
+      "fecIds": [
+        "S6MI00418"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6MI00418",
+          "fecName": "EL-SAYED, ABDUL",
+          "cycles": [
+            2026
+          ],
+          "method": "fec-name-search"
+        }
+      ]
     },
     {
       "id": "MI-2026--MIKE-ROGERS",
@@ -863,6 +1377,17 @@
       "party": "R",
       "fecIds": [
         "S4MI00595"
+      ],
+      "fecMatches": [
+        {
+          "id": "S4MI00595",
+          "fecName": "ROGERS, MICHAEL J",
+          "cycles": [
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -874,7 +1399,17 @@
         "S6MI00442"
       ],
       "provisional": true,
-      "provisionalReason": "Ballot status not fully confirmed by source."
+      "provisionalReason": "Ballot status not fully confirmed by source.",
+      "fecMatches": [
+        {
+          "id": "S6MI00442",
+          "fecName": "CHRISTENSEN, LYDIA LYNN",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "MI-2026--DOUGLAS-P-MARSH",
@@ -885,17 +1420,39 @@
         "S4MI00512"
       ],
       "provisional": true,
-      "provisionalReason": "Ballot status not fully confirmed by source."
+      "provisionalReason": "Ballot status not fully confirmed by source.",
+      "fecMatches": [
+        {
+          "id": "S4MI00512",
+          "fecName": "MARSH, DOUGLAS PHILIP",
+          "cycles": [
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "MI-2026--TIM-LONG",
       "raceId": "MI-2026",
       "name": "Tim Long",
       "party": "I",
-      "fecIds": [],
-      "fecMatchNote": "no FEC filing found",
+      "fecIds": [
+        "S6MI00566"
+      ],
       "provisional": true,
-      "provisionalReason": "Ballot status not fully confirmed by source."
+      "provisionalReason": "Ballot status not fully confirmed by source.",
+      "fecMatches": [
+        {
+          "id": "S6MI00566",
+          "fecName": "LONG, TIMOTHY E",
+          "cycles": [
+            2026
+          ],
+          "method": "fec-name-search"
+        }
+      ]
     },
     {
       "id": "MI-2026--WALTER-P-KRISTY",
@@ -906,7 +1463,17 @@
         "S6MI00590"
       ],
       "provisional": true,
-      "provisionalReason": "Ballot status not fully confirmed by source."
+      "provisionalReason": "Ballot status not fully confirmed by source.",
+      "fecMatches": [
+        {
+          "id": "S6MI00590",
+          "fecName": "KRISTY, WALTER P.",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "MN-2026--PEGGY-FLANAGAN",
@@ -915,6 +1482,16 @@
       "party": "D",
       "fecIds": [
         "S6MN00440"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6MN00440",
+          "fecName": "FLANAGAN, MARGARET",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -924,6 +1501,16 @@
       "party": "R",
       "fecIds": [
         "S6MN00556"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6MN00556",
+          "fecName": "TAFOYA, MICHELE",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -934,7 +1521,17 @@
       "fecIds": [
         "S6MN00481"
       ],
-      "provisional": true
+      "provisional": true,
+      "fecMatches": [
+        {
+          "id": "S6MN00481",
+          "fecName": "SIMONETTI, MARISA",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "MN-2026--REBECCA-WHITING",
@@ -945,15 +1542,40 @@
         "S6MN00572"
       ],
       "provisional": true,
-      "provisionalReason": "Party label discrepancy in source (Libertarian vs. Green footnote) — unresolved."
+      "provisionalReason": "Party label discrepancy in source (Libertarian vs. Green footnote) — unresolved.",
+      "fecMatches": [
+        {
+          "id": "S6MN00572",
+          "fecName": "WHITING, REBECCA",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "MS-2026--CINDY-HYDE-SMITH",
       "raceId": "MS-2026",
       "name": "Cindy Hyde-Smith",
       "party": "R",
-      "fecIds": [],
-      "fecMatchNote": "no FEC filing found"
+      "fecIds": [
+        "S8MS00261"
+      ],
+      "fecMatches": [
+        {
+          "id": "S8MS00261",
+          "fecName": "HYDE-SMITH, CINDY",
+          "cycles": [
+            2018,
+            2020,
+            2022,
+            2024,
+            2026
+          ],
+          "method": "fec-name-search"
+        }
+      ]
     },
     {
       "id": "MS-2026--SCOTT-COLOM",
@@ -962,6 +1584,16 @@
       "party": "D",
       "fecIds": [
         "S6MS00133"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6MS00133",
+          "fecName": "COLOM, SCOTT",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -973,7 +1605,19 @@
         "S4MS00187"
       ],
       "provisional": true,
-      "provisionalReason": "Former Democratic primary candidate, now running independent with real fundraising/polling."
+      "provisionalReason": "Former Democratic primary candidate, now running independent with real fundraising/polling.",
+      "fecMatches": [
+        {
+          "id": "S4MS00187",
+          "fecName": "PINKINS, TY",
+          "cycles": [
+            2022,
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "MT-2026--KURT-ALME",
@@ -982,6 +1626,16 @@
       "party": "R",
       "fecIds": [
         "S6MT00295"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6MT00295",
+          "fecName": "ALME, KURT",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -991,6 +1645,16 @@
       "party": "D",
       "fecIds": [
         "S6MT00253"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6MT00253",
+          "fecName": "BANKHEAD, ALANI INES",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1002,7 +1666,17 @@
         "S6MT00287"
       ],
       "provisional": true,
-      "provisionalReason": "Serious three-way contender per source."
+      "provisionalReason": "Serious three-way contender per source.",
+      "fecMatches": [
+        {
+          "id": "S6MT00287",
+          "fecName": "BODNAR, SETH",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "MT-2026--KYLE-AUSTIN",
@@ -1013,7 +1687,17 @@
         "S6MT00261"
       ],
       "provisional": true,
-      "provisionalReason": "Disavowed by the Montana Libertarian Party but still on ballot."
+      "provisionalReason": "Disavowed by the Montana Libertarian Party but still on ballot.",
+      "fecMatches": [
+        {
+          "id": "S6MT00261",
+          "fecName": "AUSTIN, KYLE",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "NC-2026--MICHAEL-WHATLEY",
@@ -1022,6 +1706,16 @@
       "party": "R",
       "fecIds": [
         "S6NC00415"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6NC00415",
+          "fecName": "WHATLEY, MICHAEL",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1031,6 +1725,16 @@
       "party": "D",
       "fecIds": [
         "S6NC00407"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6NC00407",
+          "fecName": "COOPER, ROY",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1041,7 +1745,20 @@
       "fecIds": [
         "S0NC00335"
       ],
-      "provisional": true
+      "provisional": true,
+      "fecMatches": [
+        {
+          "id": "S0NC00335",
+          "fecName": "BRAY, SHANNON",
+          "cycles": [
+            2020,
+            2022,
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "NC-2026--MICHAEL-DUBLIN",
@@ -1051,7 +1768,17 @@
       "fecIds": [
         "S6NC00563"
       ],
-      "provisional": true
+      "provisional": true,
+      "fecMatches": [
+        {
+          "id": "S6NC00563",
+          "fecName": "DUBLIN, MICHAEL LOUIS JR.",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "NE-2026--PETE-RICKETTS",
@@ -1060,6 +1787,21 @@
       "party": "R",
       "fecIds": [
         "S6NE00129"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6NE00129",
+          "fecName": "RICKETTS, PETE",
+          "cycles": [
+            2006,
+            2008,
+            2010,
+            2012,
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1071,16 +1813,38 @@
         "S4NE00207"
       ],
       "provisional": true,
-      "provisionalReason": "Main challenger to Ricketts, competitive polling."
+      "provisionalReason": "Main challenger to Ricketts, competitive polling.",
+      "fecMatches": [
+        {
+          "id": "S4NE00207",
+          "fecName": "OSBORN, DAN",
+          "cycles": [
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "NE-2026--CHUCK-CONBOY",
       "raceId": "NE-2026",
       "name": "Chuck Conboy",
       "party": "I",
-      "fecIds": [],
-      "fecMatchNote": "no FEC filing found",
-      "provisional": true
+      "fecIds": [
+        "S6NE00202"
+      ],
+      "provisional": true,
+      "fecMatches": [
+        {
+          "id": "S6NE00202",
+          "fecName": "CONBOY, CHARLES",
+          "cycles": [
+            2026
+          ],
+          "method": "fec-name-search"
+        }
+      ]
     },
     {
       "id": "NE-2026--ROBIN-RICHARDS",
@@ -1090,7 +1854,17 @@
       "fecIds": [
         "S6NE00210"
       ],
-      "provisional": true
+      "provisional": true,
+      "fecMatches": [
+        {
+          "id": "S6NE00210",
+          "fecName": "RICHARDS, ROBIN MRS.",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "NE-2026--MIKE-MARVIN",
@@ -1101,7 +1875,17 @@
         "S6NE00152"
       ],
       "provisional": true,
-      "provisionalReason": "Withdrew/endorsed Osborn but remains on ballot per source."
+      "provisionalReason": "Withdrew/endorsed Osborn but remains on ballot per source.",
+      "fecMatches": [
+        {
+          "id": "S6NE00152",
+          "fecName": "MARVIN, MIKE",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "NH-2026--CHRIS-PAPPAS",
@@ -1110,6 +1894,16 @@
       "party": "D",
       "fecIds": [
         "S6NH00141"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6NH00141",
+          "fecName": "PAPPAS, CHRIS",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1119,6 +1913,16 @@
       "party": "R",
       "fecIds": [
         "S6NH00208"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6NH00208",
+          "fecName": "SUNUNU, JOHN E",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1129,7 +1933,18 @@
       "fecIds": [
         "S2NH00223"
       ],
-      "provisional": true
+      "provisional": true,
+      "fecMatches": [
+        {
+          "id": "S2NH00223",
+          "fecName": "LAPLANTE, EDMOND",
+          "cycles": [
+            2022,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "NJ-2026--CORY-BOOKER",
@@ -1138,6 +1953,22 @@
       "party": "D",
       "fecIds": [
         "S4NJ00185"
+      ],
+      "fecMatches": [
+        {
+          "id": "S4NJ00185",
+          "fecName": "BOOKER, CORY A.",
+          "cycles": [
+            2014,
+            2016,
+            2018,
+            2020,
+            2022,
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1147,6 +1978,17 @@
       "party": "R",
       "fecIds": [
         "S4NJ00532"
+      ],
+      "fecMatches": [
+        {
+          "id": "S4NJ00532",
+          "fecName": "MURPHY, JUSTIN MICHAEL LL.M.",
+          "cycles": [
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1157,7 +1999,18 @@
       "fecIds": [
         "S0NJ00258"
       ],
-      "provisional": true
+      "provisional": true,
+      "fecMatches": [
+        {
+          "id": "S0NJ00258",
+          "fecName": "FERNANDEZ, VERONICA",
+          "cycles": [
+            2020,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "NJ-2026--JOANNE-KUNIANSKY",
@@ -1167,15 +2020,41 @@
       "fecIds": [
         "S4NJ00144"
       ],
-      "provisional": true
+      "provisional": true,
+      "fecMatches": [
+        {
+          "id": "S4NJ00144",
+          "fecName": "KUNIANSKY, JOANNE",
+          "cycles": [
+            1994,
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "NM-2026--BEN-RAY-LUJ-N",
       "raceId": "NM-2026",
       "name": "Ben Ray Luján",
       "party": "D",
-      "fecIds": [],
-      "fecMatchNote": "no FEC filing found"
+      "fecIds": [
+        "S0NM00058"
+      ],
+      "fecMatches": [
+        {
+          "id": "S0NM00058",
+          "fecName": "LUJAN, BEN RAY",
+          "cycles": [
+            2020,
+            2022,
+            2024,
+            2026
+          ],
+          "method": "fec-name-search"
+        }
+      ]
     },
     {
       "id": "NM-2026--LARRY-MARKER",
@@ -1184,6 +2063,16 @@
       "party": "R",
       "fecIds": [
         "S6NM01186"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6NM01186",
+          "fecName": "MARKER, LARRY E",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1193,6 +2082,16 @@
       "party": "R",
       "fecIds": [
         "S6OH00304"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6OH00304",
+          "fecName": "HUSTED, JON",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1202,6 +2101,26 @@
       "party": "D",
       "fecIds": [
         "S6OH00163"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6OH00163",
+          "fecName": "BROWN, SHERROD",
+          "cycles": [
+            2006,
+            2008,
+            2010,
+            2012,
+            2014,
+            2016,
+            2018,
+            2020,
+            2022,
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1212,7 +2131,17 @@
       "fecIds": [
         "S6OH00429"
       ],
-      "provisional": true
+      "provisional": true,
+      "fecMatches": [
+        {
+          "id": "S6OH00429",
+          "fecName": "REDPATH, WILLIAM",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "OH-2026--GREG-LEVY",
@@ -1223,7 +2152,17 @@
         "S6OH00395"
       ],
       "provisional": true,
-      "provisionalReason": "Reportedly a Party for Socialism and Liberation member filing as independent — label mismatch."
+      "provisionalReason": "Reportedly a Party for Socialism and Liberation member filing as independent — label mismatch.",
+      "fecMatches": [
+        {
+          "id": "S6OH00395",
+          "fecName": "LEVY, GREGORY LEE",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "OK-2026--KEVIN-HERN",
@@ -1232,6 +2171,16 @@
       "party": "R",
       "fecIds": [
         "S6OK04247"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6OK04247",
+          "fecName": "HERN, KEVIN",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1241,6 +2190,16 @@
       "party": "D",
       "fecIds": [
         "S6OK04163"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6OK04163",
+          "fecName": "THOMAS, N'KIYLA JASMINE - ANN",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1249,8 +2208,9 @@
       "name": "Sevier White",
       "party": "I",
       "fecIds": [],
-      "fecMatchNote": "no FEC filing found",
-      "provisional": true
+      "provisional": true,
+      "fecMatches": [],
+      "fecMatchNote": "no FEC filing found"
     },
     {
       "id": "OK-2026--RON-MEINHARDT",
@@ -1261,7 +2221,17 @@
         "S6OK04205"
       ],
       "provisional": true,
-      "provisionalReason": "Ballot qualification not confirmed by source; former Republican, switched to independent."
+      "provisionalReason": "Ballot qualification not confirmed by source; former Republican, switched to independent.",
+      "fecMatches": [
+        {
+          "id": "S6OK04205",
+          "fecName": "MEINHARDT, RON",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "OK-2026--CURTIS-STINNETT",
@@ -1269,17 +2239,38 @@
       "name": "Curtis Stinnett",
       "party": "I",
       "fecIds": [],
-      "fecMatchNote": "no FEC filing found",
       "provisional": true,
-      "provisionalReason": "Ballot qualification not confirmed by source."
+      "provisionalReason": "Ballot qualification not confirmed by source.",
+      "fecMatches": [],
+      "fecMatchNote": "no FEC filing found"
     },
     {
       "id": "OR-2026--JEFF-MERKLEY",
       "raceId": "OR-2026",
       "name": "Jeff Merkley",
       "party": "D",
-      "fecIds": [],
-      "fecMatchNote": "no FEC filing found"
+      "fecIds": [
+        "S8OR00207"
+      ],
+      "fecMatches": [
+        {
+          "id": "S8OR00207",
+          "fecName": "MERKLEY, JEFFREY ALAN",
+          "cycles": [
+            2008,
+            2010,
+            2012,
+            2014,
+            2016,
+            2018,
+            2020,
+            2022,
+            2024,
+            2026
+          ],
+          "method": "fec-name-search"
+        }
+      ]
     },
     {
       "id": "OR-2026--DAVID-BROCK-SMITH",
@@ -1288,6 +2279,16 @@
       "party": "R",
       "fecIds": [
         "S6OR05218"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6OR05218",
+          "fecName": "SMITH, DAVID BROCK",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1298,7 +2299,18 @@
       "fecIds": [
         "S0OR00378"
       ],
-      "provisional": true
+      "provisional": true,
+      "fecMatches": [
+        {
+          "id": "S0OR00378",
+          "fecName": "DYE, GARY",
+          "cycles": [
+            2020,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "OR-2026--CHRIS-HENRY",
@@ -1309,15 +2321,52 @@
         "S2OR00234"
       ],
       "provisional": true,
-      "provisionalReason": "Cross-nominated by the Pacific Green Party per source."
+      "provisionalReason": "Cross-nominated by the Pacific Green Party per source.",
+      "fecMatches": [
+        {
+          "id": "S2OR00234",
+          "fecName": "HENRY, CHRIS",
+          "cycles": [
+            2022,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "RI-2026--JACK-REED",
       "raceId": "RI-2026",
       "name": "Jack Reed",
       "party": "D",
-      "fecIds": [],
-      "fecMatchNote": "no FEC filing found"
+      "fecIds": [
+        "S6RI00163"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6RI00163",
+          "fecName": "REED, JOHN F.",
+          "cycles": [
+            1996,
+            1998,
+            2000,
+            2002,
+            2004,
+            2006,
+            2008,
+            2010,
+            2012,
+            2014,
+            2016,
+            2018,
+            2020,
+            2022,
+            2024,
+            2026
+          ],
+          "method": "fec-name-search"
+        }
+      ]
     },
     {
       "id": "RI-2026--RAYMOND-MCKAY",
@@ -1326,6 +2375,18 @@
       "party": "R",
       "fecIds": [
         "S4RI00051"
+      ],
+      "fecMatches": [
+        {
+          "id": "S4RI00051",
+          "fecName": "MCKAY, RAYMOND TYLER MR",
+          "cycles": [
+            2022,
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1337,7 +2398,17 @@
         "S6RI00288"
       ],
       "provisional": true,
-      "provisionalReason": "Ballot qualification not confirmed by source."
+      "provisionalReason": "Ballot qualification not confirmed by source.",
+      "fecMatches": [
+        {
+          "id": "S6RI00288",
+          "fecName": "BAHRY, MICHAEL",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "SC-2026--DARLINE-GRAHAM",
@@ -1346,6 +2417,16 @@
       "party": "R",
       "fecIds": [
         "S6SC04437"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6SC04437",
+          "fecName": "GRAHAM, DARLINE",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1355,6 +2436,16 @@
       "party": "D",
       "fecIds": [
         "S6SC04239"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6SC04239",
+          "fecName": "ANDREWS, ANNIE",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1365,7 +2456,17 @@
       "fecIds": [
         "S6SC04247"
       ],
-      "provisional": true
+      "provisional": true,
+      "fecMatches": [
+        {
+          "id": "S6SC04247",
+          "fecName": "WHITENER, KASIE DR.",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "SC-2026--MARK-HACKETT",
@@ -1373,8 +2474,9 @@
       "name": "Mark Hackett",
       "party": "I",
       "fecIds": [],
-      "fecMatchNote": "no FEC filing found",
-      "provisional": true
+      "provisional": true,
+      "fecMatches": [],
+      "fecMatchNote": "no FEC filing found"
     },
     {
       "id": "SD-2026--MIKE-ROUNDS",
@@ -1383,6 +2485,23 @@
       "party": "R",
       "fecIds": [
         "S4SD00049"
+      ],
+      "fecMatches": [
+        {
+          "id": "S4SD00049",
+          "fecName": "ROUNDS, MIKE",
+          "cycles": [
+            2012,
+            2014,
+            2016,
+            2018,
+            2020,
+            2022,
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1394,7 +2513,17 @@
         "S6SD01117"
       ],
       "provisional": true,
-      "provisionalReason": "Main challenger to Rounds after Democratic nominee withdrew with no replacement."
+      "provisionalReason": "Main challenger to Rounds after Democratic nominee withdrew with no replacement.",
+      "fecMatches": [
+        {
+          "id": "S6SD01117",
+          "fecName": "BENGS, BRIAN",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "TN-2026--BILL-HAGERTY",
@@ -1403,6 +2532,19 @@
       "party": "R",
       "fecIds": [
         "S0TN00169"
+      ],
+      "fecMatches": [
+        {
+          "id": "S0TN00169",
+          "fecName": "HAGERTY, BILL",
+          "cycles": [
+            2020,
+            2022,
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1412,6 +2554,17 @@
       "party": "D",
       "fecIds": [
         "S4TN00542"
+      ],
+      "fecMatches": [
+        {
+          "id": "S4TN00542",
+          "fecName": "BRADSHAW, MARQUITA",
+          "cycles": [
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1419,8 +2572,19 @@
       "raceId": "TX-2026",
       "name": "Ken Paxton",
       "party": "R",
-      "fecIds": [],
-      "fecMatchNote": "no FEC filing found"
+      "fecIds": [
+        "S6TX00388"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6TX00388",
+          "fecName": "PAXTON, WARREN KENNETH JR.",
+          "cycles": [
+            2026
+          ],
+          "method": "fec-name-search"
+        }
+      ]
     },
     {
       "id": "TX-2026--JAMES-TALARICO",
@@ -1429,6 +2593,16 @@
       "party": "D",
       "fecIds": [
         "S6TX00479"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6TX00479",
+          "fecName": "TALARICO, JAMES",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1439,7 +2613,18 @@
       "fecIds": [
         "S4TX00888"
       ],
-      "provisional": true
+      "provisional": true,
+      "fecMatches": [
+        {
+          "id": "S4TX00888",
+          "fecName": "BROWN, THEODORE E. JR.",
+          "cycles": [
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "VA-2026--MARK-WARNER",
@@ -1448,6 +2633,28 @@
       "party": "D",
       "fecIds": [
         "S6VA00093"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6VA00093",
+          "fecName": "WARNER, MARK ROBERT",
+          "cycles": [
+            1996,
+            1998,
+            2000,
+            2008,
+            2010,
+            2012,
+            2014,
+            2016,
+            2018,
+            2020,
+            2022,
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1457,6 +2664,17 @@
       "party": "R",
       "fecIds": [
         "S8VA00321"
+      ],
+      "fecMatches": [
+        {
+          "id": "S8VA00321",
+          "fecName": "MIZUSAWA, BERT K",
+          "cycles": [
+            2018,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1466,6 +2684,23 @@
       "party": "R",
       "fecIds": [
         "S4WV00159"
+      ],
+      "fecMatches": [
+        {
+          "id": "S4WV00159",
+          "fecName": "CAPITO, SHELLEY MOORE",
+          "cycles": [
+            2012,
+            2014,
+            2016,
+            2018,
+            2020,
+            2022,
+            2024,
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1473,8 +2708,19 @@
       "raceId": "WV-2026",
       "name": "Rachel Fetty Anderson",
       "party": "D",
-      "fecIds": [],
-      "fecMatchNote": "no FEC filing found"
+      "fecIds": [
+        "S6WV00188"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6WV00188",
+          "fecName": "FETTY ANDERSON, RACHEL LEE",
+          "cycles": [
+            2026
+          ],
+          "method": "fec-name-search"
+        }
+      ]
     },
     {
       "id": "WV-2026--S-MARSHALL-WILSON",
@@ -1484,7 +2730,17 @@
       "fecIds": [
         "S6WV00204"
       ],
-      "provisional": true
+      "provisional": true,
+      "fecMatches": [
+        {
+          "id": "S6WV00204",
+          "fecName": "WILSON, S. MARSHALL",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
+      ]
     },
     {
       "id": "WY-2026--HARRIET-HAGEMAN",
@@ -1493,6 +2749,16 @@
       "party": "R",
       "fecIds": [
         "S6WY00209"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6WY00209",
+          "fecName": "HAGEMAN, HARRIET",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     },
     {
@@ -1502,6 +2768,16 @@
       "party": "D",
       "fecIds": [
         "S6WY00217"
+      ],
+      "fecMatches": [
+        {
+          "id": "S6WY00217",
+          "fecName": "BYRD, JAMES WILLARD MR.",
+          "cycles": [
+            2026
+          ],
+          "method": "2a-name-match"
+        }
       ]
     }
   ]
