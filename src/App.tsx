@@ -123,10 +123,11 @@ export default function App() {
               </a>
             </p>
             <p>
-              Created by{' '}
+              © 2026{' '}
               <a href="https://www.lanceshields.design/" target="_blank" rel="noreferrer">
                 Lance Shields
               </a>
+              . All rights reserved.
             </p>
           </div>
           <section className="faq" aria-labelledby="faq-heading">
