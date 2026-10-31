@@ -4,8 +4,6 @@ import MapCallout from './components/MapCallout'
 import NationalCard from './components/NationalCard'
 import RacePanel from './components/RacePanel'
 import ContactFooter from './components/ContactFooter'
-import correctionsJson from '../data/corrections.json'
-import type { CorrectionEntry } from './corrections'
 import ShareMenu from './components/ShareMenu'
 import UsStatesMap, { rampColor } from './components/UsStatesMap'
 import { buildNationalCard } from './computeNational'
@@ -215,7 +213,7 @@ export default function App() {
             </p>
           </section>
           <div className="footer-meta">
-            <ContactFooter entries={correctionsJson as CorrectionEntry[]} />
+            <ContactFooter />
             <p>
               © 2026{' '}
               <a href="https://www.lanceshields.design/" target="_blank" rel="noreferrer">
