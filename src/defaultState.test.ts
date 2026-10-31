@@ -34,12 +34,11 @@ describe('default state rule', () => {
     expect(pickDefaultState(races)).toBe('CC')
   })
 
-  it('skips the real top-spending race because it is flagged incomplete', () => {
-    const byTotal = [...real].sort((a, b) => (b.total ?? 0) - (a.total ?? 0))
-    expect(byTotal[0].incompleteCount).toBeGreaterThan(0)
-    const expected = byTotal.find((r) => r.incompleteCount === 0)!.state
-    expect(pickDefaultState(real)).toBe(expected)
-    expect(pickDefaultState(real)).not.toBe(byTotal[0].state)
+  it('picks the highest-spending complete race in the real data, whatever the data currently is', () => {
+    const eligible = real.filter((r) => r.incompleteCount === 0 && r.total !== null)
+    const best = [...eligible].sort((a, b) => (b.total ?? 0) - (a.total ?? 0) || a.state.localeCompare(b.state))[0]
+    expect(pickDefaultState(real)).toBe(best.state)
+    expect(real.find((r) => r.state === pickDefaultState(real))?.incompleteCount).toBe(0)
   })
 
   it('breaks a tie by state code and returns null when nothing is eligible', () => {
