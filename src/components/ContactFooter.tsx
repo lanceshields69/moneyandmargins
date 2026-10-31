@@ -32,18 +32,19 @@ export default function ContactFooter({ entries }: { entries: CorrectionEntry[] 
 
   return (
     <>
-      {CONTACT_EMAIL && (
-        <p>
-          Questions or corrections? <a href={`mailto:${CONTACT_EMAIL}`}>Send an email</a>{' '}
-          <button type="button" className="link-button" onClick={copy}>
-            Copy
-          </button>
-          <span className="sr-only" role="status" aria-live="polite">
-            {copied ? 'Address copied' : ''}
-          </span>
-        </p>
-      )}
-      <p>
+      <p className="contact-line">
+        {CONTACT_EMAIL && (
+          <>
+            Questions or corrections? <a href={`mailto:${CONTACT_EMAIL}`}>Send an email</a>{' '}
+            <button type="button" className="link-button" onClick={copy}>
+              Copy
+            </button>
+            <span className="sr-only" role="status" aria-live="polite">
+              {copied ? 'Address copied' : ''}
+            </span>
+            {' · '}
+          </>
+        )}
         <button type="button" className="link-button" aria-expanded={showLog} aria-controls="corrections-log" onClick={() => setShowLog((v) => !v)}>
           Corrections
         </button>

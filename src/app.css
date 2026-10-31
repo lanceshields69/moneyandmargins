@@ -941,3 +941,11 @@ details h4 {
   word-spacing: -0.12em;
   letter-spacing: 0.02em;
 }
+.contact-line {
+  white-space: normal;
+}
+@media (min-width: 480px) {
+  .contact-line {
+    white-space: nowrap;
+  }
+}
