@@ -1,5 +1,5 @@
 import type { Committee } from '../types'
-import type { RaceView, RowView, SideView } from '../computeSpending'
+import { PARTY_DISPLAY, type RaceView, type RowView, type SideView } from '../computeSpending'
 import { formatDate, formatMoney, formatMoneyFull } from '../format'
 
 const FEC_SOURCE_URL = 'https://www.fec.gov/data/independent-expenditures/'
@@ -105,10 +105,16 @@ export default function RacePanel({ race, fetchedAt }: RacePanelProps) {
           <p className="muted summary">
             {race.total === null
               ? 'Incomplete data'
-              : `Total independent expenditures, support plus oppose: ${formatMoney(race.total)}`}
+              : `Total independent expenditures, support plus oppose: ${formatMoney(race.total)} (FEC processed data as of ${formatDate(fetchedAt)})`}
             {race.incompleteCount > 0 &&
               `. Leaves out ${race.incompleteCount} nominee${race.incompleteCount === 1 ? '' : 's'} with incomplete data, so this total may be low.`}
+            {race.total !== null && ' Includes primary-season spending.'}
           </p>
+          {race.missingMajor.map((party) => (
+            <p key={party} className="muted summary">
+              No {PARTY_DISPLAY[party].label} nominee listed in the source data.
+            </p>
+          ))}
           <ul className="nominees">
             {race.rows.map((row) => (
               <Nominee key={row.candidateId} row={row} />

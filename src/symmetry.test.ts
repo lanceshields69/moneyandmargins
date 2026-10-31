@@ -34,7 +34,12 @@ function mirrorRow(row: RowView): RowView {
 }
 
 function mirrorRace(race: RaceView): RaceView {
-  return { ...race, rows: race.rows.map(mirrorRow) }
+  const mirroredMissing = race.missingMajor.map(swapParty)
+  return {
+    ...race,
+    rows: race.rows.map(mirrorRow),
+    missingMajor: (['D', 'R'] as Party[]).filter((p) => mirroredMissing.includes(p)),
+  }
 }
 
 // Real Ohio nominees and real fixture totals (Husted R, Brown D), plus one queried-zero
@@ -120,6 +125,14 @@ describe('party symmetry on the saved fixture', () => {
       expect(missing.reason).toBe('No FEC match')
       expect(missing.support).toBeNull()
     }
+  })
+
+  it('notes a missing major-party nominee the same way for either party', () => {
+    const withoutD = candidates.filter((c) => c.party !== 'D')
+    const withoutR = candidates.filter((c) => c.party !== 'R')
+    expect(view(withoutD).missingMajor).toEqual(['D'])
+    expect(view(withoutR).missingMajor).toEqual(['R'])
+    expect(view(withoutD.map(swapCandidate))).toEqual(mirrorRace(view(withoutD)))
   })
 
   it('keeps Support and oppose separate: no net figure exists on a row', () => {

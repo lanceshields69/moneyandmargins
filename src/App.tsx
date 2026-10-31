@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import UsStatesMap, { rampColor } from './components/UsStatesMap'
 import RacePanel from './components/RacePanel'
 import { allRaces } from './data'
-import { formatMoney } from './format'
+import { formatDate, formatMoney } from './format'
 
 function stateFromUrl(valid: Set<string>): string | null {
   const value = new URLSearchParams(window.location.search).get('state')?.toUpperCase() ?? null
@@ -11,7 +11,7 @@ function stateFromUrl(valid: Set<string>): string | null {
 
 export default function App() {
   const raceByState = useMemo(() => new Map(allRaces.races.map((r) => [r.state, r])), [])
-  const sortedRaces = useMemo(() => [...allRaces.races].sort((a, b) => a.state.localeCompare(b.state)), [])
+  const sortedRaces = useMemo(() => [...allRaces.races].sort((a, b) => a.raceName.localeCompare(b.raceName)), [])
   const [selected, setSelected] = useState<string | null>(() => stateFromUrl(new Set(raceByState.keys())))
   const announce = useRef<HTMLParagraphElement>(null)
 
@@ -74,7 +74,7 @@ export default function App() {
             </div>
             <p className="muted legend-note">
               Support plus oppose, all candidates in the race. Color scale is square root. Dark states have no 2026
-              Senate race.
+              Senate race. FEC processed data as of {formatDate(allRaces.fetchedAt)}.
             </p>
             <p className="legend-hatch muted">
               <svg width="18" height="12" aria-hidden="true">

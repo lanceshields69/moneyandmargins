@@ -30,6 +30,8 @@ export interface RowView {
   asOf: string | null
 }
 
+const MAJOR_PARTIES: readonly Party[] = ['D', 'R']
+
 export interface RaceView {
   raceId: string
   state: string
@@ -39,6 +41,8 @@ export interface RaceView {
   scaleMax: number
   total: number | null
   incompleteCount: number
+  /** Major parties with no nominee in the source data, in fixed D, R order. */
+  missingMajor: Party[]
 }
 
 export interface AllRaces {
@@ -130,6 +134,7 @@ export function buildRaceView(
     scaleMax,
     total: complete.length > 0 ? complete.reduce((sum, r) => sum + (r.support?.value ?? 0) + (r.oppose?.value ?? 0), 0) : null,
     incompleteCount: rows.length - complete.length,
+    missingMajor: MAJOR_PARTIES.filter((party) => !rows.some((r) => r.party === party)),
   }
 }
 
