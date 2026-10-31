@@ -764,3 +764,129 @@ details h4 {
   border-radius: 1px;
   box-shadow: inset 0 0 0 1.5px var(--color-text);
 }
+
+/* Share: top aligns with the logo, right edge with the detail panel. */
+.header {
+  position: relative;
+}
+.share {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-bottom: 12px;
+  --share-bg: #8b268d;
+  --share-rule: #3a3834;
+  --share-text: #eae8e2;
+}
+.share-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 266px;
+  max-width: 100%;
+  height: 52px;
+  padding: 14px 28px;
+  border: 1px solid var(--share-rule);
+  border-radius: 99px;
+  background: var(--share-bg);
+  color: var(--share-text);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.share-menu {
+  position: absolute;
+  top: 58px;
+  right: 0;
+  z-index: 20;
+  width: 266px;
+  max-width: 100%;
+  margin: 0;
+  padding: 14px 28px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid var(--share-rule);
+  border-radius: 6px;
+  background: var(--share-bg);
+}
+.share-menu button,
+.share-menu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--share-text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 300;
+  text-decoration: none;
+  cursor: pointer;
+}
+.share-menu button:hover,
+.share-menu a:hover {
+  color: #fff;
+}
+.share-menu button:hover img,
+.share-menu a:hover img {
+  filter: brightness(1.1);
+}
+.share-button:focus-visible,
+.share-menu :focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+@media (min-width: 900px) {
+  .share {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    margin: 0;
+  }
+}
+
+/* Phone (Figma "Mobile share"): 36px outlined icon button beside the logo, 169px menu. */
+.share-icon-phone {
+  display: none;
+}
+@media (max-width: 600px) {
+  .share {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    margin: 0;
+  }
+  .share-button {
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+    justify-content: center;
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+  .share-icon-wide {
+    display: none;
+  }
+  .share-icon-phone {
+    display: block;
+  }
+  .share-button span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .share-menu {
+    top: 41px;
+    width: 169px;
+    padding: 14px 18px;
+    gap: 16px;
+  }
+}

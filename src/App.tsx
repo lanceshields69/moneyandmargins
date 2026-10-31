@@ -3,6 +3,7 @@ import ErrorBoundary from './components/ErrorBoundary'
 import MapCallout from './components/MapCallout'
 import NationalCard from './components/NationalCard'
 import RacePanel from './components/RacePanel'
+import ShareMenu from './components/ShareMenu'
 import UsStatesMap, { rampColor } from './components/UsStatesMap'
 import { buildNationalCard } from './computeNational'
 import { allRaces, callouts, forecastSnapshot, labelPoints, mapViewBox, stateNames } from './data'
@@ -63,6 +64,7 @@ export default function App() {
         </a>
       )}
       <header className="header">
+        <ShareMenu />
         <h1>
           <img className="logo" src={logo} alt="Money & Margins" width={483} height={66} />
         </h1>
