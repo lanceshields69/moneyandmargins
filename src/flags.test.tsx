@@ -121,6 +121,8 @@ describe('each flag combination on the whole page', () => {
       expect(page.querySelector('#race-details')?.textContent?.includes('Top committees') ?? false).toBe(flags.data)
       expect(/\$\d/.test(page.querySelector('#race-details')?.textContent ?? '')).toBe(flags.data)
       expect(page.querySelector('.ramp') !== null).toBe(flags.data)
+      // as-of label: "itemized data through [date]" once the data is verified
+      expect(body.includes('itemized data through')).toBe(flags.data)
       // map fill: one neutral color for every race state when data is unverified
       const fills = new Set([...page.querySelectorAll('path.state-race')].map((p) => p.getAttribute('fill')))
       expect(fills.size === 1).toBe(!flags.data)
@@ -137,4 +139,37 @@ describe('each flag combination on the whole page', () => {
       unmount()
     })
   }
+
+  it('fills the methodology placeholders from the pipeline metadata when data is verified', async () => {
+    const { page, unmount } = await renderPage({ data: true, shares: false }, '#how-it-works')
+    const body = page.querySelector('[role="dialog"]')?.textContent ?? ''
+    expect(body).toContain('For 6 committees')
+    expect(body).toContain('$31,761,417')
+    expect(body).toContain("which can count toward the other side's share. The shares row stays hidden until that is verified.")
+    expect(body).toContain("A contrast ad can be reported on two lines, so a state's total can count some spending twice.")
+    expect(body).not.toContain('not tied to a candidate total') // no figure, so the sentence is dropped
+    expect(body).not.toMatch(/\{\{|\}\}/)
+    unmount()
+  })
+
+  it('opens the Corrections dialog from its link and shows the logged entry', async () => {
+    const { page, unmount } = await renderPage({ data: true, shares: true }, '#corrections')
+    const body = page.querySelector('[role="dialog"]')?.textContent ?? ''
+    expect(body).toContain('Corrections')
+    expect(body).toContain('The first version left out 24- and 48-hour reports, which is where most recent spending is filed.')
+    expect(body).toContain('understated Republican-aligned spending more than Democratic-aligned spending')
+    expect(body).toMatch(/Corrected [A-Z][a-z]{2} \d+, 2026 UTC\./)
+    unmount()
+  })
+})
+
+describe('corrections log', () => {
+  it('says "No corrections yet." when the log is empty', async () => {
+    const { correctionsBlocks } = await import('./corrections')
+    expect(correctionsBlocks([])).toEqual([{ kind: 'h1', text: 'Corrections' }, { kind: 'p', text: 'No corrections yet.' }])
+  })
+  it('puts the newest entry first', async () => {
+    const { latestCorrections } = await import('./corrections')
+    expect(latestCorrections([{ date: '2026-10-01', text: 'a' }, { date: '2026-10-20', text: 'b' }]).map((e) => e.text)).toEqual(['b', 'a'])
+  })
 })

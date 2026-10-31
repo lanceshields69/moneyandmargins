@@ -8,7 +8,7 @@ import MapCallout from './components/MapCallout'
 import MethodologyModal from './components/MethodologyModal'
 import RacePanel from './components/RacePanel'
 import { DATA_VERIFIED, GLOBAL_PARTIAL_NOTICE } from './config'
-import { DATA_CHECK_NOTICE, LIMITS_SENTENCE, PARTIAL_CALLOUT_NOTICE } from './copy'
+import { DATA_CHECK_NOTICE, LIMITS_SENTENCE, LIMITS_VERIFIED_SENTENCE, PARTIAL_CALLOUT_NOTICE } from './copy'
 import { allRaces, callouts } from './data'
 import { fillMethodology, isHowHash, methodologySource, parseMethodology, splitMethodology, type MethodologyValues } from './methodology'
 
@@ -183,11 +183,13 @@ describe('partial-data hotfix text is identical for every race and party', () =>
     }
   })
 
-  it('shows the same limits sentence in the panel for every race', () => {
+  it('shows the same limits sentence in the panel for every race, whichever way the data flag is set', () => {
     for (const race of allRaces.races) {
-      const html = renderToStaticMarkup(<RacePanel race={race} fetchedAt={allRaces.fetchedAt} dataVerified />)
-      expect(html).toContain(LIMITS_SENTENCE)
-      expect(html).not.toContain('may not be included')
+      const unverified = renderToStaticMarkup(<RacePanel race={race} fetchedAt={allRaces.fetchedAt} dataVerified={false} />)
+      expect(unverified).toContain(LIMITS_SENTENCE)
+      const verified = renderToStaticMarkup(<RacePanel race={race} fetchedAt={allRaces.fetchedAt} dataVerified />)
+      expect(verified).toContain(LIMITS_VERIFIED_SENTENCE)
+      expect(verified).not.toContain('are not included')
     }
   })
 

@@ -52,12 +52,13 @@ jobs:
       - if: steps.gate.outputs.run == 'true'
         run: npm ci
 
-      # Paces itself under the FEC's 1,000 requests per hour and retries politely. It exits non-zero, before
-      # writing anything, on any failure or when the pull has far fewer rows than the last one.
+      # Paces itself under the FEC's 1,000 requests per hour and retries politely. Writes a candidate file, never
+      # spending.json: scripts/verify.ts must pass first. It also exits non-zero, before writing anything, on any
+      # failure or when the pull has far fewer rows than the last one.
       - name: Fetch spending
         id: fetch
         if: steps.gate.outputs.run == 'true'
-        run: npx tsx scripts/fetch-spending.ts --confirm
+        run: npx tsx scripts/fetch-spending.ts --confirm --out=data/spending.candidate.json
 
       - name: Save the raw pull
         if: steps.gate.outputs.run == 'true' && steps.fetch.outcome == 'success'
@@ -67,28 +68,43 @@ jobs:
           path: data/raw/
           retention-days: 90
 
+      # Blocking checks (race totals did not drop; Texas PAC and SLF PAC match the saved FEC exports) stop the run
+      # here. The result is appended to data/verification.json either way. No flag is ever changed automatically.
+      - name: Verify
+        id: verify
+        if: steps.gate.outputs.run == 'true' && steps.fetch.outcome == 'success'
+        run: npx tsx scripts/verify.ts --candidate=data/spending.candidate.json --previous=data/spending.json
+
+      - name: Replace spending.json
+        if: steps.verify.outcome == 'success'
+        run: mv data/spending.candidate.json data/spending.json
+
       - name: Run tests and data checks
-        if: steps.gate.outputs.run == 'true'
+        if: steps.verify.outcome == 'success'
         run: |
           npm test
           npm run check:incomplete 2>&1 | tee -a "$GITHUB_STEP_SUMMARY"
 
-      - name: Commit refreshed data
-        if: steps.gate.outputs.run == 'true'
+      - name: Commit data
+        if: always() && steps.fetch.outcome == 'success'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/spending.json
+          git add data/verification.json
+          if [ "${{ steps.verify.outcome }}" = "success" ]; then git add data/spending.json; fi
           git diff --cached --quiet || git commit -m "Refresh FEC spending data"
-          git pull --rebase origin main
-          git push
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin "HEAD:$GITHUB_REF_NAME"
 
+      # main deploys to production. Any other branch deploys a Preview, which gets the Preview environment variables.
       - name: Deploy to Vercel
-        if: steps.gate.outputs.run == 'true'
+        if: steps.verify.outcome == 'success'
         run: |
-          npx vercel@latest pull --yes --environment=production --token="$VERCEL_TOKEN"
-          npx vercel@latest build --prod --token="$VERCEL_TOKEN"
-          npx vercel@latest deploy --prebuilt --prod --token="$VERCEL_TOKEN"
+          if [ "$GITHUB_REF_NAME" = "main" ]; then env=production; flag=--prod; else env=preview; flag=; fi
+          npx vercel@latest pull --yes --environment=$env --token="$VERCEL_TOKEN"
+          npx vercel@latest build $flag --token="$VERCEL_TOKEN"
+          npx vercel@latest deploy --prebuilt $flag --token="$VERCEL_TOKEN" | tee deploy-url.txt
+          echo "Deployed: $(tail -1 deploy-url.txt)" >> "$GITHUB_STEP_SUMMARY"
 
       # A failed run leaves spending.json as it was and says so: the run goes red and an issue is opened
       # (or commented on, if one is already open).
