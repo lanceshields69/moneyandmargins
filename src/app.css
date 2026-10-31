@@ -51,7 +51,7 @@ strong {
 }
 .logo {
   display: block;
-  height: 40px;
+  height: 46px;
   width: auto;
   max-width: 100%;
 }
@@ -869,7 +869,7 @@ details h4 {
 @media (max-width: 600px) {
   .share {
     position: absolute;
-    top: 22px;
+    top: 25px;
     right: 16px;
     margin: 0;
   }
@@ -896,7 +896,7 @@ details h4 {
     white-space: nowrap;
   }
   .share-menu {
-    top: 51px;
+    top: 54px;
     width: 169px;
     max-width: calc(100vw - 32px);
     padding: 14px 18px;
