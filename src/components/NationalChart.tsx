@@ -73,7 +73,7 @@ export default function NationalChart({ view, stateName, fetchedAt }: NationalCh
       </p>
       <p className="muted nat-note">
         All 35 races. Independents and nominees with incomplete data are not counted. Includes primary-season spending;
-        recent {'24- and 48-hour'} reports may not be included. Snapshot of FEC processed data.{' '}
+        recent {'24- and 48-hour'} reports may not be included. FEC processed data, refreshed twice a day.{' '}
         <a href={FEC_SOURCE_URL} target="_blank" rel="noreferrer">
           FEC source
         </a>
