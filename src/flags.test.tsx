@@ -151,7 +151,9 @@ describe('each flag combination on the whole page', () => {
     const body = page.querySelector('[role="dialog"]')?.textContent ?? ''
     expect(body).toContain('For 6 committees')
     expect(body).toContain('$31,761,417')
-    expect(body).toContain("which can count toward the other side's share. The shares row is not shown until that is verified.")
+    expect(body).toContain("Totals and shares include primary-season spending as labeled by the filer, which can count toward the other side's share. I'm moving the shares to general-election spending only.")
+    expect(body).toContain('Nationally this is at most about 3.4%.')
+    expect(body).toContain('Races with incomplete data (Colorado, Michigan, Nebraska, Oklahoma, South Carolina) are left out of the national card.')
     expect(body).toContain("A contrast ad can be reported on two lines, so a state's total can count some spending twice.")
     expect(body).not.toContain('not tied to a candidate total') // no figure, so the sentence is dropped
     expect(body).not.toMatch(/\{\{|\}\}/)

@@ -19,7 +19,6 @@ export interface MethodologyValues {
   /** Committees matched to periodic reports by key rather than by coverage date, and the dollars in those rows. */
   approxCommitteeCount: number | null
   approxTotal: number | null
-  primarySentence: string | null
   /** From verification.json, e.g. "Nationally this is at most about 3.4%."; null when there is no figure. */
   doubleCountSentence?: string | null
   /** From the pipeline data, e.g. "Races with incomplete data (Colorado, ...) are left out of the national card."; null when none. */
@@ -49,9 +48,8 @@ export function fillMethodology(md: string, v: MethodologyValues): string {
   set('latest_filing_date', v.latestFiling ? formatDate(`${v.latestFiling}T00:00:00Z`) : null)
   set('approx_committee_count', v.approxCommitteeCount === null ? null : String(v.approxCommitteeCount))
   set('approx_total', v.approxTotal === null ? null : money.format(v.approxTotal))
-  set('primary_sentence', v.primarySentence)
   set('double_count_sentence', v.doubleCountSentence ?? '')
-  set('incomplete_races_sentence', v.incompleteRacesSentence ?? '')
+  set('incomplete_races_sentence', v.incompleteRacesSentence ?? null) // missing: the bullet is dropped below
   set('unattributed_sentence', v.unattributedTotal !== null ? `Expenditures not tied to a candidate total ${money.format(v.unattributedTotal)}.` : '')
 
   return text

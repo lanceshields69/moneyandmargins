@@ -13,7 +13,7 @@ import { buildNationalCard } from './computeNational'
 import { allRaces, callouts, forecastSnapshot, labelPoints, mapViewBox, stateNames } from './data'
 import logo from '../images/logo.png'
 import { DATA_VERIFIED, SHARES_VERIFIED } from './config'
-import { DATA_CHECK_NOTICE, LIMITS_SENTENCE, LIMITS_VERIFIED_SENTENCE, PRIMARY_SENTENCE_UNVERIFIED, PRIMARY_SENTENCE_VERIFIED } from './copy'
+import { DATA_CHECK_NOTICE, LIMITS_SENTENCE, LIMITS_VERIFIED_SENTENCE } from './copy'
 import corrections from '../data/corrections.json'
 import { correctionsBlocks, isCorrectionsHash, type CorrectionEntry } from './corrections'
 import { formatAsOf, formatDate, formatMoney, formatMonthDay } from './format'
@@ -102,7 +102,6 @@ export default function App() {
           unattributedTotal: allRaces.unattributedTotal,
           approxCommitteeCount: allRaces.approxCommitteeCount,
           approxTotal: allRaces.approxTotal,
-          primarySentence: SHARES_VERIFIED ? PRIMARY_SENTENCE_VERIFIED : PRIMARY_SENTENCE_UNVERIFIED,
           doubleCountSentence: doubleCountSentence(verification),
           incompleteRacesSentence: incompleteRacesSentence(allRaces.races.filter((r) => r.incompleteCount > 0).map((r) => stateNames.get(r.state) ?? r.state)),
         }),

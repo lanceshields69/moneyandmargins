@@ -21,9 +21,10 @@ const values: MethodologyValues = {
   unattributedTotal: 1234567,
   approxCommitteeCount: 6,
   approxTotal: 2500000,
-  primarySentence: 'Primary-season spending is included.',
+  doubleCountSentence: 'Nationally this is at most about 3.4%.',
+  incompleteRacesSentence: 'Races with incomplete data (Colorado) are left out of the national card.',
 }
-const none: MethodologyValues = { ...values, latestFiling: null, unattributedTotal: null, approxCommitteeCount: null, approxTotal: null, primarySentence: null }
+const none: MethodologyValues = { ...values, latestFiling: null, unattributedTotal: null, approxCommitteeCount: null, approxTotal: null, doubleCountSentence: null, incompleteRacesSentence: null }
 
 describe('which text renders', () => {
   it('uses the verified method when DATA_VERIFIED is true and the partial text when it is false', () => {
@@ -63,7 +64,9 @@ describe('placeholders', () => {
     expect(text).not.toContain('latest filing in the data')
     expect(text).not.toContain('not tied to a candidate total')
     expect(text).not.toContain('Duplicate removal is imperfect')
-    expect(text).not.toContain('Primary-season spending.')
+    expect(text).not.toContain('Incomplete races.') // its bullet needs a figure that is missing
+    expect(text).toContain('Primary-season spending.') // plain text, always there
+    expect(text).not.toContain('Nationally this is')
     expect(text).toContain('such as an ad against a whole party.')
   })
 
@@ -72,6 +75,7 @@ describe('placeholders', () => {
     expect(text).toContain('dated Oct 30, 2026')
     expect(text).toContain('Expenditures not tied to a candidate total $1,234,567.')
     expect(text).toContain('For 6 committees')
+    expect(text).toContain('Races with incomplete data (Colorado) are left out of the national card.')
     expect(text).toContain('$2,500,000')
   })
 
@@ -217,7 +221,7 @@ describe('partial-data hotfix text is identical for every race and party', () =>
 
 describe('double-count and incomplete-races sentences', () => {
   const md = 'Gaps.\n\n- **Contrast ads.** A contrast ad can be reported on two lines. {{double_count_sentence}}\n- **Left out.** {{incomplete_races_sentence}}\n'
-  const base = { updated: '2026-10-31T16:09:12.954Z', forecastFrozen: '2026-10-31T15:38:29Z', latestFiling: null, unattributedTotal: null, approxCommitteeCount: null, approxTotal: null, primarySentence: null }
+  const base = { updated: '2026-10-31T16:09:12.954Z', forecastFrozen: '2026-10-31T15:38:29Z', latestFiling: null, unattributedTotal: null, approxCommitteeCount: null, approxTotal: null, doubleCountSentence: null, incompleteRacesSentence: null }
   const verification = { runs: [{ checks: [{ id: 'double_count', summary: '10 race(s) over 2%; overall 3.42%' }] }] }
 
   it('builds the sentences from the verification run and the pipeline data', () => {
@@ -242,5 +246,6 @@ describe('double-count and incomplete-races sentences', () => {
     expect(text).not.toMatch(/\{\{|\}\}/)
     expect(text).toContain('A contrast ad can be reported on two lines.\n')
     expect(text).not.toContain('Nationally')
+    expect(text).not.toContain('Left out.') // a bullet that is only its missing sentence goes
   })
 })

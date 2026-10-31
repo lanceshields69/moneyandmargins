@@ -41,9 +41,9 @@ I'm still working on these, and I'll note here when each one is fixed.
 
 - **Late filings.** Groups file new reports every day through Election Day, and the FEC takes time to process them. Anything filed after the last refresh is missing.
 - **Duplicate removal is imperfect for a few groups.** For {{approx_committee_count}} committees, the FEC data doesn't show which dates their regular reports cover, so I match their notices to those reports by amount, date, and payee. That can occasionally leave a duplicate in or remove a real row. Those rows total {{approx_total}}.
-- **Primary-season spending.** {{primary_sentence}}
-- **Contrast ads.** A contrast ad can be reported on two lines, so a state's total can count some spending twice.
-- **Spending not tied to a candidate.** {{unattributed_sentence}}
+- **Primary-season spending.** Totals and shares include primary-season spending as labeled by the filer, which can count toward the other side's share. I'm moving the shares to general-election spending only.
+- **Contrast ads.** A contrast ad can be reported on two lines, so a state's total can count some spending twice. {{double_count_sentence}}
+- **Incomplete races.** {{incomplete_races_sentence}}
 
 ## How it stays even-handed
 
