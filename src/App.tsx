@@ -145,6 +145,9 @@ export default function App() {
             forecast, frozen {formatMonthDay(forecastSnapshot.fetchedAt)}.
           </p>
         </div>
+        <div className="vote411-wrap">
+          <Vote411Banner />
+        </div>
         </div>
 
         {!phone && (
@@ -153,10 +156,6 @@ export default function App() {
           </aside>
         )}
       </main>
-
-      <div className="vote411-wrap">
-        <Vote411Banner />
-      </div>
 
       <footer className="footer muted">
         <div className="footer-grid">

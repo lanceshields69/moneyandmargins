@@ -952,7 +952,7 @@ details h4 {
 
 /* Vote411 banner: one link, left aligned above the footer on desktop, full width on phones. */
 .vote411-wrap {
-  padding: 0 16px 48px;
+  margin-top: 48px;
 }
 .vote411 {
   display: flex;
@@ -964,7 +964,7 @@ details h4 {
   border-radius: 3px;
   background: #523074;
   color: var(--color-text);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: -0.01em;
   text-decoration: none;
 }
@@ -1022,13 +1022,4 @@ details h4 {
   font-weight: 600;
   line-height: normal;
   color: #fff;
-}
-@media (min-width: 900px) {
-  .vote411-wrap {
-    padding: 0 32px 48px;
-  }
-  .vote411 {
-    width: 471px;
-    max-width: 100%;
-  }
 }
