@@ -136,7 +136,7 @@ export default function RacePanel({ race, fetchedAt }: RacePanelProps) {
           <>
             {' · '}
             <a href={buildMailto(race ? race.raceName.replace(/ Senate( special election)? 2026$/, '') : null, window.location.href, fetchedAt)}>
-              See an error? Report it
+              Send me a message
             </a>
           </>
         )}
