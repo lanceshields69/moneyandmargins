@@ -1,8 +1,11 @@
 name: Refresh FEC data
 
+# Every 3 hours through Nov 4 (UTC), then daily through Nov 10. GitHub cron cannot express a date range,
+# so both schedules are registered and the gate step lets only the right one run on a given day.
 on:
   schedule:
-    - cron: '17 11,23 * * *'
+    - cron: '7 0,3,6,9,12,15,18,21 * 10,11 *'
+    - cron: '17 12 * 11 *'
   workflow_dispatch:
 
 concurrency:
@@ -11,11 +14,12 @@ concurrency:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 90
     env:
       INCOMPLETE_CHECK: warn
       FEC_API_KEY: ${{ secrets.FEC_API_KEY }}
@@ -23,31 +27,79 @@ jobs:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
     steps:
+      - name: Gate by date
+        id: gate
+        env:
+          EVENT: ${{ github.event_name }}
+          SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          now=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          run=false
+          if [ "$EVENT" = "workflow_dispatch" ]; then run=true
+          elif [ "$SCHEDULE" = "7 0,3,6,9,12,15,18,21 * 10,11 *" ] && [[ "$now" < "2026-11-05T00:00:00Z" ]]; then run=true
+          elif [ "$SCHEDULE" = "17 12 * 11 *" ] && [[ "$now" > "2026-11-05T00:00:00Z" ]] && [[ "$now" < "2026-11-11T00:00:00Z" ]]; then run=true
+          fi
+          echo "run=$run" >> "$GITHUB_OUTPUT"
+          echo "Gate: $EVENT $SCHEDULE at $now -> run=$run"
+
       - uses: actions/checkout@v4
+        if: steps.gate.outputs.run == 'true'
       - uses: actions/setup-node@v4
+        if: steps.gate.outputs.run == 'true'
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
+      - if: steps.gate.outputs.run == 'true'
+        run: npm ci
 
+      # Paces itself under the FEC's 1,000 requests per hour and retries politely. It exits non-zero, before
+      # writing anything, on any failure or when the pull has far fewer rows than the last one.
       - name: Fetch spending
+        id: fetch
+        if: steps.gate.outputs.run == 'true'
         run: npx tsx scripts/fetch-spending.ts --confirm
 
+      - name: Save the raw pull
+        if: steps.gate.outputs.run == 'true' && steps.fetch.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: raw-pull-${{ github.run_id }}-${{ github.run_attempt }}
+          path: data/raw/
+          retention-days: 90
+
       - name: Run tests and data checks
+        if: steps.gate.outputs.run == 'true'
         run: |
           npm test
           npm run check:incomplete 2>&1 | tee -a "$GITHUB_STEP_SUMMARY"
 
-      - name: Deploy to Vercel
-        run: |
-          npx vercel@latest pull --yes --environment=production --token="$VERCEL_TOKEN"
-          npx vercel@latest build --prod --token="$VERCEL_TOKEN"
-          npx vercel@latest deploy --prebuilt --prod --token="$VERCEL_TOKEN"
-
       - name: Commit refreshed data
+        if: steps.gate.outputs.run == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/spending.json
           git diff --cached --quiet || git commit -m "Refresh FEC spending data"
+          git pull --rebase origin main
           git push
+
+      - name: Deploy to Vercel
+        if: steps.gate.outputs.run == 'true'
+        run: |
+          npx vercel@latest pull --yes --environment=production --token="$VERCEL_TOKEN"
+          npx vercel@latest build --prod --token="$VERCEL_TOKEN"
+          npx vercel@latest deploy --prebuilt --prod --token="$VERCEL_TOKEN"
+
+      # A failed run leaves spending.json as it was and says so: the run goes red and an issue is opened
+      # (or commented on, if one is already open).
+      - name: Open an issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          title="Data refresh failed"
+          body="The scheduled FEC refresh failed, so data/spending.json was not changed. Run: $RUN_URL"
+          existing=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "$title in:title" --json number --jq '.[0].number')
+          if [ -n "$existing" ]; then gh issue comment "$existing" --repo "$GITHUB_REPOSITORY" --body "$body"
+          else gh issue create --repo "$GITHUB_REPOSITORY" --title "$title" --body "$body"; fi

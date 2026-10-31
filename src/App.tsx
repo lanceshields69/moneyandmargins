@@ -12,8 +12,10 @@ import { buildNationalCard } from './computeNational'
 import { allRaces, callouts, forecastSnapshot, labelPoints, mapViewBox, stateNames } from './data'
 import logo from '../images/logo.png'
 import { DATA_VERIFIED, SHARES_VERIFIED } from './config'
-import { DATA_CHECK_NOTICE, LIMITS_SENTENCE } from './copy'
-import { formatDate, formatMoney, formatMonthDay } from './format'
+import { DATA_CHECK_NOTICE, LIMITS_SENTENCE, LIMITS_VERIFIED_SENTENCE, PRIMARY_SENTENCE_UNVERIFIED, PRIMARY_SENTENCE_VERIFIED } from './copy'
+import corrections from '../data/corrections.json'
+import { correctionsBlocks, isCorrectionsHash, type CorrectionEntry } from './corrections'
+import { formatAsOf, formatDate, formatMoney, formatMonthDay } from './format'
 import { initialSelection, parseHashState } from './defaultState'
 import { fillMethodology, isHowHash, methodologySource, parseMethodology } from './methodology'
 import { usePhone } from './usePhone'
@@ -28,6 +30,13 @@ export default function App() {
   const [active, setActive] = useState<string | null>(initial.state)
   const [isDefault, setIsDefault] = useState(initial.isDefault)
   const [howOpen, setHowOpen] = useState(() => isHowHash(window.location.hash))
+  const [corrOpen, setCorrOpen] = useState(() => isCorrectionsHash(window.location.hash))
+  const openCorr = useCallback(() => {
+    setCorrOpen(true)
+    const url = new URL(window.location.href)
+    url.hash = 'corrections'
+    window.history.replaceState(null, '', url)
+  }, [])
   const openHow = useCallback(() => {
     setHowOpen(true)
     const url = new URL(window.location.href)
@@ -44,6 +53,12 @@ export default function App() {
     window.history.replaceState(null, '', state ? url : url.pathname + url.search)
   }, [])
   const close = useCallback(() => choose(null), [choose])
+  const closeCorr = useCallback(() => {
+    setCorrOpen(false)
+    const url = new URL(window.location.href)
+    url.hash = active ?? ''
+    window.history.replaceState(null, '', active ? url : url.pathname + url.search)
+  }, [active])
   const closeHow = useCallback(() => {
     setHowOpen(false)
     const url = new URL(window.location.href)
@@ -55,6 +70,7 @@ export default function App() {
   useEffect(() => {
     const onHashChange = () => {
       if (isHowHash(window.location.hash)) setHowOpen(true)
+      if (isCorrectionsHash(window.location.hash)) setCorrOpen(true)
       const fromHash = parseHashState(window.location.hash, validStates)
       if (fromHash) {
         setActive(fromHash)
@@ -72,17 +88,19 @@ export default function App() {
   const [vx, vy, vw, vh] = mapViewBox
   const anchor = point ? { x: (point[0] - vx) / vw, y: (point[1] - vy) / vh } : null
   const snapshotHost = new URL(forecastSnapshot.sourceUrl).host
+  const asOf = formatAsOf(allRaces.latestDissemination, allRaces.fetchedAt, DATA_VERIFIED)
+  const correctionBlocks = useMemo(() => correctionsBlocks(corrections as CorrectionEntry[]), [])
   const methodologyBlocks = useMemo(
     () =>
       parseMethodology(
         fillMethodology(methodologySource(DATA_VERIFIED), {
           updated: allRaces.fetchedAt,
           forecastFrozen: forecastSnapshot.fetchedAt,
-          latestFiling: null,
-          unattributedTotal: null,
-          approxCommitteeCount: null,
-          approxTotal: null,
-          primarySentence: null,
+          latestFiling: allRaces.latestDissemination,
+          unattributedTotal: allRaces.unattributedTotal,
+          approxCommitteeCount: allRaces.approxCommitteeCount,
+          approxTotal: allRaces.approxTotal,
+          primarySentence: SHARES_VERIFIED ? PRIMARY_SENTENCE_VERIFIED : PRIMARY_SENTENCE_UNVERIFIED,
         }),
       ),
     [],
@@ -123,7 +141,7 @@ export default function App() {
               ))}
             </select>
           </label>
-            {SHARES_VERIFIED && <NationalCard card={national} stateName={active ? (stateNames.get(active) ?? active) : null} fetchedAt={allRaces.fetchedAt} />}
+            {SHARES_VERIFIED && <NationalCard card={national} stateName={active ? (stateNames.get(active) ?? active) : null} asOf={asOf} />}
           </div>
 
         <div className="map-wrap" id="map">
@@ -138,7 +156,7 @@ export default function App() {
           {callout && anchor && active && (
             <ErrorBoundary key={active}>
               <MapCallout sharesVerified={SHARES_VERIFIED} onOpenHow={openHow} callout={callout} stateName={stateNames.get(active) ?? active} anchor={anchor} isDefault={isDefault}
-                detail={phone ? <RacePanel race={race} fetchedAt={allRaces.fetchedAt} dataVerified={DATA_VERIFIED} onOpenHow={openHow} /> : undefined}
+                detail={phone ? <RacePanel race={race} fetchedAt={allRaces.fetchedAt} asOf={asOf} dataVerified={DATA_VERIFIED} onOpenHow={openHow} /> : undefined}
                 onClose={close}
               />
             </ErrorBoundary>
@@ -179,7 +197,7 @@ export default function App() {
         <div className="map-notes muted">
           <p>
             {DATA_VERIFIED
-              ? `Support plus oppose, all candidates in the race. Color scale is square root. Dark states have no 2026 Senate race. FEC processed data as of ${formatDate(allRaces.fetchedAt)}.`
+              ? `Support plus oppose, all candidates in the race. Color scale is square root. Dark states have no 2026 Senate race. FEC data: ${asOf}.`
               : `Dark states have no 2026 Senate race. Spending amounts are being verified. FEC processed data as of ${formatDate(allRaces.fetchedAt)}.`}
           </p>
           <p className="legend-hatch">
@@ -204,7 +222,7 @@ export default function App() {
 
         {!phone && (
           <aside className="panel-column">
-            <RacePanel race={race} fetchedAt={allRaces.fetchedAt} dataVerified={DATA_VERIFIED} onOpenHow={openHow} />
+            <RacePanel race={race} fetchedAt={allRaces.fetchedAt} asOf={asOf} dataVerified={DATA_VERIFIED} onOpenHow={openHow} />
           </aside>
         )}
       </main>
@@ -232,7 +250,7 @@ export default function App() {
               ), frozen {formatDate(forecastSnapshot.fetchedAt)}. A 55% chance is not a prediction that someone will win.{' '}
               <strong>Spent on ads:</strong> each party&apos;s share of independent expenditures reported to the FEC in the
               2026 cycle that support its nominee or oppose the other nominee. Includes primary-season spending and
-              excludes candidate and party-coordinated spending. Processed FEC data as of {formatDate(allRaces.fetchedAt)}. {LIMITS_SENTENCE}
+              excludes candidate and party-coordinated spending. {DATA_VERIFIED ? `FEC data: ${asOf}` : `Processed FEC data as of ${formatDate(allRaces.fetchedAt)}`}. {DATA_VERIFIED ? LIMITS_VERIFIED_SENTENCE : LIMITS_SENTENCE}
             </p>
             <p>
               Official voting information:{' '}
@@ -260,8 +278,8 @@ export default function App() {
             </p>
             <h3>How fresh is this data?</h3>
             <p>
-              It updates twice a day from the FEC’s processed records, and each page shows its last update time, so
-              very recent filings may not appear yet.
+              It refreshes every few hours from FEC filings, and each page shows the latest filing date and when the
+              data was fetched, so very recent filings may not appear yet.
             </p>
             <h3>Who made this?</h3>
             <p>
@@ -273,7 +291,7 @@ export default function App() {
             </p>
           </section>
           <div className="footer-meta">
-            <ContactFooter />
+            <ContactFooter onOpenCorrections={openCorr} />
             <p>
               © 2026{' '}
               <a href="https://www.lanceshields.design/" target="_blank" rel="noreferrer">
@@ -285,6 +303,7 @@ export default function App() {
         </div>
       </footer>
       {howOpen && <MethodologyModal blocks={methodologyBlocks} onClose={closeHow} />}
+      {corrOpen && <MethodologyModal blocks={correctionBlocks} onClose={closeCorr} />}
     </div>
   )
 }

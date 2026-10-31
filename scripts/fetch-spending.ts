@@ -1,22 +1,27 @@
-import { readFileSync, writeFileSync } from 'node:fs'
+import { createHash } from 'node:crypto'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { gunzipSync, gzipSync } from 'node:zlib'
 import 'dotenv/config'
-import type { Candidate, Committee, ExpenditureTotals, FecMatch, NomineesFile, SpendingStatus } from '../src/types'
+import type { RawScheduleERow } from './lib/fec-itemized'
+import type { Candidate, Committee, ExpenditureTotals, FecMatch, NomineesFile, SpendingFile, SpendingMetadata, SpendingStatus } from '../src/types'
+import { dedupeIeRows, noticeDate, periodicCutoffs, type IeRow, type ReportCoverage } from './lib/dedup-ie'
+import { createFecClient, type Params } from './lib/fec-client'
+import { assertInCycle, CYCLE, fetchItemizedRows, fetchReports, toIeRow } from './lib/fec-itemized'
 import { fecNameMatchesNominee, nomineeFirstAndLast } from './lib/fec-name-match'
 
 const API_KEY = process.env.FEC_API_KEY ?? 'DEMO_KEY'
-const CYCLE = 2026
 const BATCH_SIZE = 25
-// election_full=false limits aggregation to the two-year 2026 cycle. The FEC
-// default (true) spans the whole Senate election period and pulled in 2024.
-const SPENDING_PARAMS: Params = [
-  ['cycle', String(CYCLE)],
-  ['election_full', 'false'],
-  ['sort', 'candidate_id'],
-  ['sort', 'committee_id'],
-  ['sort', 'support_oppose_indicator'],
-]
+// A refresh that returns far fewer rows than the last one is treated as a bad pull and does not overwrite spending.json.
+const MIN_ROW_RATIO = 0.9
+const client = createFecClient({ apiKey: API_KEY })
+// --from-raw=data/raw/<timestamp> rebuilds spending.json from a saved pull without re-fetching the rows.
+const FROM_RAW = process.argv.find((a) => a.startsWith('--from-raw='))?.slice('--from-raw='.length)
 const SOURCE_NOTE =
-  'FEC Schedule E independent expenditures, by-candidate aggregate (/schedules/schedule_e/by_candidate/), cycle=2026, election_full=false (the two-year 2026 cycle).'
+  'FEC Schedule E independent expenditures, itemized (/schedules/schedule_e/), cycle=2026, 24/48-hour notices included and de-duplicated against periodic reports (see metadata.dedup_method).'
+const DEDUP_METHOD =
+  'Itemized Schedule E rows. Memo subtotals dropped. Within each filing chain only the latest version of a transaction is kept (FEC most_recent flag plus previous_file_number on amendments). ' +
+  'For each committee, periodic-report rows (non-notice) stand up to the latest processed periodic coverage end date, and 24/48-hour notices count only after it. ' +
+  'If a committee has periodic rows but no coverage end date can be matched, notices are matched one for one to periodic rows on (committee, candidate, support/oppose, amount, date, payee) and the committee is listed as approximate.'
 
 // S4AK00214 is incumbent Dan Sullivan. The 2a nickname matching had also attached
 // S6AK00326 (a separate 2026 registrant, Daniel J. Sullivan Jr., excluded from the
@@ -35,20 +40,9 @@ const COMPARE_CANDIDATE_IDS = ['OH-2026--SHERROD-BROWN', 'MI-2026--MIKE-ROGERS']
 // both the D and R nominee have multi-committee spending on both sides.
 const FIXTURE_CANDIDATE_IDS = ['OH-2026--JON-HUSTED', 'OH-2026--SHERROD-BROWN']
 
-type Params = [string, string][]
-
 interface Page<T> {
   results: T[]
   pagination: { pages: number; count: number }
-}
-
-interface FecExpenditureRow {
-  candidate_id: string
-  committee_id: string
-  committee_name: string
-  support_oppose_indicator: 'S' | 'O'
-  total: number
-  cycle: number
 }
 
 interface FecCandidateRecord {
@@ -63,17 +57,7 @@ interface FecCandidateRecord {
 }
 
 async function fecGetPage<T>(path: string, params: Params, page: number): Promise<Page<T>> {
-  const url = new URL(`https://api.open.fec.gov/v1${path}`)
-  for (const [key, value] of params) url.searchParams.append(key, value)
-  url.searchParams.set('per_page', '100')
-  url.searchParams.set('page', String(page))
-  url.searchParams.set('api_key', API_KEY)
-
-  const res = await fetch(url)
-  if (!res.ok) {
-    throw new Error(`FEC API request failed: ${res.status} ${res.statusText} (${path})`)
-  }
-  return (await res.json()) as Page<T>
+  return client.get<Page<T>>(path, [...params, ['per_page', '100'], ['page', String(page)]])
 }
 
 /** Fetches every page, keyed for dedupe, and fails if the unique row count
@@ -175,15 +159,15 @@ function candidateSourceUrl(candidate: Candidate, fecIds: string[]): string {
 }
 
 /** Sums per committee for one side, desc by amount, ties by committee_id ascending. */
-function topCommittees(rows: FecExpenditureRow[], side: 'S' | 'O'): Committee[] {
+function topCommittees(rows: IeRow[], side: 'S' | 'O'): Committee[] {
   const byCommittee = new Map<string, { name: string; amount: number }>()
   for (const row of rows) {
     if (row.support_oppose_indicator !== side) continue
     const existing = byCommittee.get(row.committee_id)
     if (existing) {
-      existing.amount += row.total
+      existing.amount += row.expenditure_amount
     } else {
-      byCommittee.set(row.committee_id, { name: row.committee_name, amount: row.total })
+      byCommittee.set(row.committee_id, { name: row.committee_name ?? row.committee_id, amount: row.expenditure_amount })
     }
   }
   return [...byCommittee.entries()]
@@ -192,14 +176,14 @@ function topCommittees(rows: FecExpenditureRow[], side: 'S' | 'O'): Committee[] 
     .map(([id, { name, amount }]) => ({ id, name, fecUrl: committeeUrl(id), amount }))
 }
 
-function sumSide(rows: FecExpenditureRow[], side: 'S' | 'O'): number {
-  return rows.reduce((sum, row) => (row.support_oppose_indicator === side ? sum + row.total : sum), 0)
+function sumSide(rows: IeRow[], side: 'S' | 'O'): number {
+  return rows.reduce((sum, row) => (row.support_oppose_indicator === side ? sum + row.expenditure_amount : sum), 0)
 }
 
 function buildTotals(
   candidates: Candidate[],
   assignments: Map<string, Assignment>,
-  rowsByFecId: Map<string, FecExpenditureRow[]>,
+  rowsByFecId: Map<string, IeRow[]>,
   fetchedAt: string,
 ): ExpenditureTotals[] {
   return candidates.map((candidate) => {
@@ -277,29 +261,64 @@ async function main() {
   }
   const no2026Cycle = allFecIds.filter((id) => !records.get(id)?.cycles.includes(CYCLE))
 
-  // 5. Spending, limited to the 2026 cycle.
-  const rawRows: FecExpenditureRow[] = []
-  for (const batch of chunk(allFecIds, BATCH_SIZE)) {
-    rawRows.push(
-      ...(await fecGetAll<FecExpenditureRow>(
-        '/schedules/schedule_e/by_candidate/',
-        [...batch.map((id): [string, string] => ['candidate_id', id]), ...SPENDING_PARAMS],
-        (r) => `${r.candidate_id}|${r.committee_id}|${r.support_oppose_indicator}`,
-      )),
-    )
-  }
-  const wrongCycle = rawRows.filter((r) => r.cycle !== CYCLE)
-  if (wrongCycle.length > 0) {
-    throw new Error(`${wrongCycle.length} expenditure rows returned with cycle other than ${CYCLE}.`)
-  }
+  // 5. Itemized Schedule E rows, 24/48-hour notices included, cycle 2026 only.
+  const savedDir = FROM_RAW ? new URL(`../${FROM_RAW.replace(/\/?$/, '/')}`, import.meta.url) : null
+  const readGz = <T>(name: string): T => JSON.parse(gunzipSync(readFileSync(new URL(name, savedDir as URL))).toString('utf-8')) as T
+  const rawItemized = savedDir ? readGz<RawScheduleERow[]>('itemized.json.gz') : await fetchItemizedRows(client, allFecIds)
+  const rawRows = rawItemized.map(toIeRow)
+  assertInCycle(rawRows)
 
-  const rowsByFecId = new Map<string, FecExpenditureRow[]>()
-  for (const row of rawRows) {
+  // 6. De-duplicate: latest version per transaction, periodic rows up to each committee's coverage end, notices after it.
+  const reports = savedDir ? readGz<ReportCoverage[]>('reports.json.gz') : await fetchReports(client, [...new Set(rawRows.map((r) => r.committee_id))])
+  const cutoffs = periodicCutoffs(rawRows, reports)
+  const dedup = dedupeIeRows(rawRows, cutoffs)
+  const keptRows = dedup.kept
+
+  const rowsByFecId = new Map<string, IeRow[]>()
+  for (const row of keptRows) {
     rowsByFecId.set(row.candidate_id, [...(rowsByFecId.get(row.candidate_id) ?? []), row])
   }
 
-  const fetchedAt = new Date().toISOString()
+  const fetchedAt = savedDir
+    ? (JSON.parse(readFileSync(new URL('meta.json', savedDir), 'utf-8')) as { fetchedAt: string }).fetchedAt
+    : new Date().toISOString()
   const totals = buildTotals(candidates, assignments, rowsByFecId, fetchedAt)
+
+  // Latest dissemination date per race and overall, from the rows that count.
+  const stateOf = new Map<string, string>()
+  for (const c of candidates) for (const id of assignments.get(c.id)?.fecIds ?? []) stateOf.set(id, c.raceId.slice(0, 2))
+  const latestByState: Record<string, string> = {}
+  let latestOverall = ''
+  let futureDated = 0
+  for (const row of keptRows) {
+    const date = noticeDate(row)
+    const state = stateOf.get(row.candidate_id)
+    if (!date || !state) continue
+    // A filing with a date after the fetch is a typo in the filing; it still counts but cannot set "latest".
+    if (date > fetchedAt.slice(0, 10)) {
+      futureDated += 1
+      continue
+    }
+    if (date > (latestByState[state] ?? '')) latestByState[state] = date
+    if (date > latestOverall) latestOverall = date
+  }
+
+  const rawJson = JSON.stringify(rawItemized)
+  const rawHash = createHash('sha256').update(rawJson).digest('hex')
+  const metadata: SpendingMetadata = {
+    dedup_method: DEDUP_METHOD,
+    rows_pulled: rawRows.length,
+    rows_kept: keptRows.length,
+    rows_dropped: dedup.dropped,
+    approximate_committees: dedup.approximateCommittees,
+    approx_rows_total: dedup.approximateTotal,
+    latest_dissemination_date: latestOverall || null,
+    future_dated_rows: futureDated,
+    latest_dissemination_by_race: Object.fromEntries(Object.entries(latestByState).sort(([a], [b]) => a.localeCompare(b))),
+    raw_sha256: rawHash,
+    raw_path: FROM_RAW ? FROM_RAW.replace(/\/?$/, '/') : `data/raw/${fetchedAt.replace(/[:.]/g, '-')}/`,
+    requests: client.requestCount(),
+  }
 
   // ---- Report ----
   const statusCounts = { queried_with_rows: 0, queried_zero_rows: 0, unmatched: 0 }
@@ -347,12 +366,9 @@ async function main() {
     }),
   )
 
-  console.log('\n=== Query window ===')
-  console.log(
-    `GET /v1/schedules/schedule_e/by_candidate/ ${SPENDING_PARAMS.filter(([k]) => k !== 'sort')
-      .map(([k, v]) => `${k}=${v}`)
-      .join(' ')}; every returned row has cycle=${CYCLE} (${rawRows.length} rows checked).`,
-  )
+  console.log('\n=== Query window and dedup ===')
+  console.log(`GET /v1/schedules/schedule_e/ cycle=${CYCLE}, notices included: ${rawRows.length} rows pulled, ${keptRows.length} kept, ${client.requestCount()} requests.`)
+  console.log('Dropped:', dedup.dropped, '| approximate committees:', dedup.approximateCommittees.length, '| latest dissemination:', latestOverall)
   console.table(
     COMPARE_CANDIDATE_IDS.map((id) => {
       const t = totals.find((x) => x.candidateId === id)
@@ -384,15 +400,31 @@ async function main() {
   if (no2026Cycle.length > 0) {
     console.warn(`\nWARNING: queried FEC IDs with no ${CYCLE} cycle on their FEC record: ${no2026Cycle.join(', ')}`)
   }
-  console.log(`\n${totals.length} candidates, ${allFecIds.length} distinct FEC IDs queried, ${rawRows.length} expenditure rows.`)
+  console.log(`\n${totals.length} candidates, ${allFecIds.length} distinct FEC IDs queried, ${rawRows.length} itemized rows pulled, ${keptRows.length} counted.`)
 
-  const spendingFile = { fetchedAt, source: SOURCE_NOTE, totals }
+  const spendingFile: SpendingFile = { fetchedAt, source: SOURCE_NOTE, metadata, totals }
 
   if (process.argv.includes('--confirm')) {
+    // A bad pull must not replace good data: far fewer rows than last time fails the run.
+    const previous = existsSync(new URL('../data/spending.json', import.meta.url))
+      ? (JSON.parse(readFileSync(new URL('../data/spending.json', import.meta.url), 'utf-8')) as SpendingFile)
+      : null
+    const before = previous?.metadata?.rows_pulled
+    if (before && rawRows.length < before * MIN_ROW_RATIO) {
+      throw new Error(`Refusing to overwrite data/spending.json: this pull has ${rawRows.length} rows, the last had ${before} (less than ${MIN_ROW_RATIO * 100}%).`)
+    }
+
+    // The raw pull is append-only, one folder per run; data/raw is gitignored and kept as a workflow artifact.
+    const dir = new URL(`../${metadata.raw_path}`, import.meta.url)
+    if (!savedDir) mkdirSync(dir, { recursive: true })
+    if (!savedDir) writeFileSync(new URL('itemized.json.gz', dir), gzipSync(rawJson))
+    if (!savedDir) writeFileSync(new URL('reports.json.gz', dir), gzipSync(JSON.stringify(reports)))
+    if (!savedDir) writeFileSync(new URL('meta.json', dir), JSON.stringify({ fetchedAt, sha256: rawHash, rows: rawRows.length, requests: client.requestCount() }, null, 2) + '\n')
+
     writeFileSync(new URL('../data/spending.json', import.meta.url), JSON.stringify(spendingFile, null, 2) + '\n')
-    console.log('\nWrote data/spending.json')
+    console.log('\nWrote data/spending.json and', metadata.raw_path)
   } else {
-    console.log('\nPreview only — rerun with --confirm after approval to write data/spending.json')
+    console.log('\nPreview only. Rerun with --confirm to write data/spending.json')
   }
 
   if (process.argv.includes('--write-nominees')) {

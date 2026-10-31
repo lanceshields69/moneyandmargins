@@ -1,5 +1,5 @@
 import type { AlignedPart, NationalCard as NationalCardData, PartyAligned } from '../computeNational'
-import { formatDate, formatMoney, formatMoneyFull } from '../format'
+import { formatMoney, formatMoneyFull } from '../format'
 
 function Part({ part, group, outlined, selected }: { part: AlignedPart; group: PartyAligned; outlined: boolean; selected: boolean }) {
   if (part.widthPct <= 0) return null
@@ -39,16 +39,16 @@ function Row({ group, selected }: { group: PartyAligned; selected: boolean }) {
 interface NationalCardProps {
   card: NationalCardData
   stateName: string | null
-  fetchedAt: string
+  asOf: string
 }
 
-export default function NationalCard({ card, stateName, fetchedAt }: NationalCardProps) {
+export default function NationalCard({ card, stateName, asOf }: NationalCardProps) {
   const selected = card.stateCode !== null
   return (
     <section className="national" aria-label="Spending aligned with each party's nominees">
       <h2>Spending aligned with each party&apos;s nominees</h2>
       <p className="muted nat-sub">
-        Across the {card.includedRaces + card.excludedRaces} races, 2026 cycle, as of {formatDate(fetchedAt)}
+        Across the {card.includedRaces + card.excludedRaces} races, 2026 cycle, FEC data: {asOf}
       </p>
       {card.groups.map((group) => (
         <Row key={group.party} group={group} selected={selected} />

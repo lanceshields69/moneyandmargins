@@ -6,3 +6,6 @@ export const SHARES_PENDING_LEAD = 'Shares are being verified. Partial data: see
 export const SHARES_PENDING_LINK = 'how this is counted'
 export const AMOUNTS_PENDING_LEAD = 'Dollar amounts are being verified. Partial data: see '
 export const PANEL_PRIMARY_NOTE = 'Includes primary-season spending as labeled by the filer.'
+export const LIMITS_VERIFIED_SENTENCE = 'Includes 24- and 48-hour reports, matched against periodic reports so nothing counts twice. Filings made after the fetch are not yet included.'
+export const PRIMARY_SENTENCE_UNVERIFIED = "Totals include primary-season spending as labeled by the filer, which can count toward the other side's share. The shares row stays hidden until that is verified."
+export const PRIMARY_SENTENCE_VERIFIED = 'Totals include primary-season spending as labeled by the filer.'

@@ -1,10 +1,17 @@
 import { CONTACT_EMAIL } from '../config'
 
-export default function ContactFooter() {
-  if (!CONTACT_EMAIL) return null
+export default function ContactFooter({ onOpenCorrections }: { onOpenCorrections: () => void }) {
   return (
     <p>
-      Questions or corrections? <a href={`mailto:${CONTACT_EMAIL}`}>Send an email</a>
+      {CONTACT_EMAIL && (
+        <>
+          Questions or corrections? <a href={`mailto:${CONTACT_EMAIL}`}>Send an email</a>
+          {' · '}
+        </>
+      )}
+      <button type="button" className="link-button" onClick={onOpenCorrections}>
+        Corrections
+      </button>
     </p>
   )
 }

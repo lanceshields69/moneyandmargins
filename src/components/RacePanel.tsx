@@ -1,7 +1,7 @@
 import type { Committee } from '../types'
 import { PARTY_DISPLAY, type RaceView, type RowView, type SideView } from '../computeSpending'
 import { DATA_VERIFIED } from '../config'
-import { AMOUNTS_PENDING_LEAD, LIMITS_SENTENCE, PANEL_PRIMARY_NOTE, SHARES_PENDING_LINK } from '../copy'
+import { AMOUNTS_PENDING_LEAD, LIMITS_SENTENCE, LIMITS_VERIFIED_SENTENCE, PANEL_PRIMARY_NOTE, SHARES_PENDING_LINK } from '../copy'
 import { formatDate, formatMoney, formatMoneyFull } from '../format'
 import { CONTACT_EMAIL } from '../config'
 import { buildMailto } from '../corrections'
@@ -47,7 +47,7 @@ function CommitteeList({ title, committees }: { title: string; committees: Commi
   )
 }
 
-function Nominee({ row, index, dataVerified }: { row: RowView; index: number; dataVerified: boolean }) {
+function Nominee({ row, index, dataVerified, asOf }: { row: RowView; index: number; dataVerified: boolean; asOf: string }) {
   return (
     <li className="nominee" style={{ ['--i' as string]: index }}>
       <div className="nominee-head">
@@ -82,7 +82,7 @@ function Nominee({ row, index, dataVerified }: { row: RowView; index: number; da
           <a href={row.sourceUrl} target="_blank" rel="noreferrer">
             FEC record
           </a>
-          , processed data as of {formatDate(row.asOf)}
+          , {dataVerified ? asOf : `processed data as of ${formatDate(row.asOf)}`}
         </p>
       )}
     </li>
@@ -92,13 +92,15 @@ function Nominee({ row, index, dataVerified }: { row: RowView; index: number; da
 interface RacePanelProps {
   race: RaceView | null
   fetchedAt: string
+  /** The as-of label: "itemized data through [date]; fetched [time]" once the data is verified. */
+  asOf?: string
   /** Whether per-candidate dollar amounts and top committees may be shown. Defaults to the DATA_VERIFIED flag. */
   dataVerified?: boolean
   /** Opens the methodology modal from the "how this is counted" link. */
   onOpenHow?: () => void
 }
 
-export default function RacePanel({ race, fetchedAt, dataVerified = DATA_VERIFIED, onOpenHow }: RacePanelProps) {
+export default function RacePanel({ race, fetchedAt, asOf = formatDate(fetchedAt), dataVerified = DATA_VERIFIED, onOpenHow }: RacePanelProps) {
   return (
     <section id="race-details" className="panel" aria-label="Race details" tabIndex={-1}>
       {!race ? (
@@ -123,7 +125,7 @@ export default function RacePanel({ race, fetchedAt, dataVerified = DATA_VERIFIE
               <>
                 {race.total === null
                   ? 'Incomplete data'
-                  : `Total independent expenditures, support plus oppose: ${formatMoney(race.total)} (FEC processed data as of ${formatDate(fetchedAt)})`}
+                  : `Total independent expenditures, support plus oppose: ${formatMoney(race.total)} (${asOf})`}
                 {race.incompleteCount > 0 &&
                   `. Leaves out ${race.incompleteCount} nominee${race.incompleteCount === 1 ? '' : 's'} with incomplete data, so this total may be low.`}
                 {race.total !== null && ` ${PANEL_PRIMARY_NOTE}`}
@@ -137,7 +139,7 @@ export default function RacePanel({ race, fetchedAt, dataVerified = DATA_VERIFIE
           ))}
           <ul className="nominees">
             {race.rows.map((row, index) => (
-              <Nominee key={row.candidateId} row={row} index={index} dataVerified={dataVerified} />
+              <Nominee key={row.candidateId} row={row} index={index} dataVerified={dataVerified} asOf={asOf} />
             ))}
           </ul>
           <p className="muted scale-note">Bars share one scale within this race. Supporting and opposing amounts are not netted.</p>
@@ -145,7 +147,7 @@ export default function RacePanel({ race, fetchedAt, dataVerified = DATA_VERIFIE
       )}
       <p className="muted disclaimer">
         Independent expenditures reported to the FEC for the 2026 cycle, including primary-season spending. Excludes
-        candidate committee and party-coordinated spending. Processed FEC data as of {formatDate(fetchedAt)}. {LIMITS_SENTENCE}{' '}
+        candidate committee and party-coordinated spending. {dataVerified ? `FEC data: ${asOf}` : `Processed FEC data as of ${formatDate(fetchedAt)}`}. {dataVerified ? LIMITS_VERIFIED_SENTENCE : LIMITS_SENTENCE}{' '}
         <a href={FEC_SOURCE_URL} target="_blank" rel="noreferrer">
           FEC source
         </a>
@@ -153,7 +155,7 @@ export default function RacePanel({ race, fetchedAt, dataVerified = DATA_VERIFIE
           <>
             {' · '}
             <a href={buildMailto(race ? race.raceName.replace(/ Senate( special election)? 2026$/, '') : null, window.location.href, fetchedAt)}>
-              Send me a message
+              See an error? Report it
             </a>
           </>
         )}

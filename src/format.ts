@@ -22,3 +22,21 @@ export function formatDate(iso: string): string {
 export function formatMonthDay(iso: string): string {
   return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
 }
+
+export function formatDateTime(iso: string): string {
+  const d = new Date(iso)
+  const date = d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' })
+  const time = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'UTC' })
+  return `${date}, ${time} UTC`
+}
+
+/**
+ * The as-of label. Verified data: "itemized data through Oct 30, 2026 UTC; fetched Oct 31, 2026, 16:09 UTC", where the
+ * date is the latest dissemination date among the rows that count. Otherwise: "latest filing ...; fetched ...".
+ */
+export function formatAsOf(latestDissemination: string | null, fetchedAt: string, itemized = false): string {
+  const fetched = `fetched ${formatDateTime(fetchedAt)}`
+  if (!latestDissemination) return fetched
+  const through = formatDate(`${latestDissemination}T00:00:00Z`)
+  return itemized ? `itemized data through ${through}; ${fetched}` : `latest filing ${through}; ${fetched}`
+}

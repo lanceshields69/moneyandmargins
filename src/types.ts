@@ -62,9 +62,30 @@ export interface Committee {
  */
 export type SpendingStatus = 'queried_with_rows' | 'queried_zero_rows' | 'unmatched'
 
+export interface SpendingMetadata {
+  dedup_method: string
+  rows_pulled: number
+  rows_kept: number
+  rows_dropped: Record<string, number>
+  approximate_committees: string[]
+  /** Dollars in the rows that went through the approximate key match (dropped as matched, or kept as notices). */
+  approx_rows_total: number
+  /** Spending reported with no candidate ID, when measured; absent means no figure. */
+  unattributed_total?: number
+  /** Latest dissemination date among the rows that count, YYYY-MM-DD. */
+  latest_dissemination_date: string | null
+  latest_dissemination_by_race: Record<string, string>
+  /** Rows dated after the fetch (typos in the filing). They count but never set the latest date. */
+  future_dated_rows: number
+  raw_sha256: string
+  raw_path: string
+  requests: number
+}
+
 export interface SpendingFile {
   fetchedAt: string
   source: string
+  metadata?: SpendingMetadata
   totals: ExpenditureTotals[]
 }
 

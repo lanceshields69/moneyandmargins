@@ -52,6 +52,12 @@ export interface AllRaces {
   races: RaceView[]
   maxTotal: number
   fetchedAt: string
+  /** Latest dissemination date among the rows that count (YYYY-MM-DD), when the data carries it. */
+  latestDissemination: string | null
+  /** Pipeline figures for the methodology text; null when the data does not carry them. */
+  unattributedTotal: number | null
+  approxCommitteeCount: number | null
+  approxTotal: number | null
   source: string
 }
 
@@ -146,7 +152,16 @@ export function buildAllRaces(nominees: NomineesFile, spending: SpendingFile): A
   const claims = countFecIdClaims(nominees.candidates)
   const races = nominees.races.map((race) => buildRaceView(race, nominees.candidates, totalsById, claims))
   const maxTotal = Math.max(0, ...races.map((r) => r.total ?? 0))
-  return { races, maxTotal, fetchedAt: spending.fetchedAt, source: spending.source }
+  return {
+    races,
+    maxTotal,
+    fetchedAt: spending.fetchedAt,
+    latestDissemination: spending.metadata?.latest_dissemination_date ?? null,
+    unattributedTotal: spending.metadata?.unattributed_total ?? null,
+    approxCommitteeCount: spending.metadata ? spending.metadata.approximate_committees.length : null,
+    approxTotal: spending.metadata?.approx_rows_total ?? null,
+    source: spending.source,
+  }
 }
 
 /** Square-root scale so mid-range races stay distinguishable from the largest. */
