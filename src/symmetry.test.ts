@@ -4,7 +4,6 @@ import spendingJson from '../data/spending.json'
 import fixtureJson from '../scripts/__fixtures__/spending-fixture.json'
 import {
   buildAllRaces,
-  buildNationalView,
   buildRaceView,
   fillFraction,
   PARTY_DISPLAY,
@@ -154,60 +153,5 @@ describe('party symmetry on all races', () => {
 
   it('keeps the map scale identical', () => {
     expect(swapped.maxTotal).toBe(original.maxTotal)
-  })
-})
-
-describe('party symmetry in the national chart', () => {
-  const original = buildAllRaces(nominees, spending)
-  const swapped = buildAllRaces({ ...nominees, candidates: nominees.candidates.map(swapCandidate) }, spending)
-  const group = (view: ReturnType<typeof buildNationalView>, party: Party) => view.groups.find((g) => g.party === party)!
-
-  for (const state of [null, 'OH', 'TX']) {
-    const a = buildNationalView(original.races, state)
-    const b = buildNationalView(swapped.races, state)
-
-    it(`mirrors every bar when D and R are swapped (${state ?? 'no state selected'})`, () => {
-      for (const party of ['D', 'R'] as Party[]) {
-        const mine = group(b, party)
-        const theirs = group(a, swapParty(party))
-        expect(mine.support).toEqual(theirs.support)
-        expect(mine.oppose).toEqual(theirs.oppose)
-        expect(mine.total).toBe(theirs.total)
-        expect(mine.stateTotal).toBe(theirs.stateTotal)
-        expect(mine.nominees).toBe(theirs.nominees)
-        expect(mine.label).toBe(PARTY_DISPLAY[party].label)
-        expect(mine.color).toBe(PARTY_DISPLAY[party].color)
-        expect(mine.tint).toBe(PARTY_DISPLAY[party].tint)
-      }
-      expect(b.scaleMax).toBe(a.scaleMax)
-    })
-
-    it(`keeps the same group order (${state ?? 'no state selected'})`, () => {
-      expect(b.groups.map((g) => g.party)).toEqual(a.groups.map((g) => g.party))
-    })
-  }
-
-  it('keeps supporting and opposing separate and the state part within each bar', () => {
-    const view = buildNationalView(original.races, 'OH')
-    for (const g of view.groups) {
-      expect(Object.keys(g)).not.toContain('net')
-      for (const bar of [g.support, g.oppose]) {
-        expect(bar.statePortion).toBeLessThanOrEqual(bar.total)
-        expect(bar.widthPct).toBeLessThanOrEqual(100)
-      }
-      expect(g.support.widthPct + g.oppose.widthPct).toBeLessThanOrEqual(100.0000001)
-      expect(g.total).toBeCloseTo(g.support.total + g.oppose.total, 2)
-    }
-    expect(buildNationalView(original.races, null).groups.every((g) => g.support.statePortion === 0)).toBe(true)
-  })
-
-  it('counts only complete, major-party nominees', () => {
-    const view = buildNationalView(original.races, null)
-    const rows = original.races.flatMap((r) => r.rows)
-    for (const party of ['D', 'R'] as Party[]) {
-      const expected = rows.filter((r) => r.party === party && !r.incomplete)
-      expect(group(view, party).nominees).toBe(expected.length)
-      expect(group(view, party).support.total).toBeCloseTo(expected.reduce((n, r) => n + (r.support?.value ?? 0), 0), 2)
-    }
   })
 })

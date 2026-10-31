@@ -18,3 +18,7 @@ export function formatMoneyFull(value: number): string {
 export function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' }) + ' UTC'
 }
+
+export function formatMonthDay(iso: string): string {
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
+}

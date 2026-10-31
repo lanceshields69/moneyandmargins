@@ -1,0 +1,320 @@
+{
+ "race": {
+  "id": "NE-2026",
+  "state": "NE",
+  "raceName": "Nebraska Senate 2026",
+  "isSpecial": false,
+  "incumbentName": null,
+  "incumbentParty": null,
+  "sourceUrl": "https://en.wikipedia.org/w/index.php?title=2026_United_States_Senate_election_in_Nebraska&oldid=1382872137",
+  "sourceTier": "secondary_wikipedia",
+  "retrievedAt": "2026-10-30",
+  "note": "Democratic primary winner Cindy Burbank withdrew; a lawsuit to force a replacement nominee was dismissed, so there is no Democratic nominee. Dan Osborn (independent) is the main challenger. Mike Marvin withdrew/endorsed Osborn but remains printed on the ballot per source."
+ },
+ "candidates": [
+  {
+   "id": "NE-2026--PETE-RICKETTS",
+   "raceId": "NE-2026",
+   "name": "Pete Ricketts",
+   "party": "R",
+   "fecIds": [
+    "S6NE00129"
+   ],
+   "fecMatches": [
+    {
+     "id": "S6NE00129",
+     "fecName": "RICKETTS, PETE",
+     "fecParty": "REP",
+     "cycles": [
+      2006,
+      2008,
+      2010,
+      2012,
+      2024,
+      2026
+     ],
+     "method": "2a-name-match"
+    }
+   ]
+  },
+  {
+   "id": "NE-2026--DAN-OSBORN",
+   "raceId": "NE-2026",
+   "name": "Dan Osborn",
+   "party": "I",
+   "fecIds": [
+    "S4NE00207"
+   ],
+   "provisional": true,
+   "provisionalReason": "Main challenger to Ricketts, competitive polling.",
+   "fecMatches": [
+    {
+     "id": "S4NE00207",
+     "fecName": "OSBORN, DAN",
+     "fecParty": "IND",
+     "cycles": [
+      2024,
+      2026
+     ],
+     "method": "2a-name-match"
+    }
+   ]
+  },
+  {
+   "id": "NE-2026--CHUCK-CONBOY",
+   "raceId": "NE-2026",
+   "name": "Chuck Conboy",
+   "party": "I",
+   "fecIds": [
+    "S6NE00202"
+   ],
+   "provisional": true,
+   "fecMatches": [
+    {
+     "id": "S6NE00202",
+     "fecName": "CONBOY, CHARLES",
+     "fecParty": "OTH",
+     "cycles": [
+      2026
+     ],
+     "method": "fec-name-search"
+    }
+   ]
+  },
+  {
+   "id": "NE-2026--ROBIN-RICHARDS",
+   "raceId": "NE-2026",
+   "name": "Robin Richards",
+   "party": "I",
+   "fecIds": [
+    "S6NE00210"
+   ],
+   "provisional": true,
+   "fecMatches": [
+    {
+     "id": "S6NE00210",
+     "fecName": "RICHARDS, ROBIN MRS.",
+     "fecParty": "OTH",
+     "cycles": [
+      2026
+     ],
+     "method": "2a-name-match"
+    }
+   ]
+  },
+  {
+   "id": "NE-2026--MIKE-MARVIN",
+   "raceId": "NE-2026",
+   "name": "Mike Marvin",
+   "party": "I",
+   "fecIds": [
+    "S6NE00152"
+   ],
+   "provisional": true,
+   "provisionalReason": "Withdrew/endorsed Osborn but remains on ballot per source.",
+   "fecMatches": [
+    {
+     "id": "S6NE00152",
+     "fecName": "MARVIN, MIKE",
+     "fecParty": "OTH",
+     "cycles": [
+      2026
+     ],
+     "method": "2a-name-match"
+    }
+   ]
+  }
+ ],
+ "totals": [
+  {
+   "candidateId": "NE-2026--PETE-RICKETTS",
+   "status": "queried_with_rows",
+   "fecIds": [
+    "S6NE00129"
+   ],
+   "support": {
+    "value": 783915.22,
+    "sourceUrl": "https://www.fec.gov/data/candidate/S6NE00129/?tab=independent-expenditures&cycle=2026&election_full=false",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "oppose": {
+    "value": 431.09,
+    "sourceUrl": "https://www.fec.gov/data/candidate/S6NE00129/?tab=independent-expenditures&cycle=2026&election_full=false",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "topSupportCommittees": [
+    {
+     "id": "C00915181",
+     "name": "FELLOWSHIP PAC",
+     "fecUrl": "https://www.fec.gov/data/committee/C00915181/",
+     "amount": 350000
+    },
+    {
+     "id": "C00928390",
+     "name": "DEFENDING OUR VALUES PAC",
+     "fecUrl": "https://www.fec.gov/data/committee/C00928390/",
+     "amount": 262625
+    },
+    {
+     "id": "C00571703",
+     "name": "SLF PAC",
+     "fecUrl": "https://www.fec.gov/data/committee/C00571703/",
+     "amount": 156666.67
+    },
+    {
+     "id": "C00432260",
+     "name": "CLUB FOR GROWTH PAC",
+     "fecUrl": "https://www.fec.gov/data/committee/C00432260/",
+     "amount": 14623.55
+    }
+   ],
+   "topOpposeCommittees": [
+    {
+     "id": "C00909465",
+     "name": "INDIGO PAC",
+     "fecUrl": "https://www.fec.gov/data/committee/C00909465/",
+     "amount": 431.09
+    }
+   ]
+  },
+  {
+   "candidateId": "NE-2026--DAN-OSBORN",
+   "status": "queried_with_rows",
+   "fecIds": [
+    "S4NE00207"
+   ],
+   "support": {
+    "value": 70803.1,
+    "sourceUrl": "https://www.fec.gov/data/candidate/S4NE00207/?tab=independent-expenditures&cycle=2026&election_full=false",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "oppose": {
+    "value": 109999.97,
+    "sourceUrl": "https://www.fec.gov/data/candidate/S4NE00207/?tab=independent-expenditures&cycle=2026&election_full=false",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "topSupportCommittees": [
+    {
+     "id": "C00580068",
+     "name": "PROGRESSIVE TURNOUT PROJECT",
+     "fecUrl": "https://www.fec.gov/data/committee/C00580068/",
+     "amount": 47997.34
+    },
+    {
+     "id": "C90020231",
+     "name": "THOMAS PAINE SOCIETY L.L.C.",
+     "fecUrl": "https://www.fec.gov/data/committee/C90020231/",
+     "amount": 21060
+    },
+    {
+     "id": "C00722884",
+     "name": "LGBTQ CONNECTION PAC",
+     "fecUrl": "https://www.fec.gov/data/committee/C00722884/",
+     "amount": 1307.15
+    },
+    {
+     "id": "C00909994",
+     "name": "FIELD TEAM 6, INC.",
+     "fecUrl": "https://www.fec.gov/data/committee/C00909994/",
+     "amount": 316.11
+    },
+    {
+     "id": "C00776419",
+     "name": "THE PEOPLE UNITED PAC",
+     "fecUrl": "https://www.fec.gov/data/committee/C00776419/",
+     "amount": 112.5
+    }
+   ],
+   "topOpposeCommittees": [
+    {
+     "id": "C00571703",
+     "name": "SLF PAC",
+     "fecUrl": "https://www.fec.gov/data/committee/C00571703/",
+     "amount": 100000
+    },
+    {
+     "id": "C00747121",
+     "name": "RED SENATE",
+     "fecUrl": "https://www.fec.gov/data/committee/C00747121/",
+     "amount": 9999.97
+    }
+   ]
+  },
+  {
+   "candidateId": "NE-2026--CHUCK-CONBOY",
+   "status": "queried_zero_rows",
+   "fecIds": [
+    "S6NE00202"
+   ],
+   "support": {
+    "value": 0,
+    "sourceUrl": "https://www.fec.gov/data/candidate/S6NE00202/?tab=independent-expenditures&cycle=2026&election_full=false",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "oppose": {
+    "value": 0,
+    "sourceUrl": "https://www.fec.gov/data/candidate/S6NE00202/?tab=independent-expenditures&cycle=2026&election_full=false",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "topSupportCommittees": [],
+   "topOpposeCommittees": []
+  },
+  {
+   "candidateId": "NE-2026--ROBIN-RICHARDS",
+   "status": "queried_zero_rows",
+   "fecIds": [
+    "S6NE00210"
+   ],
+   "support": {
+    "value": 0,
+    "sourceUrl": "https://www.fec.gov/data/candidate/S6NE00210/?tab=independent-expenditures&cycle=2026&election_full=false",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "oppose": {
+    "value": 0,
+    "sourceUrl": "https://www.fec.gov/data/candidate/S6NE00210/?tab=independent-expenditures&cycle=2026&election_full=false",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "topSupportCommittees": [],
+   "topOpposeCommittees": []
+  },
+  {
+   "candidateId": "NE-2026--MIKE-MARVIN",
+   "status": "queried_with_rows",
+   "fecIds": [
+    "S6NE00152"
+   ],
+   "support": {
+    "value": 73445,
+    "sourceUrl": "https://www.fec.gov/data/candidate/S6NE00152/?tab=independent-expenditures&cycle=2026&election_full=false",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "oppose": {
+    "value": 0,
+    "sourceUrl": "https://www.fec.gov/data/candidate/S6NE00152/?tab=independent-expenditures&cycle=2026&election_full=false",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "topSupportCommittees": [
+    {
+     "id": "C00620021",
+     "name": "COMMON DEFENSE ACTION FUND",
+     "fecUrl": "https://www.fec.gov/data/committee/C00620021/",
+     "amount": 73445
+    }
+   ],
+   "topOpposeCommittees": []
+  }
+ ],
+ "forecast": {
+  "state": "NE",
+  "pDemWin": null,
+  "basis": null,
+  "nPolls": null,
+  "candidates": null,
+  "noForecast": {
+   "reason": "independent_contender",
+   "actualMatchup": "Dan Osborn (I) vs. Pete Ricketts (R)"
+  },
+  "asOf": null
+ }
+}

@@ -1,0 +1,261 @@
+{
+ "race": {
+  "id": "TX-2026",
+  "state": "TX",
+  "raceName": "Texas Senate 2026",
+  "isSpecial": false,
+  "incumbentName": null,
+  "incumbentParty": null,
+  "sourceUrl": "https://en.wikipedia.org/w/index.php?title=2026_United_States_Senate_election_in_Texas&oldid=1382898635",
+  "sourceTier": "secondary_wikipedia",
+  "retrievedAt": "2026-10-30",
+  "note": "Incumbent John Cornyn lost the Republican primary to Ken Paxton — a primary-level event, not a general-election replacement."
+ },
+ "candidates": [
+  {
+   "id": "TX-2026--KEN-PAXTON",
+   "raceId": "TX-2026",
+   "name": "Ken Paxton",
+   "party": "R",
+   "fecIds": [
+    "S6TX00388"
+   ],
+   "fecMatches": [
+    {
+     "id": "S6TX00388",
+     "fecName": "PAXTON, WARREN KENNETH JR.",
+     "fecParty": "REP",
+     "cycles": [
+      2026
+     ],
+     "method": "fec-name-search"
+    }
+   ]
+  },
+  {
+   "id": "TX-2026--JAMES-TALARICO",
+   "raceId": "TX-2026",
+   "name": "James Talarico",
+   "party": "D",
+   "fecIds": [
+    "S6TX00479"
+   ],
+   "fecMatches": [
+    {
+     "id": "S6TX00479",
+     "fecName": "TALARICO, JAMES",
+     "fecParty": "DEM",
+     "cycles": [
+      2026
+     ],
+     "method": "2a-name-match"
+    }
+   ]
+  },
+  {
+   "id": "TX-2026--TED-BROWN",
+   "raceId": "TX-2026",
+   "name": "Ted Brown",
+   "party": "I",
+   "fecIds": [
+    "S4TX00888"
+   ],
+   "provisional": true,
+   "fecMatches": [
+    {
+     "id": "S4TX00888",
+     "fecName": "BROWN, THEODORE E. JR.",
+     "fecParty": "LIB",
+     "cycles": [
+      2024,
+      2026
+     ],
+     "method": "2a-name-match"
+    }
+   ]
+  }
+ ],
+ "totals": [
+  {
+   "candidateId": "TX-2026--KEN-PAXTON",
+   "status": "queried_with_rows",
+   "fecIds": [
+    "S6TX00388"
+   ],
+   "support": {
+    "value": 1427091.9,
+    "sourceUrl": "https://www.fec.gov/data/candidate/S6TX00388/?tab=independent-expenditures&cycle=2026&election_full=false",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "oppose": {
+    "value": 26931095.8,
+    "sourceUrl": "https://www.fec.gov/data/candidate/S6TX00388/?tab=independent-expenditures&cycle=2026&election_full=false",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "topSupportCommittees": [
+    {
+     "id": "C00901223",
+     "name": "LONE STAR LIBERTY PAC",
+     "fecUrl": "https://www.fec.gov/data/committee/C00901223/",
+     "amount": 770070.83
+    },
+    {
+     "id": "C00915181",
+     "name": "FELLOWSHIP PAC",
+     "fecUrl": "https://www.fec.gov/data/committee/C00915181/",
+     "amount": 500000
+    },
+    {
+     "id": "C00448696",
+     "name": "SENATE CONSERVATIVES FUND",
+     "fecUrl": "https://www.fec.gov/data/committee/C00448696/",
+     "amount": 80516.13
+    },
+    {
+     "id": "C00524181",
+     "name": "SENATE CONSERVATIVES ACTION",
+     "fecUrl": "https://www.fec.gov/data/committee/C00524181/",
+     "amount": 48305.9
+    },
+    {
+     "id": "C00432260",
+     "name": "CLUB FOR GROWTH PAC",
+     "fecUrl": "https://www.fec.gov/data/committee/C00432260/",
+     "amount": 15545.78
+    }
+   ],
+   "topOpposeCommittees": [
+    {
+     "id": "C00542217",
+     "name": "TEXANS FOR A CONSERVATIVE MAJORITY",
+     "fecUrl": "https://www.fec.gov/data/committee/C00542217/",
+     "amount": 24960684.38
+    },
+    {
+     "id": "C00948695",
+     "name": "TEXANS DEMANDING ACCOUNTABILITY",
+     "fecUrl": "https://www.fec.gov/data/committee/C00948695/",
+     "amount": 1853480.91
+    },
+    {
+     "id": "C00918268",
+     "name": "LONE STAR RISING PAC",
+     "fecUrl": "https://www.fec.gov/data/committee/C00918268/",
+     "amount": 90909.71
+    },
+    {
+     "id": "C00754069",
+     "name": "PAF",
+     "fecUrl": "https://www.fec.gov/data/committee/C00754069/",
+     "amount": 26020.8
+    }
+   ]
+  },
+  {
+   "candidateId": "TX-2026--JAMES-TALARICO",
+   "status": "queried_with_rows",
+   "fecIds": [
+    "S6TX00479"
+   ],
+   "support": {
+    "value": 4397036.35,
+    "sourceUrl": "https://www.fec.gov/data/candidate/S6TX00479/?tab=independent-expenditures&cycle=2026&election_full=false",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "oppose": {
+    "value": 1281079.29,
+    "sourceUrl": "https://www.fec.gov/data/candidate/S6TX00479/?tab=independent-expenditures&cycle=2026&election_full=false",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "topSupportCommittees": [
+    {
+     "id": "C00918268",
+     "name": "LONE STAR RISING PAC",
+     "fecUrl": "https://www.fec.gov/data/committee/C00918268/",
+     "amount": 3980261.86
+    },
+    {
+     "id": "C00909994",
+     "name": "FIELD TEAM 6, INC.",
+     "fecUrl": "https://www.fec.gov/data/committee/C00909994/",
+     "amount": 102470.35
+    },
+    {
+     "id": "C00580068",
+     "name": "PROGRESSIVE TURNOUT PROJECT",
+     "fecUrl": "https://www.fec.gov/data/committee/C00580068/",
+     "amount": 94314.39
+    },
+    {
+     "id": "C00562777",
+     "name": "LATINO VICTORY FUND",
+     "fecUrl": "https://www.fec.gov/data/committee/C00562777/",
+     "amount": 82500
+    },
+    {
+     "id": "C00835041",
+     "name": "FORWARD BLUE",
+     "fecUrl": "https://www.fec.gov/data/committee/C00835041/",
+     "amount": 45559.38
+    }
+   ],
+   "topOpposeCommittees": [
+    {
+     "id": "C99002396",
+     "name": "AMERICAN POLITICAL ACTION COMMITTEE",
+     "fecUrl": "https://www.fec.gov/data/committee/C99002396/",
+     "amount": 533069
+    },
+    {
+     "id": "C00930099",
+     "name": "FORWARD TEXAS",
+     "fecUrl": "https://www.fec.gov/data/committee/C00930099/",
+     "amount": 505023.93
+    },
+    {
+     "id": "C00901223",
+     "name": "LONE STAR LIBERTY PAC",
+     "fecUrl": "https://www.fec.gov/data/committee/C00901223/",
+     "amount": 200000
+    },
+    {
+     "id": "C00844613",
+     "name": "WIN IT BACK PAC",
+     "fecUrl": "https://www.fec.gov/data/committee/C00844613/",
+     "amount": 42986.36
+    }
+   ]
+  },
+  {
+   "candidateId": "TX-2026--TED-BROWN",
+   "status": "queried_zero_rows",
+   "fecIds": [
+    "S4TX00888"
+   ],
+   "support": {
+    "value": 0,
+    "sourceUrl": "https://www.fec.gov/data/candidate/S4TX00888/?tab=independent-expenditures&cycle=2026&election_full=false",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "oppose": {
+    "value": 0,
+    "sourceUrl": "https://www.fec.gov/data/candidate/S4TX00888/?tab=independent-expenditures&cycle=2026&election_full=false",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "topSupportCommittees": [],
+   "topOpposeCommittees": []
+  }
+ ],
+ "forecast": {
+  "state": "TX",
+  "pDemWin": null,
+  "basis": null,
+  "nPolls": null,
+  "candidates": null,
+  "noForecast": {
+   "reason": "candidate_left_ballot",
+   "actualMatchup": "Matchup no longer exists"
+  },
+  "asOf": "2026-10-31"
+ }
+}

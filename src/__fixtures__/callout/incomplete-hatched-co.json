@@ -1,0 +1,283 @@
+{
+ "race": {
+  "id": "CO-2026",
+  "state": "CO",
+  "raceName": "Colorado Senate 2026",
+  "isSpecial": false,
+  "incumbentName": null,
+  "incumbentParty": null,
+  "sourceUrl": "https://en.wikipedia.org/w/index.php?title=2026_United_States_Senate_election_in_Colorado&oldid=1382698367",
+  "sourceTier": "secondary_wikipedia",
+  "retrievedAt": "2026-10-30",
+  "note": "Bob Chew (Forward Party) reported ~$3.6M raised, far outpacing minor rivals — included as provisional pending the real independent-expenditure check in prompt 2b, but worth separate confirmation of his seriousness as a contender."
+ },
+ "candidates": [
+  {
+   "id": "CO-2026--JOHN-HICKENLOOPER",
+   "raceId": "CO-2026",
+   "name": "John Hickenlooper",
+   "party": "D",
+   "fecIds": [
+    "S0CO00575"
+   ],
+   "fecMatches": [
+    {
+     "id": "S0CO00575",
+     "fecName": "HICKENLOOPER, JOHN W.",
+     "fecParty": "DEM",
+     "cycles": [
+      2020,
+      2022,
+      2024,
+      2026
+     ],
+     "method": "2a-name-match"
+    }
+   ]
+  },
+  {
+   "id": "CO-2026--MARK-BAISLEY",
+   "raceId": "CO-2026",
+   "name": "Mark Baisley",
+   "party": "R",
+   "fecIds": [
+    "S6CO00507"
+   ],
+   "fecMatches": [
+    {
+     "id": "S6CO00507",
+     "fecName": "BAISLEY, MARK",
+     "fecParty": "REP",
+     "cycles": [
+      2026
+     ],
+     "method": "2a-name-match"
+    }
+   ]
+  },
+  {
+   "id": "CO-2026--BOB-CHEW",
+   "raceId": "CO-2026",
+   "name": "Bob Chew",
+   "party": "I",
+   "fecIds": [
+    "S6CO00549",
+    "S6CO00556"
+   ],
+   "provisional": true,
+   "provisionalReason": "Well-funded minor-party candidate (~$3.6M raised).",
+   "fecMatches": [
+    {
+     "id": "S6CO00549",
+     "fecName": "CHEW, ROBERT",
+     "fecParty": "FWD",
+     "cycles": [
+      2026
+     ],
+     "method": "2a-name-match"
+    },
+    {
+     "id": "S6CO00556",
+     "fecName": "CHEW, BOB",
+     "fecParty": "OTH",
+     "cycles": [
+      2026
+     ],
+     "method": "2a-name-match"
+    }
+   ],
+   "fecMatchNote": "matched 2 FEC candidate IDs — not merged, verify same person"
+  },
+  {
+   "id": "CO-2026--BLAKE-HUBER",
+   "raceId": "CO-2026",
+   "name": "Blake Huber",
+   "party": "I",
+   "fecIds": [],
+   "provisional": true,
+   "fecMatches": [],
+   "fecMatchNote": "no FEC filing found"
+  },
+  {
+   "id": "CO-2026--ADAM-WITHROW",
+   "raceId": "CO-2026",
+   "name": "Adam Withrow",
+   "party": "I",
+   "fecIds": [
+    "S6CO00564"
+   ],
+   "provisional": true,
+   "fecMatches": [
+    {
+     "id": "S6CO00564",
+     "fecName": "WITHROW, ADAM",
+     "fecParty": "UNI",
+     "cycles": [
+      2026
+     ],
+     "method": "2a-name-match"
+    }
+   ]
+  },
+  {
+   "id": "CO-2026--CHRISTOPHER-BAUM",
+   "raceId": "CO-2026",
+   "name": "Christopher Baum",
+   "party": "I",
+   "fecIds": [],
+   "provisional": true,
+   "fecMatches": [],
+   "fecMatchNote": "no FEC filing found"
+  }
+ ],
+ "totals": [
+  {
+   "candidateId": "CO-2026--JOHN-HICKENLOOPER",
+   "status": "queried_with_rows",
+   "fecIds": [
+    "S0CO00575"
+   ],
+   "support": {
+    "value": 510198.01,
+    "sourceUrl": "https://www.fec.gov/data/candidate/S0CO00575/?tab=independent-expenditures&cycle=2026&election_full=false",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "oppose": {
+    "value": 0,
+    "sourceUrl": "https://www.fec.gov/data/candidate/S0CO00575/?tab=independent-expenditures&cycle=2026&election_full=false",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "topSupportCommittees": [
+    {
+     "id": "C00928259",
+     "name": "COMMON SENSE ACTION FUND",
+     "fecUrl": "https://www.fec.gov/data/committee/C00928259/",
+     "amount": 300000
+    },
+    {
+     "id": "C00952267",
+     "name": "OUR FUTURE COLORADO",
+     "fecUrl": "https://www.fec.gov/data/committee/C00952267/",
+     "amount": 195250
+    },
+    {
+     "id": "C00030718",
+     "name": "NATIONAL ASSOCIATION OF REALTORS POLITICAL ACTION COMMITTEE",
+     "fecUrl": "https://www.fec.gov/data/committee/C00030718/",
+     "amount": 14754
+    },
+    {
+     "id": "C00802389",
+     "name": "GIVEGREEN UNITED ACTION",
+     "fecUrl": "https://www.fec.gov/data/committee/C00802389/",
+     "amount": 194.01
+    }
+   ],
+   "topOpposeCommittees": []
+  },
+  {
+   "candidateId": "CO-2026--MARK-BAISLEY",
+   "status": "queried_zero_rows",
+   "fecIds": [
+    "S6CO00507"
+   ],
+   "support": {
+    "value": 0,
+    "sourceUrl": "https://www.fec.gov/data/candidate/S6CO00507/?tab=independent-expenditures&cycle=2026&election_full=false",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "oppose": {
+    "value": 0,
+    "sourceUrl": "https://www.fec.gov/data/candidate/S6CO00507/?tab=independent-expenditures&cycle=2026&election_full=false",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "topSupportCommittees": [],
+   "topOpposeCommittees": []
+  },
+  {
+   "candidateId": "CO-2026--BOB-CHEW",
+   "status": "queried_zero_rows",
+   "fecIds": [
+    "S6CO00549",
+    "S6CO00556"
+   ],
+   "support": {
+    "value": 0,
+    "sourceUrl": "https://www.fec.gov/data/candidate/S6CO00549/?tab=independent-expenditures&cycle=2026&election_full=false",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "oppose": {
+    "value": 0,
+    "sourceUrl": "https://www.fec.gov/data/candidate/S6CO00549/?tab=independent-expenditures&cycle=2026&election_full=false",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "topSupportCommittees": [],
+   "topOpposeCommittees": []
+  },
+  {
+   "candidateId": "CO-2026--BLAKE-HUBER",
+   "status": "unmatched",
+   "fecIds": [],
+   "support": {
+    "value": null,
+    "sourceUrl": "https://www.fec.gov/data/elections/senate/CO/2026/",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "oppose": {
+    "value": null,
+    "sourceUrl": "https://www.fec.gov/data/elections/senate/CO/2026/",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "topSupportCommittees": [],
+   "topOpposeCommittees": []
+  },
+  {
+   "candidateId": "CO-2026--ADAM-WITHROW",
+   "status": "queried_zero_rows",
+   "fecIds": [
+    "S6CO00564"
+   ],
+   "support": {
+    "value": 0,
+    "sourceUrl": "https://www.fec.gov/data/candidate/S6CO00564/?tab=independent-expenditures&cycle=2026&election_full=false",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "oppose": {
+    "value": 0,
+    "sourceUrl": "https://www.fec.gov/data/candidate/S6CO00564/?tab=independent-expenditures&cycle=2026&election_full=false",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "topSupportCommittees": [],
+   "topOpposeCommittees": []
+  },
+  {
+   "candidateId": "CO-2026--CHRISTOPHER-BAUM",
+   "status": "unmatched",
+   "fecIds": [],
+   "support": {
+    "value": null,
+    "sourceUrl": "https://www.fec.gov/data/elections/senate/CO/2026/",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "oppose": {
+    "value": null,
+    "sourceUrl": "https://www.fec.gov/data/elections/senate/CO/2026/",
+    "asOf": "2026-10-31T08:09:44.433Z"
+   },
+   "topSupportCommittees": [],
+   "topOpposeCommittees": []
+  }
+ ],
+ "forecast": {
+  "state": "CO",
+  "pDemWin": 0.9888,
+  "basis": "fundamentals",
+  "nPolls": 0,
+  "candidates": {
+   "democrat": null,
+   "republican": null
+  },
+  "noForecast": null,
+  "asOf": "2026-10-30"
+ }
+}
