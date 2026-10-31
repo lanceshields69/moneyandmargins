@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import MapCallout from './components/MapCallout'
 import PreviewBadge from './components/PreviewBadge'
 import RacePanel from './components/RacePanel'
-import { AMOUNTS_PENDING_LEAD, PANEL_PRIMARY_NOTE, PARTIAL_CALLOUT_NOTICE, SHARES_PENDING_LEAD, SHARES_PENDING_LINK } from './copy'
+import { AMOUNTS_PENDING_LEAD, CALLOUT_SPENT_NOTE, PANEL_PRIMARY_NOTE, PARTIAL_CALLOUT_NOTICE, SHARES_PENDING_LEAD, SHARES_PENDING_LINK } from './copy'
 import { allRaces, callouts } from './data'
 import verifiedMd from '../docs/methodology.md?raw'
 
@@ -34,6 +34,7 @@ describe('SHARES_VERIFIED gates the "Spent on ads" percentages', () => {
       expect(text(html)).toContain(SHARES_MESSAGE)
       expect(html).toContain('Spent on ads:')
       expect(html).not.toContain(PARTIAL_CALLOUT_NOTICE)
+      expect(html).not.toContain(CALLOUT_SPENT_NOTE)
       // only the "Predicted to win" row carries percentages
       expect(html.split('cc-value').length - 1).toBe(c.winFlag ? 0 : c.sides.length)
       seen.add(row.split('Predicted')[0])
@@ -45,7 +46,8 @@ describe('SHARES_VERIFIED gates the "Spent on ads" percentages', () => {
     const state = [...callouts].find(([, c]) => !c.adFlag && !c.winFlag)![0]
     const html = callout(state, true)
     expect(text(html)).not.toContain(SHARES_MESSAGE)
-    expect(html).toContain(PARTIAL_CALLOUT_NOTICE)
+    expect(html).toContain(CALLOUT_SPENT_NOTE)
+    expect(html).not.toContain(PARTIAL_CALLOUT_NOTICE)
     expect(html.split('cc-value').length - 1).toBe(callouts.get(state)!.sides.length * 2)
   })
 })
@@ -100,7 +102,7 @@ describe('each flag combination on the whole page', () => {
 
   async function renderPage(flags: { data: boolean; shares: boolean }, hash = '', preview = false) {
     vi.resetModules()
-    vi.doMock('./config', () => ({ CONTACT_EMAIL: 'a@b.test', DATA_VERIFIED: flags.data, SHARES_VERIFIED: flags.shares, GLOBAL_PARTIAL_NOTICE: true, IS_PREVIEW_BUILD: preview }))
+    vi.doMock('./config', () => ({ CONTACT_EMAIL: 'a@b.test', DATA_VERIFIED: flags.data, SHARES_VERIFIED: flags.shares, GLOBAL_PARTIAL_NOTICE: false, IS_PREVIEW_BUILD: preview }))
     window.history.replaceState(null, '', `/${hash}`)
     const { default: App } = await import('./App')
     const root = createRoot(host)
@@ -138,6 +140,8 @@ describe('each flag combination on the whole page', () => {
       const body = dialog.textContent ?? ''
       expect(body.includes('Contrast ads') || (page.ownerDocument.body.textContent ?? '').includes('count some spending twice')).toBe(flags.data)
       expect(body.includes('This version uses the FEC')).toBe(!flags.data)
+      expect(body).not.toMatch(/\{\{|\}\}/)
+      expect(body.toLowerCase()).not.toContain('hidden')
       unmount()
     })
   }
@@ -147,7 +151,7 @@ describe('each flag combination on the whole page', () => {
     const body = page.querySelector('[role="dialog"]')?.textContent ?? ''
     expect(body).toContain('For 6 committees')
     expect(body).toContain('$31,761,417')
-    expect(body).toContain("which can count toward the other side's share. The shares row stays hidden until that is verified.")
+    expect(body).toContain("which can count toward the other side's share. The shares row is not shown until that is verified.")
     expect(body).toContain("A contrast ad can be reported on two lines, so a state's total can count some spending twice.")
     expect(body).not.toContain('not tied to a candidate total') // no figure, so the sentence is dropped
     expect(body).not.toMatch(/\{\{|\}\}/)
@@ -186,7 +190,7 @@ describe('the Preview badge', () => {
     window.matchMedia = ((q: string) => ({ matches: false, media: q, addEventListener() {}, removeEventListener() {}, addListener() {}, removeListener() {}, onchange: null, dispatchEvent: () => false })) as typeof window.matchMedia
     for (const preview of [true, false]) {
       vi.resetModules()
-      vi.doMock('./config', () => ({ CONTACT_EMAIL: 'a@b.test', DATA_VERIFIED: true, SHARES_VERIFIED: true, GLOBAL_PARTIAL_NOTICE: true, IS_PREVIEW_BUILD: preview }))
+      vi.doMock('./config', () => ({ CONTACT_EMAIL: 'a@b.test', DATA_VERIFIED: true, SHARES_VERIFIED: true, GLOBAL_PARTIAL_NOTICE: false, IS_PREVIEW_BUILD: preview }))
       const host = document.createElement('div')
       document.body.appendChild(host)
       const { default: App } = await import('./App')

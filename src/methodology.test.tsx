@@ -8,9 +8,9 @@ import MapCallout from './components/MapCallout'
 import MethodologyModal from './components/MethodologyModal'
 import RacePanel from './components/RacePanel'
 import { DATA_VERIFIED, GLOBAL_PARTIAL_NOTICE, IS_PREVIEW_BUILD, SHARES_VERIFIED } from './config'
-import { DATA_CHECK_NOTICE, LIMITS_SENTENCE, LIMITS_VERIFIED_SENTENCE, PARTIAL_CALLOUT_NOTICE } from './copy'
+import { CALLOUT_SPENT_NOTE, DATA_CHECK_NOTICE, LIMITS_SENTENCE, LIMITS_VERIFIED_SENTENCE, PARTIAL_CALLOUT_NOTICE } from './copy'
 import { allRaces, callouts } from './data'
-import { fillMethodology, isHowHash, methodologySource, parseMethodology, splitMethodology, type MethodologyValues } from './methodology'
+import { doubleCountSentence, fillMethodology, incompleteRacesSentence, isHowHash, methodologySource, parseMethodology, splitMethodology, type MethodologyValues } from './methodology'
 
 ;(globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true
 
@@ -177,14 +177,24 @@ describe('dialog', () => {
 describe('partial-data hotfix text is identical for every race and party', () => {
   window.matchMedia = ((query: string) => ({ matches: false, media: query, addEventListener: () => {}, removeEventListener: () => {}, addListener: () => {}, removeListener: () => {}, onchange: null, dispatchEvent: () => false })) as typeof window.matchMedia
 
-  it('shows the callout line, with the Spent on ads row, under every race the callout covers', () => {
-    expect(GLOBAL_PARTIAL_NOTICE).toBe(true)
+  it('shows the primary-season and contrast-ad note under the Spent on ads row in every race, and not the partial-data line', () => {
+    expect(GLOBAL_PARTIAL_NOTICE).toBe(false)
     expect(callouts.size).toBe(allRaces.races.length)
     for (const [state, callout] of callouts) {
       const html = renderToStaticMarkup(<MapCallout callout={callout} stateName={state} anchor={{ x: 0.5, y: 0.5 }} isDefault={false} onClose={() => {}} sharesVerified />)
-      expect(html.split(PARTIAL_CALLOUT_NOTICE).length - 1).toBe(1)
+      expect(html.split(CALLOUT_SPENT_NOTE).length - 1).toBe(1)
+      expect(html).not.toContain(PARTIAL_CALLOUT_NOTICE)
       expect(html).toContain('Spent on ads')
+      // the note sits under the Spent on ads row, before the Predicted to win row is followed by it
+      expect(html.indexOf('Spent on ads')).toBeLessThan(html.indexOf(CALLOUT_SPENT_NOTE))
     }
+  })
+
+  it('brings the partial-data line back when GLOBAL_PARTIAL_NOTICE is on', () => {
+    const [state, callout] = [...callouts][0]
+    const html = renderToStaticMarkup(<MapCallout callout={callout} stateName={state} anchor={{ x: 0.5, y: 0.5 }} isDefault={false} onClose={() => {}} sharesVerified globalPartialNotice />)
+    expect(html).toContain(PARTIAL_CALLOUT_NOTICE)
+    expect(html).not.toContain(CALLOUT_SPENT_NOTE)
   })
 
   it('shows the same limits sentence in the panel for every race, whichever way the data flag is set', () => {
@@ -198,8 +208,39 @@ describe('partial-data hotfix text is identical for every race and party', () =>
   })
 
   it('uses the exact wording asked for', () => {
+    expect(CALLOUT_SPENT_NOTE).toBe('Includes primary-season spending as labeled by the filer. Contrast ads may be counted twice.')
     expect(PARTIAL_CALLOUT_NOTICE).toBe('Partial data: recent filings missing. Shares may change.')
     expect(DATA_CHECK_NOTICE).toBe('Data check in progress: totals for some races are being corrected.')
     expect(LIMITS_SENTENCE).toBe('24- and 48-hour reports are not included, and most recent spending is filed that way.')
+  })
+})
+
+describe('double-count and incomplete-races sentences', () => {
+  const md = 'Gaps.\n\n- **Contrast ads.** A contrast ad can be reported on two lines. {{double_count_sentence}}\n- **Left out.** {{incomplete_races_sentence}}\n'
+  const base = { updated: '2026-10-31T16:09:12.954Z', forecastFrozen: '2026-10-31T15:38:29Z', latestFiling: null, unattributedTotal: null, approxCommitteeCount: null, approxTotal: null, primarySentence: null }
+  const verification = { runs: [{ checks: [{ id: 'double_count', summary: '10 race(s) over 2%; overall 3.42%' }] }] }
+
+  it('builds the sentences from the verification run and the pipeline data', () => {
+    expect(doubleCountSentence(verification)).toBe('Nationally this is at most about 3.4%.')
+    expect(incompleteRacesSentence(['South Carolina', 'Colorado', 'Michigan', 'Nebraska', 'Oklahoma'])).toBe(
+      'Races with incomplete data (Colorado, Michigan, Nebraska, Oklahoma, South Carolina) are left out of the national card.',
+    )
+  })
+
+  it('fills both into the text with no raw braces', () => {
+    const text = fillMethodology(md, { ...base, doubleCountSentence: doubleCountSentence(verification), incompleteRacesSentence: incompleteRacesSentence(['Colorado']) })
+    expect(text).toContain('Nationally this is at most about 3.4%.')
+    expect(text).toContain('Races with incomplete data (Colorado) are left out of the national card.')
+    expect(text).not.toMatch(/\{\{|\}\}/)
+  })
+
+  it('drops either sentence when its figure is missing, leaving no braces or dangling space', () => {
+    expect(doubleCountSentence(null)).toBeNull()
+    expect(doubleCountSentence({ runs: [{ checks: [] }] })).toBeNull()
+    expect(incompleteRacesSentence([])).toBeNull()
+    const text = fillMethodology(md, { ...base, doubleCountSentence: null, incompleteRacesSentence: null })
+    expect(text).not.toMatch(/\{\{|\}\}/)
+    expect(text).toContain('A contrast ad can be reported on two lines.\n')
+    expect(text).not.toContain('Nationally')
   })
 })

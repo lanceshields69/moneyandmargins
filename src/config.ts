@@ -12,8 +12,9 @@ export const DATA_VERIFIED: boolean = __DATA_VERIFIED__
 // "Spent on ads" row says shares are being verified and links to the methodology.
 export const SHARES_VERIFIED: boolean = __SHARES_VERIFIED__
 
-// A visible line under the callout's rows: totals do not yet include 24- and 48-hour reports.
-export const GLOBAL_PARTIAL_NOTICE = true
+// When true, the callout shows the partial-data line under its rows. Off: it shows the primary-season and
+// contrast-ad note instead.
+export const GLOBAL_PARTIAL_NOTICE = false
 
 // The badge that prints the compiled flags shows on Vercel Preview builds only.
 export const IS_PREVIEW_BUILD: boolean = __VERCEL_ENV__ === 'preview'

@@ -20,6 +20,10 @@ export interface MethodologyValues {
   approxCommitteeCount: number | null
   approxTotal: number | null
   primarySentence: string | null
+  /** From verification.json, e.g. "Nationally this is at most about 3.4%."; null when there is no figure. */
+  doubleCountSentence?: string | null
+  /** From the pipeline data, e.g. "Races with incomplete data (Colorado, ...) are left out of the national card."; null when none. */
+  incompleteRacesSentence?: string | null
 }
 
 export const HOW_HASH = '#how-it-works'
@@ -46,6 +50,8 @@ export function fillMethodology(md: string, v: MethodologyValues): string {
   set('approx_committee_count', v.approxCommitteeCount === null ? null : String(v.approxCommitteeCount))
   set('approx_total', v.approxTotal === null ? null : money.format(v.approxTotal))
   set('primary_sentence', v.primarySentence)
+  set('double_count_sentence', v.doubleCountSentence ?? '')
+  set('incomplete_races_sentence', v.incompleteRacesSentence ?? '')
   set('unattributed_sentence', v.unattributedTotal !== null ? `Expenditures not tied to a candidate total ${money.format(v.unattributedTotal)}.` : '')
 
   return text
@@ -106,4 +112,17 @@ export function splitMethodology(blocks: MethodBlock[]): MethodologyParts {
     short: at === -1 ? rest : rest.slice(0, at),
     full: at === -1 ? [] : rest.slice(at + 1),
   }
+}
+
+/** The double-count figure from the latest verification run: "Nationally this is at most about 3.4%." */
+export function doubleCountSentence(verification: { runs: { checks: { id: string; summary: string }[] }[] } | null): string | null {
+  const latest = verification?.runs.at(-1)?.checks.find((c) => c.id === 'double_count')
+  const pct = latest ? /overall ([\d.]+)%/.exec(latest.summary)?.[1] : undefined
+  return pct === undefined ? null : `Nationally this is at most about ${Number(pct).toFixed(1)}%.`
+}
+
+/** Races left out of the national card for incomplete data, by state name. */
+export function incompleteRacesSentence(stateNames: string[]): string | null {
+  const names = [...stateNames].sort((a, b) => a.localeCompare(b))
+  return names.length === 0 ? null : `Races with incomplete data (${names.join(', ')}) are left out of the national card.`
 }

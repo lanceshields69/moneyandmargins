@@ -1,5 +1,5 @@
 import { GLOBAL_PARTIAL_NOTICE, SHARES_VERIFIED } from '../config'
-import { PARTIAL_CALLOUT_NOTICE, SHARES_PENDING_LEAD, SHARES_PENDING_LINK } from '../copy'
+import { CALLOUT_SPENT_NOTE, PARTIAL_CALLOUT_NOTICE, SHARES_PENDING_LEAD, SHARES_PENDING_LINK } from '../copy'
 import { useEffect, useState, type ReactNode } from 'react'
 import leaderUrl from '../assets/callout-leader.svg'
 import type { Callout, CalloutSide } from '../computeCallout'
@@ -87,12 +87,14 @@ interface MapCalloutProps {
   sharesVerified?: boolean
   /** Opens the methodology modal from the "how this is counted" link. */
   onOpenHow?: () => void
+  /** Shows the partial-data line instead of the primary-season note. Defaults to the GLOBAL_PARTIAL_NOTICE flag. */
+  globalPartialNotice?: boolean
   /** The race detail panel, shown inside the bottom sheet when it is expanded (phones only). */
   detail?: ReactNode
   onClose: () => void
 }
 
-export default function MapCallout({ callout, stateName, anchor, isDefault, detail, onClose, sharesVerified = SHARES_VERIFIED, onOpenHow }: MapCalloutProps) {
+export default function MapCallout({ callout, stateName, anchor, isDefault, detail, onClose, sharesVerified = SHARES_VERIFIED, onOpenHow, globalPartialNotice = GLOBAL_PARTIAL_NOTICE }: MapCalloutProps) {
   const sheet = usePhone()
   const [expanded, setExpanded] = useState(false)
 
@@ -126,7 +128,7 @@ export default function MapCallout({ callout, stateName, anchor, isDefault, deta
           {note}
         </p>
       ))}
-      {sharesVerified && GLOBAL_PARTIAL_NOTICE && <p className="cc-partial">{PARTIAL_CALLOUT_NOTICE}</p>}
+      {sharesVerified && <p className="cc-partial">{globalPartialNotice ? PARTIAL_CALLOUT_NOTICE : CALLOUT_SPENT_NOTE}</p>}
     </div>
   )
   const live = <p className="sr-only" aria-live="polite">{summary(stateName, callout, sharesVerified)}</p>

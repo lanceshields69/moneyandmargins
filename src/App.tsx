@@ -18,7 +18,8 @@ import corrections from '../data/corrections.json'
 import { correctionsBlocks, isCorrectionsHash, type CorrectionEntry } from './corrections'
 import { formatAsOf, formatDate, formatMoney, formatMonthDay } from './format'
 import { initialSelection, parseHashState } from './defaultState'
-import { fillMethodology, isHowHash, methodologySource, parseMethodology } from './methodology'
+import verification from '../data/verification.json'
+import { doubleCountSentence, fillMethodology, incompleteRacesSentence, isHowHash, methodologySource, parseMethodology } from './methodology'
 import { usePhone } from './usePhone'
 
 export default function App() {
@@ -102,6 +103,8 @@ export default function App() {
           approxCommitteeCount: allRaces.approxCommitteeCount,
           approxTotal: allRaces.approxTotal,
           primarySentence: SHARES_VERIFIED ? PRIMARY_SENTENCE_VERIFIED : PRIMARY_SENTENCE_UNVERIFIED,
+          doubleCountSentence: doubleCountSentence(verification),
+          incompleteRacesSentence: incompleteRacesSentence(allRaces.races.filter((r) => r.incompleteCount > 0).map((r) => stateNames.get(r.state) ?? r.state)),
         }),
       ),
     [],
