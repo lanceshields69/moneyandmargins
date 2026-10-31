@@ -401,6 +401,7 @@ async function main() {
       const fecMatches: FecMatch[] = a.fecIds.map((id) => ({
         id,
         fecName: records.get(id)?.name ?? '',
+        fecParty: records.get(id)?.party ?? '',
         cycles: records.get(id)?.cycles ?? [],
         method:
           a.how === 'override'

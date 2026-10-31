@@ -22,6 +22,7 @@ export interface Race {
 export interface FecMatch {
   id: string
   fecName: string
+  fecParty: string
   cycles: number[]
   method: '2a-name-match' | 'manual-assignment' | 'fec-name-search'
 }
@@ -60,6 +61,12 @@ export interface Committee {
  *   the totals are null (unknown), never 0.
  */
 export type SpendingStatus = 'queried_with_rows' | 'queried_zero_rows' | 'unmatched'
+
+export interface SpendingFile {
+  fetchedAt: string
+  source: string
+  totals: ExpenditureTotals[]
+}
 
 export interface ExpenditureTotals {
   candidateId: string
