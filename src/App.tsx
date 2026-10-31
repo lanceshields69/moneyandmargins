@@ -1,11 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import ErrorBoundary from './components/ErrorBoundary'
 import MapCallout from './components/MapCallout'
+import NationalCard from './components/NationalCard'
+import RacePanel from './components/RacePanel'
 import UsStatesMap, { rampColor } from './components/UsStatesMap'
+import { buildNationalCard } from './computeNational'
 import { allRaces, callouts, forecastSnapshot, labelPoints, mapViewBox, stateNames } from './data'
 import logo from '../images/logo.png'
 import { formatDate, formatMoney, formatMonthDay } from './format'
 import { initialSelection, parseHashState } from './defaultState'
+import { usePhone } from './usePhone'
 
 export default function App() {
   const raceByState = useMemo(() => new Map(allRaces.races.map((r) => [r.state, r])), [])
@@ -26,6 +30,7 @@ export default function App() {
     window.history.replaceState(null, '', state ? url : url.pathname + url.search)
   }, [])
   const close = useCallback(() => choose(null), [choose])
+  const phone = usePhone()
 
   useEffect(() => {
     const onHashChange = () => {
@@ -40,6 +45,8 @@ export default function App() {
   }, [validStates])
 
   const callout = active ? callouts.get(active) : undefined
+  const race = active ? (raceByState.get(active) ?? null) : null
+  const national = useMemo(() => buildNationalCard(allRaces.races, active), [active])
   const point = active ? labelPoints.get(active) : undefined
   const [vx, vy, vw, vh] = mapViewBox
   const anchor = point ? { x: (point[0] - vx) / vw, y: (point[1] - vy) / vh } : null
@@ -50,6 +57,11 @@ export default function App() {
       <a className="skip" href="#map">
         Skip to map
       </a>
+      {!phone && (
+        <a className="skip skip-second" href="#race-details">
+          Skip to race details
+        </a>
+      )}
       <header className="header">
         <h1>
           <img className="logo" src={logo} alt="Money & Margins" width={483} height={66} />
@@ -58,19 +70,23 @@ export default function App() {
       </header>
 
       <main className="layout">
-        <label className="jump">
-          <span>Jump to a race</span>
-          <select value={active ?? ''} onChange={(e) => choose(e.target.value || null)}>
-            <option value="">Choose a state</option>
-            {sortedRaces.map((r) => (
-              <option key={r.raceId} value={r.state}>
-                {r.raceName.replace(/ Senate( special election)? 2026$/, '')}
-                {r.isSpecial ? ' (special election)' : ''}
-                {r.incompleteCount > 0 ? ' (incomplete data)' : ''}
-              </option>
-            ))}
-          </select>
-        </label>
+        <div className="map-column">
+          <div className="map-top">
+          <label className="jump">
+            <span>Jump to a race</span>
+            <select value={active ?? ''} onChange={(e) => choose(e.target.value || null)}>
+              <option value="">Choose a state</option>
+              {sortedRaces.map((r) => (
+                <option key={r.raceId} value={r.state}>
+                  {r.raceName.replace(/ Senate( special election)? 2026$/, '')}
+                  {r.isSpecial ? ' (special election)' : ''}
+                  {r.incompleteCount > 0 ? ' (incomplete data)' : ''}
+                </option>
+              ))}
+            </select>
+          </label>
+            <NationalCard card={national} stateName={active ? (stateNames.get(active) ?? active) : null} fetchedAt={allRaces.fetchedAt} />
+          </div>
 
         <div className="map-wrap" id="map">
           <UsStatesMap
@@ -82,7 +98,10 @@ export default function App() {
           />
           {callout && anchor && active && (
             <ErrorBoundary key={active}>
-              <MapCallout callout={callout} stateName={stateNames.get(active) ?? active} anchor={anchor} isDefault={isDefault} onClose={close} />
+              <MapCallout callout={callout} stateName={stateNames.get(active) ?? active} anchor={anchor} isDefault={isDefault}
+                detail={phone ? <RacePanel race={race} fetchedAt={allRaces.fetchedAt} /> : undefined}
+                onClose={close}
+              />
             </ErrorBoundary>
           )}
           <div className="legend" role="group" aria-label="Map legend">
@@ -122,6 +141,13 @@ export default function App() {
             forecast, frozen {formatMonthDay(forecastSnapshot.fetchedAt)}.
           </p>
         </div>
+        </div>
+
+        {!phone && (
+          <aside className="panel-column">
+            <RacePanel race={race} fetchedAt={allRaces.fetchedAt} />
+          </aside>
+        )}
       </main>
 
       <footer className="footer muted">

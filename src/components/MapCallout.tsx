@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import leaderUrl from '../assets/callout-leader.svg'
 import type { Callout, CalloutSide } from '../computeCallout'
+import { usePhone } from '../usePhone'
 
 // Measurements from the Figma design (node 4:2).
 const CARD_WIDTH = 171
@@ -11,22 +12,10 @@ const EDGE = 4
 /** Below this share of the map's height there is no room above the point, so the card goes underneath. */
 const FLIP_BELOW_Y = 0.2
 
-function useMobileSheet(): boolean {
-  const query = '(max-width: 600px)'
-  const [mobile, setMobile] = useState(() => window.matchMedia(query).matches)
-  useEffect(() => {
-    const media = window.matchMedia(query)
-    const update = () => setMobile(media.matches)
-    media.addEventListener('change', update)
-    return () => media.removeEventListener('change', update)
-  }, [])
-  return mobile
-}
-
 function Square({ side }: { side: CalloutSide }) {
   return (
     <span className="cc-square" style={{ background: side.partyColor }} role="img" aria-label={`${side.partyLabel}, ${side.name}`}>
-      {side.letter}
+      {side.chip}
     </span>
   )
 }
@@ -75,11 +64,14 @@ interface MapCalloutProps {
   anchor: { x: number; y: number }
   /** Shows the line explaining that the rule, not the visitor, picked this state. */
   isDefault: boolean
+  /** The race detail panel, shown inside the bottom sheet when it is expanded (phones only). */
+  detail?: ReactNode
   onClose: () => void
 }
 
-export default function MapCallout({ callout, stateName, anchor, isDefault, onClose }: MapCalloutProps) {
-  const sheet = useMobileSheet()
+export default function MapCallout({ callout, stateName, anchor, isDefault, detail, onClose }: MapCalloutProps) {
+  const sheet = usePhone()
+  const [expanded, setExpanded] = useState(false)
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -119,7 +111,17 @@ export default function MapCallout({ callout, stateName, anchor, isDefault, onCl
   if (sheet) {
     return (
       <>
-        <div className="cc-sheet">{card}</div>
+        <div className={expanded ? 'cc-sheet cc-sheet-open' : 'cc-sheet'}>
+          {card}
+          {detail && (
+            <div className="cc-sheet-extra">
+              <button type="button" className="cc-toggle" aria-expanded={expanded} onClick={() => setExpanded((v) => !v)}>
+                {expanded ? 'Hide details' : 'Show details'}
+              </button>
+              {expanded && <div className="cc-detail">{detail}</div>}
+            </div>
+          )}
+        </div>
         {live}
       </>
     )
