@@ -100,6 +100,12 @@ export default function App() {
           party-coordinated spending, donors, or where ads ran.
         </p>
         <p>
+          <strong>Supporting and opposing.</strong> Outside groups report each independent expenditure to the FEC as
+          supporting or opposing a named candidate. Supporting means spending to elect that candidate. Opposing means
+          spending to defeat them. The groups choose the label. The two amounts are shown as reported and are never
+          subtracted from each other, and opposing one candidate is not counted as supporting another.
+        </p>
+        <p>
           Official voting information:{' '}
           <a href="https://vote.gov" target="_blank" rel="noreferrer">
             vote.gov
