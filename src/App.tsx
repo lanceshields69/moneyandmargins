@@ -130,7 +130,7 @@ export default function App() {
             </p>
           </div>
           <section className="faq" aria-labelledby="faq-heading">
-            <h2 id="faq-heading">Frequently asked questions</h2>
+            <h2 id="faq-heading">FAQs</h2>
             <h3>Why did you build this?</h3>
             <p>
               Election ads are everywhere, but the records of who pays for them are hard to read, so I built a place to
