@@ -16,6 +16,8 @@ const MIN_ROW_RATIO = 0.9
 const client = createFecClient({ apiKey: API_KEY })
 // --from-raw=data/raw/<timestamp> rebuilds spending.json from a saved pull without re-fetching the rows.
 const FROM_RAW = process.argv.find((a) => a.startsWith('--from-raw='))?.slice('--from-raw='.length)
+// --out=data/spending.candidate.json writes the result somewhere else, so scripts/verify.ts can check it before it replaces spending.json.
+const OUT = process.argv.find((a) => a.startsWith('--out='))?.slice('--out='.length) ?? 'data/spending.json'
 const SOURCE_NOTE =
   'FEC Schedule E independent expenditures, itemized (/schedules/schedule_e/), cycle=2026, 24/48-hour notices included and de-duplicated against periodic reports (see metadata.dedup_method).'
 const DEDUP_METHOD =
@@ -421,8 +423,8 @@ async function main() {
     if (!savedDir) writeFileSync(new URL('reports.json.gz', dir), gzipSync(JSON.stringify(reports)))
     if (!savedDir) writeFileSync(new URL('meta.json', dir), JSON.stringify({ fetchedAt, sha256: rawHash, rows: rawRows.length, requests: client.requestCount() }, null, 2) + '\n')
 
-    writeFileSync(new URL('../data/spending.json', import.meta.url), JSON.stringify(spendingFile, null, 2) + '\n')
-    console.log('\nWrote data/spending.json and', metadata.raw_path)
+    writeFileSync(new URL(`../${OUT}`, import.meta.url), JSON.stringify(spendingFile, null, 2) + '\n')
+    console.log(`\nWrote ${OUT} and`, metadata.raw_path)
   } else {
     console.log('\nPreview only. Rerun with --confirm to write data/spending.json')
   }
