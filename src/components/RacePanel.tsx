@@ -1,6 +1,7 @@
 import type { Committee } from '../types'
 import { PARTY_DISPLAY, type RaceView, type RowView, type SideView } from '../computeSpending'
 import { formatDate, formatMoney, formatMoneyFull } from '../format'
+import { buildMailto } from '../corrections'
 
 const FEC_SOURCE_URL = 'https://www.fec.gov/data/independent-expenditures/'
 
@@ -129,6 +130,10 @@ export default function RacePanel({ race, fetchedAt }: RacePanelProps) {
         {'24- and 48-hour'} reports may not be included.{' '}
         <a href={FEC_SOURCE_URL} target="_blank" rel="noreferrer">
           FEC source
+        </a>
+        {' · '}
+        <a href={buildMailto(race ? race.raceName.replace(/ Senate( special election)? 2026$/, '') : null, window.location.href, fetchedAt)}>
+          See an error? Report it
         </a>
       </p>
     </section>

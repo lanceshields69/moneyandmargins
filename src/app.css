@@ -895,3 +895,30 @@ details h4 {
     gap: 16px;
   }
 }
+
+/* Corrections and contact: quiet, same as the other footer links. */
+.link-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.link-button:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+.corrections-list {
+  margin: 0 0 8px;
+  padding-left: 18px;
+  max-width: 720px;
+}
+.footer-meta {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-rule);
+  max-width: 720px;
+}

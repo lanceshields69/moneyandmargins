@@ -3,6 +3,9 @@ import ErrorBoundary from './components/ErrorBoundary'
 import MapCallout from './components/MapCallout'
 import NationalCard from './components/NationalCard'
 import RacePanel from './components/RacePanel'
+import ContactFooter from './components/ContactFooter'
+import correctionsJson from '../data/corrections.json'
+import type { CorrectionEntry } from './corrections'
 import ShareMenu from './components/ShareMenu'
 import UsStatesMap, { rampColor } from './components/UsStatesMap'
 import { buildNationalCard } from './computeNational'
@@ -184,13 +187,16 @@ export default function App() {
                 vote.gov
               </a>
             </p>
-            <p>
-              © 2026{' '}
-              <a href="https://www.lanceshields.design/" target="_blank" rel="noreferrer">
-                Lance Shields
-              </a>
-              . All rights reserved.
-            </p>
+            <div className="footer-meta">
+              <ContactFooter entries={correctionsJson as CorrectionEntry[]} />
+              <p>
+                © 2026{' '}
+                <a href="https://www.lanceshields.design/" target="_blank" rel="noreferrer">
+                  Lance Shields
+                </a>
+                . All rights reserved.
+              </p>
+            </div>
           </div>
           <section className="faq" aria-labelledby="faq-heading">
             <h2 id="faq-heading">FAQs</h2>
