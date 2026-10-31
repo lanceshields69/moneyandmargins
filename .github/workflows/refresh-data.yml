@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
+      INCOMPLETE_CHECK: warn
       FEC_API_KEY: ${{ secrets.FEC_API_KEY }}
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -35,7 +36,7 @@ jobs:
       - name: Run tests and data checks
         run: |
           npm test
-          npm run check:incomplete
+          npm run check:incomplete 2>&1 | tee -a "$GITHUB_STEP_SUMMARY"
 
       - name: Deploy to Vercel
         run: |

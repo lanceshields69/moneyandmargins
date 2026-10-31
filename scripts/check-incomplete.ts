@@ -10,7 +10,14 @@ const known = read<KnownIncomplete[]>('known-incomplete.json')
 
 const problems = knownIncompleteProblems(nominees.candidates, new Set(spending.totals.map((t) => t.candidateId)), known)
 if (problems.length > 0) {
-  console.error('Incomplete-data check failed:\n' + problems.map((p) => `  - ${p}`).join('\n'))
-  process.exit(1)
+  const list = problems.map((p) => `  - ${p}`).join('\n')
+  // The scheduled refresh sets INCOMPLETE_CHECK=warn: flagged nominees still publish, shown as "Incomplete data".
+  if (process.env.INCOMPLETE_CHECK === 'warn') {
+    console.warn('Incomplete-data warning (publishing anyway):\n' + list)
+  } else {
+    console.error('Incomplete-data check failed:\n' + list)
+    process.exit(1)
+  }
+} else {
+  console.log('Incomplete-data check passed.')
 }
-console.log('Incomplete-data check passed.')

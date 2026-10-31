@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import ErrorBoundary from './components/ErrorBoundary'
 import MapCallout from './components/MapCallout'
 import UsStatesMap, { rampColor } from './components/UsStatesMap'
 import { allRaces, callouts, forecastSnapshot, labelPoints, mapViewBox, stateNames } from './data'
@@ -80,7 +81,9 @@ export default function App() {
             onFocusState={choose}
           />
           {callout && anchor && active && (
-            <MapCallout key={active} callout={callout} stateName={stateNames.get(active) ?? active} anchor={anchor} isDefault={isDefault} onClose={close} />
+            <ErrorBoundary key={active}>
+              <MapCallout callout={callout} stateName={stateNames.get(active) ?? active} anchor={anchor} isDefault={isDefault} onClose={close} />
+            </ErrorBoundary>
           )}
           <div className="legend" role="group" aria-label="Map legend">
             <p className="legend-title">Total dollars, not per voter</p>

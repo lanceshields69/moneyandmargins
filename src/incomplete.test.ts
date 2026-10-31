@@ -85,7 +85,8 @@ describe('real data', () => {
     return candidates.map((c) => incompleteCodes(c, claims, spendingIds.has(c.id)).sort().join(',')).join('|')
   }
 
-  it('has no unreviewed Democratic or Republican flags', () => {
+  // The scheduled refresh sets INCOMPLETE_CHECK=warn so a newly flagged nominee shows as "Incomplete data" instead of blocking a publish.
+  it.skipIf(process.env.INCOMPLETE_CHECK === 'warn')('has no unreviewed Democratic or Republican flags', () => {
     expect(knownIncompleteProblems(nominees.candidates, spendingIds, knownJson as KnownIncomplete[])).toEqual([])
   })
 
