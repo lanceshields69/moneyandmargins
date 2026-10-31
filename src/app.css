@@ -172,11 +172,6 @@ a {
 .key-striped {
   background: repeating-linear-gradient(135deg, var(--color-text) 0 2px, var(--color-track) 2px 4px);
 }
-.nat-note {
-  margin: 8px 0 0;
-  font-size: 0.6875rem;
-  line-height: 1.4;
-}
 
 .jump {
   display: flex;

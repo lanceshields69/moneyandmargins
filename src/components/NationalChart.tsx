@@ -1,8 +1,6 @@
 import type { NationalView, PartyBar, PartyGroup } from '../computeSpending'
 import { formatDate, formatMoney, formatMoneyFull } from '../format'
 
-const FEC_SOURCE_URL = 'https://www.fec.gov/data/independent-expenditures/'
-
 function Segment({ bar, group, striped }: { bar: PartyBar; group: PartyGroup; striped: boolean }) {
   if (bar.widthPct <= 0) return null
   return (
@@ -70,13 +68,6 @@ export default function NationalChart({ view, stateName, fetchedAt }: NationalCh
           Opposing
         </span>
         {stateName && <span className="key-item">Lighter shade and right-hand amount: {stateName}</span>}
-      </p>
-      <p className="muted nat-note">
-        All 35 races. Independents and nominees with incomplete data are not counted. Includes primary-season spending;
-        recent {'24- and 48-hour'} reports may not be included. FEC processed data, refreshed twice a day.{' '}
-        <a href={FEC_SOURCE_URL} target="_blank" rel="noreferrer">
-          FEC source
-        </a>
       </p>
     </section>
   )
