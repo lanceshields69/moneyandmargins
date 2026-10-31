@@ -91,11 +91,6 @@ export default function MapCallout({ callout, stateName, anchor, isDefault, deta
             <Square side={side} />
           </span>
         ))}
-        {sheet && (
-          <button type="button" className="cc-close" onClick={onClose} aria-label="Close">
-            ×
-          </button>
-        )}
       </div>
       <Row label="Spent on ads:" sides={callout.sides} pick={(s) => s.adPct} flag={callout.adFlag} />
       <Row label="Predicted to win:" sides={callout.sides} pick={(s) => s.winPct} flag={callout.winFlag} />
@@ -119,6 +114,9 @@ export default function MapCallout({ callout, stateName, anchor, isDefault, deta
                 {expanded ? 'Hide details' : 'Show details'}
               </button>
               {expanded && <div className="cc-detail">{detail}</div>}
+              <button type="button" className="cc-close" onClick={onClose} aria-label="Close">
+                ×
+              </button>
             </div>
           )}
         </div>

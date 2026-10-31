@@ -369,7 +369,6 @@ strong {
   }
   .cc-sheet .cc-head {
     height: 20px;
-    padding-right: 36px;
   }
   .cc-sheet .cc-head + .cc-row {
     margin-top: 12px;
@@ -423,11 +422,9 @@ strong {
   }
   .cc-sheet .cc-close {
     display: block;
-    position: absolute;
-    top: 8px;
-    right: 8px;
     width: 40px;
     height: 40px;
+    margin: -40px 0 0 auto;
     border: 0;
     background: transparent;
     color: #fff;
@@ -435,6 +432,13 @@ strong {
     font-size: 24px;
     line-height: 1;
     cursor: pointer;
+  }
+  .cc-sheet-open .cc-close {
+    position: sticky;
+    bottom: 8px;
+    margin-top: 8px;
+    border-radius: 50%;
+    background: var(--color-callout);
   }
 }
 
@@ -857,7 +861,7 @@ details h4 {
 @media (max-width: 600px) {
   .share {
     position: absolute;
-    top: 12px;
+    top: 22px;
     right: 16px;
     margin: 0;
   }
@@ -884,8 +888,9 @@ details h4 {
     white-space: nowrap;
   }
   .share-menu {
-    top: 41px;
+    top: 51px;
     width: 169px;
+    max-width: calc(100vw - 32px);
     padding: 14px 18px;
     gap: 16px;
   }
