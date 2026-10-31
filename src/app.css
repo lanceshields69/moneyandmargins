@@ -433,6 +433,26 @@ details h4 {
   margin: 0 0 8px;
   max-width: 720px;
 }
+.footer-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px 40px;
+}
+.faq h2 {
+  margin: 0 0 8px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+.faq h3 {
+  margin: 12px 0 2px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+.faq h3:first-of-type {
+  margin-top: 0;
+}
 
 @media (min-width: 900px) {
   .header {
@@ -452,6 +472,9 @@ details h4 {
   }
   .footer {
     padding: 12px 32px 24px;
+  }
+  .footer-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
 }
 

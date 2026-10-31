@@ -103,29 +103,51 @@ export default function App() {
       <p ref={announce} className="sr-only" aria-live="polite" />
 
       <footer className="footer muted">
-        <p>
-          <strong>Early version.</strong> This map shows independent expenditures that outside groups reported to the
-          FEC for 2026 Senate races, placed in the candidate&apos;s state. It does not show candidate committee or
-          party-coordinated spending, donors, or where ads ran.
-        </p>
-        <p>
-          <strong>Supporting and opposing.</strong> Outside groups report each independent expenditure to the FEC as
-          supporting or opposing a named candidate. Supporting means spending to elect that candidate. Opposing means
-          spending to defeat them. The groups choose the label. The two amounts are shown as reported and are never
-          subtracted from each other, and opposing one candidate is not counted as supporting another.
-        </p>
-        <p>
-          Official voting information:{' '}
-          <a href="https://vote.gov" target="_blank" rel="noreferrer">
-            vote.gov
-          </a>
-        </p>
-        <p>
-          Created by{' '}
-          <a href="https://www.lanceshields.design/" target="_blank" rel="noreferrer">
-            Lance Shields
-          </a>
-        </p>
+        <div className="footer-grid">
+          <div className="footer-notes">
+            <p>
+              <strong>Early version.</strong> This map shows independent expenditures that outside groups reported to the
+              FEC for 2026 Senate races, placed in the candidate&apos;s state. It does not show candidate committee or
+              party-coordinated spending, donors, or where ads ran.
+            </p>
+            <p>
+              <strong>Supporting and opposing.</strong> Outside groups report each independent expenditure to the FEC as
+              supporting or opposing a named candidate. Supporting means spending to elect that candidate. Opposing means
+              spending to defeat them. The groups choose the label. The two amounts are shown as reported and are never
+              subtracted from each other, and opposing one candidate is not counted as supporting another.
+            </p>
+            <p>
+              Official voting information:{' '}
+              <a href="https://vote.gov" target="_blank" rel="noreferrer">
+                vote.gov
+              </a>
+            </p>
+            <p>
+              Created by{' '}
+              <a href="https://www.lanceshields.design/" target="_blank" rel="noreferrer">
+                Lance Shields
+              </a>
+            </p>
+          </div>
+          <section className="faq" aria-labelledby="faq-heading">
+            <h2 id="faq-heading">Frequently asked questions</h2>
+            <h3>Why did you build this?</h3>
+            <p>
+              Election ads are everywhere, but the records of who pays for them are hard to read, so I built a place to
+              look up any Senate race and check the sources yourself.
+            </p>
+            <h3>Is this data biased toward either party?</h3>
+            <p>
+              Every candidate gets the same calculations and labels whatever their party, but the map shows only
+              independent expenditures reported to the FEC, so it can’t capture all spending for either side.
+            </p>
+            <h3>How fresh is this data?</h3>
+            <p>
+              It updates twice a day from the FEC’s processed records, and each page shows its last update time, so
+              very recent filings may not appear yet.
+            </p>
+          </section>
+        </div>
       </footer>
     </div>
   )
