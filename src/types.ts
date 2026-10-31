@@ -77,3 +77,49 @@ export interface ExpenditureTotals {
   topSupportCommittees: Committee[]
   topOpposeCommittees: Committee[]
 }
+
+export interface RaceForecast {
+  state: string
+  /** The Democratic nominee's win probability, clamped 0.01 to 0.99 by the source. */
+  pDemWin: number | null
+  basis: string | null
+  nPolls: number | null
+  candidates: { democrat: string | null; republican: string | null } | null
+  noForecast: { reason: string | null; actualMatchup: string | null } | null
+  asOf: string | null
+}
+
+/** One race exactly as VotePredictor's API returned it. */
+export interface ApiRace {
+  race_id: string
+  location: string
+  as_of: string | null
+  model_version: string | null
+  forecast: { p_dem_win: number; source: string; n_polls: number | null } | null
+  candidates: { democrat: string | null; republican: string | null } | null
+  no_forecast?: { reason?: string; actual_matchup?: string } | null
+}
+
+/** The file written by scripts/freeze-forecast.ts: raw responses plus metadata. */
+export interface FrozenSnapshotFile {
+  source_name: string
+  source_url: string
+  api_base: string
+  fetched_at: string
+  content_hash: string
+  model_version: string | null
+  tag: string | null
+  note: string
+  races: ApiRace[]
+}
+
+export interface ForecastSnapshot {
+  sourceName: string
+  sourceUrl: string
+  fetchedAt: string
+  contentHash: string
+  modelVersion: string | null
+  tag: string | null
+  note: string
+  races: RaceForecast[]
+}
