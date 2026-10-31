@@ -342,6 +342,14 @@ strong {
   .footer-grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
+  .footer-grid .faq {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+  .footer-grid .footer-meta {
+    grid-column: 1;
+    grid-row: 2;
+  }
 }
 
 /* Bottom sheet on phones. */
@@ -917,7 +925,7 @@ details h4 {
   max-width: 720px;
 }
 .footer-meta {
-  margin-top: 48px;
+  margin-top: 28px; /* plus the 20px grid gap = 48px above the rule */
   padding-top: 48px;
   border-top: 1px solid var(--color-rule);
   max-width: 720px;

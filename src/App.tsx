@@ -187,16 +187,6 @@ export default function App() {
                 vote.gov
               </a>
             </p>
-            <div className="footer-meta">
-              <ContactFooter entries={correctionsJson as CorrectionEntry[]} />
-              <p>
-                © 2026{' '}
-                <a href="https://www.lanceshields.design/" target="_blank" rel="noreferrer">
-                  Lance Shields
-                </a>
-                . All rights reserved.
-              </p>
-            </div>
           </div>
           <section className="faq" aria-labelledby="faq-heading">
             <h2 id="faq-heading">FAQs</h2>
@@ -224,6 +214,16 @@ export default function App() {
               </a>
             </p>
           </section>
+          <div className="footer-meta">
+            <ContactFooter entries={correctionsJson as CorrectionEntry[]} />
+            <p>
+              © 2026{' '}
+              <a href="https://www.lanceshields.design/" target="_blank" rel="noreferrer">
+                Lance Shields
+              </a>
+              . All rights reserved.
+            </p>
+          </div>
         </div>
       </footer>
     </div>
