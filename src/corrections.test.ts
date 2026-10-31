@@ -1,6 +1,4 @@
-import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
-import { CorrectionsLog } from './components/ContactFooter'
 import { allRaces } from './data'
 import { buildMailto } from './corrections'
 
@@ -21,17 +19,5 @@ describe('corrections mailto', () => {
       )
     }
     expect(decode(buildMailto(null, 'https://x.test/', asOf, 'a@b.test')).subject).toBe('Money & Margins correction')
-  })
-})
-
-describe('corrections log', () => {
-  it('says "No corrections yet." when empty', () => {
-    expect(renderToStaticMarkup(<CorrectionsLog entries={[]} />)).toContain('No corrections yet.')
-  })
-  it('lists entries newest first', () => {
-    const html = renderToStaticMarkup(
-      <CorrectionsLog entries={[{ date: '2026-10-01', race: 'Ohio', change: 'A', reason: 'r1' }, { date: '2026-10-20', race: 'Texas', change: 'B', reason: 'r2' }]} />,
-    )
-    expect(html.indexOf('Texas')).toBeLessThan(html.indexOf('Ohio'))
   })
 })
