@@ -931,4 +931,5 @@ details h4 {
   font-family: var(--font-display);
   font-weight: 700;
   word-spacing: -0.12em;
+  letter-spacing: 0.02em;
 }
