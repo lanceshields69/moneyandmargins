@@ -1,5 +1,5 @@
-import { GLOBAL_PARTIAL_NOTICE } from '../config'
-import { PARTIAL_CALLOUT_NOTICE } from '../copy'
+import { GLOBAL_PARTIAL_NOTICE, SHARES_VERIFIED } from '../config'
+import { PARTIAL_CALLOUT_NOTICE, SHARES_PENDING_LEAD, SHARES_PENDING_LINK } from '../copy'
 import { useEffect, useState, type ReactNode } from 'react'
 import leaderUrl from '../assets/callout-leader.svg'
 import type { Callout, CalloutSide } from '../computeCallout'
@@ -51,12 +51,29 @@ function Row({ label, sides, pick, flag }: {
   )
 }
 
-function summary(stateName: string, callout: Callout): string {
+/** The "Spent on ads" row while shares are unverified: the same words for every race and party. */
+function PendingRow({ onOpenHow }: { onOpenHow?: () => void }) {
+  return (
+    <div className="cc-row cc-row-flag cc-row-pending">
+      <span className="cc-label">Spent on ads:</span>
+      <span className="cc-flag">
+        {SHARES_PENDING_LEAD}
+        <button type="button" className="link-button cc-how" onClick={onOpenHow}>
+          {SHARES_PENDING_LINK}
+        </button>
+        .
+      </span>
+    </div>
+  )
+}
+
+function summary(stateName: string, callout: Callout, sharesVerified: boolean): string {
   const part = (label: string, pick: (s: CalloutSide) => number | null, flag: { label: string; reason: string | null } | null) =>
     flag
       ? `${label}: ${flag.label}${flag.reason ? `, ${flag.reason}` : ''}.`
       : `${label}: ${callout.sides.map((s) => `${s.partyLabel} ${s.name} ${pick(s)} percent`).join(', ')}.`
-  return `${stateName}. ${part('Spent on ads', (s) => s.adPct, callout.adFlag)} ${part('Predicted to win', (s) => s.winPct, callout.winFlag)}`
+  const ads = sharesVerified ? part('Spent on ads', (s) => s.adPct, callout.adFlag) : `Spent on ads: ${SHARES_PENDING_LEAD}${SHARES_PENDING_LINK}.`
+  return `${stateName}. ${ads} ${part('Predicted to win', (s) => s.winPct, callout.winFlag)}`
 }
 
 interface MapCalloutProps {
@@ -66,12 +83,16 @@ interface MapCalloutProps {
   anchor: { x: number; y: number }
   /** Shows the line explaining that the rule, not the visitor, picked this state. */
   isDefault: boolean
+  /** Whether the "Spent on ads" percentages may be shown. Defaults to the SHARES_VERIFIED flag. */
+  sharesVerified?: boolean
+  /** Opens the methodology modal from the "how this is counted" link. */
+  onOpenHow?: () => void
   /** The race detail panel, shown inside the bottom sheet when it is expanded (phones only). */
   detail?: ReactNode
   onClose: () => void
 }
 
-export default function MapCallout({ callout, stateName, anchor, isDefault, detail, onClose }: MapCalloutProps) {
+export default function MapCallout({ callout, stateName, anchor, isDefault, detail, onClose, sharesVerified = SHARES_VERIFIED, onOpenHow }: MapCalloutProps) {
   const sheet = usePhone()
   const [expanded, setExpanded] = useState(false)
 
@@ -94,17 +115,21 @@ export default function MapCallout({ callout, stateName, anchor, isDefault, deta
           </span>
         ))}
       </div>
-      <Row label="Spent on ads:" sides={callout.sides} pick={(s) => s.adPct} flag={callout.adFlag} />
+      {sharesVerified ? (
+        <Row label="Spent on ads:" sides={callout.sides} pick={(s) => s.adPct} flag={callout.adFlag} />
+      ) : (
+        <PendingRow onOpenHow={onOpenHow} />
+      )}
       <Row label="Predicted to win:" sides={callout.sides} pick={(s) => s.winPct} flag={callout.winFlag} />
       {notes.map((note) => (
         <p key={note} className="cc-note">
           {note}
         </p>
       ))}
-      {GLOBAL_PARTIAL_NOTICE && <p className="cc-partial">{PARTIAL_CALLOUT_NOTICE}</p>}
+      {sharesVerified && GLOBAL_PARTIAL_NOTICE && <p className="cc-partial">{PARTIAL_CALLOUT_NOTICE}</p>}
     </div>
   )
-  const live = <p className="sr-only" aria-live="polite">{summary(stateName, callout)}</p>
+  const live = <p className="sr-only" aria-live="polite">{summary(stateName, callout, sharesVerified)}</p>
 
   if (sheet) {
     return (

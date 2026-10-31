@@ -1,4 +1,5 @@
 import usStatesData from '../../data/us-states.json'
+import { DATA_VERIFIED } from '../config'
 import { fillFraction, type RaceView } from '../computeSpending'
 import { formatMoney } from '../format'
 
@@ -30,15 +31,20 @@ export function rampColor(fraction: number): string {
   return `rgb(${r}, ${g}, ${b})`
 }
 
+/** One color for every state with a race while the spending amounts are being verified. */
+const NEUTRAL_FILL = rampColor(0.3)
+
 interface UsStatesMapProps {
   raceByState: Map<string, RaceView>
   maxTotal: number
   selected: string | null
   onSelect: (usps: string) => void
   onFocusState: (usps: string) => void
+  /** Whether the spending ramp may color the states. Off: one neutral fill for every state with a race. */
+  fillVerified?: boolean
 }
 
-export default function UsStatesMap({ raceByState, maxTotal, selected, onSelect, onFocusState }: UsStatesMapProps) {
+export default function UsStatesMap({ raceByState, maxTotal, selected, onSelect, onFocusState, fillVerified = DATA_VERIFIED }: UsStatesMapProps) {
   // Selected state is drawn last so its teal outline is not covered by neighbors.
   const ordered = [...states].sort((a, b) => Number(a.usps === selected) - Number(b.usps === selected))
 
@@ -55,12 +61,14 @@ export default function UsStatesMap({ raceByState, maxTotal, selected, onSelect,
           return <path key={state.fips} d={state.d} className="state state-none" aria-hidden="true" />
         }
         const isSelected = state.usps === selected
-        const fill = race.total === null ? 'var(--color-rule)' : rampColor(fillFraction(race.total, maxTotal))
+        const fill = !fillVerified ? NEUTRAL_FILL : race.total === null ? 'var(--color-rule)' : rampColor(fillFraction(race.total, maxTotal))
         const incompleteNote = race.incompleteCount > 0 ? ', some nominees have incomplete data' : ''
         const summary =
-          race.total === null
-            ? 'Incomplete data'
-            : `total independent expenditures ${formatMoney(race.total)}${incompleteNote}`
+          !fillVerified
+            ? `2026 Senate race${incompleteNote}`
+            : race.total === null
+              ? 'Incomplete data'
+              : `total independent expenditures ${formatMoney(race.total)}${incompleteNote}`
         return (
           <g key={state.fips}>
           <path

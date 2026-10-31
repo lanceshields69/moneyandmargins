@@ -1,6 +1,7 @@
 import type { Committee } from '../types'
 import { PARTY_DISPLAY, type RaceView, type RowView, type SideView } from '../computeSpending'
-import { LIMITS_SENTENCE } from '../copy'
+import { DATA_VERIFIED } from '../config'
+import { AMOUNTS_PENDING_LEAD, LIMITS_SENTENCE, PANEL_PRIMARY_NOTE, SHARES_PENDING_LINK } from '../copy'
 import { formatDate, formatMoney, formatMoneyFull } from '../format'
 import { CONTACT_EMAIL } from '../config'
 import { buildMailto } from '../corrections'
@@ -46,7 +47,7 @@ function CommitteeList({ title, committees }: { title: string; committees: Commi
   )
 }
 
-function Nominee({ row, index }: { row: RowView; index: number }) {
+function Nominee({ row, index, dataVerified }: { row: RowView; index: number; dataVerified: boolean }) {
   return (
     <li className="nominee" style={{ ['--i' as string]: index }}>
       <div className="nominee-head">
@@ -60,7 +61,7 @@ function Nominee({ row, index }: { row: RowView; index: number }) {
           Incomplete data
           <span className="reason muted">{row.reason ?? 'ID needs review'}</span>
         </p>
-      ) : (
+      ) : !dataVerified ? null : (
         <>
           <dl className="bars">
             <Bar label="Supporting" side={row.support} color={row.partyColor} striped={false} />
@@ -91,9 +92,13 @@ function Nominee({ row, index }: { row: RowView; index: number }) {
 interface RacePanelProps {
   race: RaceView | null
   fetchedAt: string
+  /** Whether per-candidate dollar amounts and top committees may be shown. Defaults to the DATA_VERIFIED flag. */
+  dataVerified?: boolean
+  /** Opens the methodology modal from the "how this is counted" link. */
+  onOpenHow?: () => void
 }
 
-export default function RacePanel({ race, fetchedAt }: RacePanelProps) {
+export default function RacePanel({ race, fetchedAt, dataVerified = DATA_VERIFIED, onOpenHow }: RacePanelProps) {
   return (
     <section id="race-details" className="panel" aria-label="Race details" tabIndex={-1}>
       {!race ? (
@@ -106,12 +111,24 @@ export default function RacePanel({ race, fetchedAt }: RacePanelProps) {
             {race.incompleteCount > 0 && <span className="tag tag-incomplete">Incomplete data</span>}
           </h2>
           <p className="muted summary">
-            {race.total === null
-              ? 'Incomplete data'
-              : `Total independent expenditures, support plus oppose: ${formatMoney(race.total)} (FEC processed data as of ${formatDate(fetchedAt)})`}
-            {race.incompleteCount > 0 &&
-              `. Leaves out ${race.incompleteCount} nominee${race.incompleteCount === 1 ? '' : 's'} with incomplete data, so this total may be low.`}
-            {race.total !== null && ' Includes primary-season spending.'}
+            {!dataVerified ? (
+              <>
+                {AMOUNTS_PENDING_LEAD}
+                <button type="button" className="link-button" onClick={onOpenHow}>
+                  {SHARES_PENDING_LINK}
+                </button>
+                .
+              </>
+            ) : (
+              <>
+                {race.total === null
+                  ? 'Incomplete data'
+                  : `Total independent expenditures, support plus oppose: ${formatMoney(race.total)} (FEC processed data as of ${formatDate(fetchedAt)})`}
+                {race.incompleteCount > 0 &&
+                  `. Leaves out ${race.incompleteCount} nominee${race.incompleteCount === 1 ? '' : 's'} with incomplete data, so this total may be low.`}
+                {race.total !== null && ` ${PANEL_PRIMARY_NOTE}`}
+              </>
+            )}
           </p>
           {race.missingMajor.map((party) => (
             <p key={party} className="muted summary">
@@ -120,7 +137,7 @@ export default function RacePanel({ race, fetchedAt }: RacePanelProps) {
           ))}
           <ul className="nominees">
             {race.rows.map((row, index) => (
-              <Nominee key={row.candidateId} row={row} index={index} />
+              <Nominee key={row.candidateId} row={row} index={index} dataVerified={dataVerified} />
             ))}
           </ul>
           <p className="muted scale-note">Bars share one scale within this race. Supporting and opposing amounts are not netted.</p>

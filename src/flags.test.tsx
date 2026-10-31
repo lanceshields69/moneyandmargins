@@ -1,0 +1,140 @@
+import { act } from 'react'
+import { createRoot } from 'react-dom/client'
+import { renderToStaticMarkup } from 'react-dom/server'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import MapCallout from './components/MapCallout'
+import RacePanel from './components/RacePanel'
+import { AMOUNTS_PENDING_LEAD, PANEL_PRIMARY_NOTE, PARTIAL_CALLOUT_NOTICE, SHARES_PENDING_LEAD, SHARES_PENDING_LINK } from './copy'
+import { allRaces, callouts } from './data'
+import verifiedMd from '../docs/methodology.md?raw'
+
+;(globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true
+
+window.matchMedia = ((q: string) => ({ matches: false, media: q, addEventListener() {}, removeEventListener() {}, addListener() {}, removeListener() {}, onchange: null, dispatchEvent: () => false })) as typeof window.matchMedia
+
+const SHARES_MESSAGE = 'Shares are being verified. Partial data: see how this is counted.'
+const COMBOS = [
+  { data: false, shares: false },
+  { data: true, shares: false },
+  { data: false, shares: true },
+  { data: true, shares: true },
+]
+const text = (html: string) => html.replace(/<[^>]+>/g, '')
+const callout = (state: string, sharesVerified: boolean) =>
+  renderToStaticMarkup(<MapCallout callout={callouts.get(state)!} stateName={state} anchor={{ x: 0.5, y: 0.5 }} isDefault={false} onClose={() => {}} sharesVerified={sharesVerified} />)
+
+describe('SHARES_VERIFIED gates the "Spent on ads" percentages', () => {
+  it('says shares are being verified, with a link to the methodology, in every race, and shows no percentages in that row', () => {
+    expect(SHARES_PENDING_LEAD + SHARES_PENDING_LINK + '.').toBe(SHARES_MESSAGE)
+    const seen = new Set<string>()
+    for (const [state, c] of callouts) {
+      const html = callout(state, false)
+      const row = text(html.slice(html.indexOf('cc-row-pending')))
+      expect(text(html)).toContain(SHARES_MESSAGE)
+      expect(html).toContain('Spent on ads:')
+      expect(html).not.toContain(PARTIAL_CALLOUT_NOTICE)
+      // only the "Predicted to win" row carries percentages
+      expect(html.split('cc-value').length - 1).toBe(c.winFlag ? 0 : c.sides.length)
+      seen.add(row.split('Predicted')[0])
+    }
+    expect(seen.size).toBe(1) // identical for every race and party
+  })
+
+  it('shows the percentages and the partial-data line when shares are verified', () => {
+    const state = [...callouts].find(([, c]) => !c.adFlag && !c.winFlag)![0]
+    const html = callout(state, true)
+    expect(text(html)).not.toContain(SHARES_MESSAGE)
+    expect(html).toContain(PARTIAL_CALLOUT_NOTICE)
+    expect(html.split('cc-value').length - 1).toBe(callouts.get(state)!.sides.length * 2)
+  })
+})
+
+describe('DATA_VERIFIED gates per-candidate amounts and top committees', () => {
+  const withAmounts = allRaces.races.filter((r) => r.total !== null && r.rows.some((row) => row.support))
+
+  it('hides dollar amounts, bars and top committees in every race and says so, the same way each time', () => {
+    const lines = new Set<string>()
+    for (const race of withAmounts) {
+      const html = renderToStaticMarkup(<RacePanel race={race} fetchedAt={allRaces.fetchedAt} dataVerified={false} />)
+      expect(text(html)).not.toMatch(/\$\d/)
+      expect(html).not.toContain('Top committees')
+      expect(html).not.toContain('class="bars"')
+      expect(html).not.toContain(PANEL_PRIMARY_NOTE)
+      const summary = /<p class="muted summary">(.*?)<\/p>/.exec(html)?.[1] ?? ''
+      lines.add(text(summary))
+    }
+    expect([...lines]).toEqual([`${AMOUNTS_PENDING_LEAD}${SHARES_PENDING_LINK}.`])
+  })
+
+  it('shows amounts, committees and the primary-season note when data is verified', () => {
+    for (const race of withAmounts) {
+      const html = renderToStaticMarkup(<RacePanel race={race} fetchedAt={allRaces.fetchedAt} dataVerified />)
+      expect(text(html)).toMatch(/\$\d/)
+      expect(text(html)).toContain(PANEL_PRIMARY_NOTE)
+      expect(text(html)).not.toContain(AMOUNTS_PENDING_LEAD)
+    }
+  })
+})
+
+describe('the Known gaps list', () => {
+  it('names the contrast-ad double count', () => {
+    expect(verifiedMd).toContain("A contrast ad can be reported on two lines, so a state's total can count some spending twice.")
+  })
+})
+
+describe('each flag combination on the whole page', () => {
+  let host: HTMLDivElement
+
+  beforeEach(() => {
+    window.matchMedia = ((q: string) => ({ matches: false, media: q, addEventListener() {}, removeEventListener() {}, addListener() {}, removeListener() {}, onchange: null, dispatchEvent: () => false })) as typeof window.matchMedia
+    host = document.createElement('div')
+    document.body.appendChild(host)
+  })
+  afterEach(() => {
+    host.remove()
+    vi.doUnmock('./config')
+    vi.resetModules()
+    window.history.replaceState(null, '', '/')
+  })
+
+  async function renderPage(flags: { data: boolean; shares: boolean }, hash = '') {
+    vi.resetModules()
+    vi.doMock('./config', () => ({ CONTACT_EMAIL: 'a@b.test', DATA_VERIFIED: flags.data, SHARES_VERIFIED: flags.shares, GLOBAL_PARTIAL_NOTICE: true }))
+    window.history.replaceState(null, '', `/${hash}`)
+    const { default: App } = await import('./App')
+    const root = createRoot(host)
+    act(() => root.render(<App />))
+    return { page: host, unmount: () => act(() => root.unmount()) }
+  }
+
+  for (const flags of COMBOS) {
+    it(`DATA_VERIFIED=${flags.data}, SHARES_VERIFIED=${flags.shares}`, async () => {
+      const { page, unmount } = await renderPage(flags, '#TX')
+      const body = page.textContent ?? ''
+      // national card: shares only
+      expect(body.includes("Spending aligned with each party's nominees")).toBe(flags.shares)
+      // spent-on-ads row: shares only
+      expect(body.includes(SHARES_MESSAGE)).toBe(!flags.shares)
+      // slim notice under the subhead while either flag is off
+      expect(body.includes('Data check in progress')).toBe(!(flags.data && flags.shares))
+      // dollar amounts and top committees in the panel, and the map legend ramp: data only
+      expect(page.querySelector('#race-details')?.textContent?.includes('Top committees') ?? false).toBe(flags.data)
+      expect(/\$\d/.test(page.querySelector('#race-details')?.textContent ?? '')).toBe(flags.data)
+      expect(page.querySelector('.ramp') !== null).toBe(flags.data)
+      // map fill: one neutral color for every race state when data is unverified
+      const fills = new Set([...page.querySelectorAll('path.state-race')].map((p) => p.getAttribute('fill')))
+      expect(fills.size === 1).toBe(!flags.data)
+      unmount()
+    })
+
+    it(`the methodology link opens the ${flags.data ? 'verified' : 'partial'} text (data=${flags.data}, shares=${flags.shares})`, async () => {
+      const { page, unmount } = await renderPage(flags, '#how-it-works')
+      const dialog = page.querySelector('[role="dialog"]')!
+      expect(dialog).not.toBeNull()
+      const body = dialog.textContent ?? ''
+      expect(body.includes('Contrast ads') || (page.ownerDocument.body.textContent ?? '').includes('count some spending twice')).toBe(flags.data)
+      expect(body.includes('This version uses the FEC')).toBe(!flags.data)
+      unmount()
+    })
+  }
+})

@@ -11,7 +11,7 @@ import UsStatesMap, { rampColor } from './components/UsStatesMap'
 import { buildNationalCard } from './computeNational'
 import { allRaces, callouts, forecastSnapshot, labelPoints, mapViewBox, stateNames } from './data'
 import logo from '../images/logo.png'
-import { DATA_VERIFIED } from './config'
+import { DATA_VERIFIED, SHARES_VERIFIED } from './config'
 import { DATA_CHECK_NOTICE, LIMITS_SENTENCE } from './copy'
 import { formatDate, formatMoney, formatMonthDay } from './format'
 import { initialSelection, parseHashState } from './defaultState'
@@ -104,7 +104,7 @@ export default function App() {
           <img className="logo" src={logo} alt="Money & Margins" width={399} height={59} />
         </h1>
         <p className="muted">The ads are everywhere. The receipts are here.</p>
-        {!DATA_VERIFIED && <p className="data-check">{DATA_CHECK_NOTICE}</p>}
+        {(!DATA_VERIFIED || !SHARES_VERIFIED) && <p className="data-check">{DATA_CHECK_NOTICE}</p>}
       </header>
 
       <main className="layout">
@@ -123,7 +123,7 @@ export default function App() {
               ))}
             </select>
           </label>
-            {DATA_VERIFIED && <NationalCard card={national} stateName={active ? (stateNames.get(active) ?? active) : null} fetchedAt={allRaces.fetchedAt} />}
+            {SHARES_VERIFIED && <NationalCard card={national} stateName={active ? (stateNames.get(active) ?? active) : null} fetchedAt={allRaces.fetchedAt} />}
           </div>
 
         <div className="map-wrap" id="map">
@@ -133,27 +133,39 @@ export default function App() {
             selected={active}
             onSelect={choose}
             onFocusState={choose}
+            fillVerified={DATA_VERIFIED}
           />
           {callout && anchor && active && (
             <ErrorBoundary key={active}>
-              <MapCallout callout={callout} stateName={stateNames.get(active) ?? active} anchor={anchor} isDefault={isDefault}
-                detail={phone ? <RacePanel race={race} fetchedAt={allRaces.fetchedAt} /> : undefined}
+              <MapCallout sharesVerified={SHARES_VERIFIED} onOpenHow={openHow} callout={callout} stateName={stateNames.get(active) ?? active} anchor={anchor} isDefault={isDefault}
+                detail={phone ? <RacePanel race={race} fetchedAt={allRaces.fetchedAt} dataVerified={DATA_VERIFIED} onOpenHow={openHow} /> : undefined}
                 onClose={close}
               />
             </ErrorBoundary>
           )}
           <div className="legend" role="group" aria-label="Map legend">
-            <p className="legend-title">Total dollars, not per voter</p>
-            <div
-              className="ramp"
-              style={{ background: `linear-gradient(to right, ${[0, 0.2, 0.4, 0.6, 0.8, 1].map(rampColor).join(', ')})` }}
-              role="img"
-              aria-label="Color scale from low to high total independent expenditures"
-            />
-            <div className="ramp-labels muted">
-              <span>$0</span>
-              <span>{formatMoney(allRaces.maxTotal)}</span>
-            </div>
+            {DATA_VERIFIED ? (
+              <>
+                <p className="legend-title">Total dollars, not per voter</p>
+                <div
+                  className="ramp"
+                  style={{ background: `linear-gradient(to right, ${[0, 0.2, 0.4, 0.6, 0.8, 1].map(rampColor).join(', ')})` }}
+                  role="img"
+                  aria-label="Color scale from low to high total independent expenditures"
+                />
+                <div className="ramp-labels muted">
+                  <span>$0</span>
+                  <span>{formatMoney(allRaces.maxTotal)}</span>
+                </div>
+              </>
+            ) : (
+              <p className="legend-title legend-neutral">
+                <svg width="18" height="12" aria-hidden="true">
+                  <rect width="18" height="12" fill={rampColor(0.3)} />
+                </svg>
+                State with a 2026 Senate race
+              </p>
+            )}
             <p className="how-link">
               <button type="button" className="link-button" onClick={openHow}>
                 How is this counted?
@@ -166,8 +178,9 @@ export default function App() {
 
         <div className="map-notes muted">
           <p>
-            Support plus oppose, all candidates in the race. Color scale is square root. Dark states have no 2026 Senate
-            race. FEC processed data as of {formatDate(allRaces.fetchedAt)}.
+            {DATA_VERIFIED
+              ? `Support plus oppose, all candidates in the race. Color scale is square root. Dark states have no 2026 Senate race. FEC processed data as of ${formatDate(allRaces.fetchedAt)}.`
+              : `Dark states have no 2026 Senate race. Spending amounts are being verified. FEC processed data as of ${formatDate(allRaces.fetchedAt)}.`}
           </p>
           <p className="legend-hatch">
             <svg width="18" height="12" aria-hidden="true">
@@ -191,7 +204,7 @@ export default function App() {
 
         {!phone && (
           <aside className="panel-column">
-            <RacePanel race={race} fetchedAt={allRaces.fetchedAt} />
+            <RacePanel race={race} fetchedAt={allRaces.fetchedAt} dataVerified={DATA_VERIFIED} onOpenHow={openHow} />
           </aside>
         )}
       </main>

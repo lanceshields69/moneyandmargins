@@ -1,9 +1,14 @@
 // The one place the corrections address lives. While empty, the site hides the report link and the contact line.
 export const CONTACT_EMAIL = 'lance@lanceshields.design'
 
-// While false: the national party card and its notice stay out, and the methodology modal renders the
-// partial text (docs/methodology-partial.md) instead of the verified method (docs/methodology.md).
+// DATA_VERIFIED gates per-candidate dollar amounts, top committees, the map fill, and the verified methodology
+// text. While false, the panel shows no amounts, the map is one neutral fill, and the methodology modal renders
+// docs/methodology-partial.md instead of docs/methodology.md.
 export const DATA_VERIFIED = false
+
+// SHARES_VERIFIED gates the national party card and the "Spent on ads" percentages. While false, the callout's
+// "Spent on ads" row says shares are being verified and links to the methodology.
+export const SHARES_VERIFIED = false
 
 // A visible line under the callout's rows: totals do not yet include 24- and 48-hour reports.
 export const GLOBAL_PARTIAL_NOTICE = true

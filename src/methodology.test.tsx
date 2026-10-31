@@ -177,7 +177,7 @@ describe('partial-data hotfix text is identical for every race and party', () =>
     expect(GLOBAL_PARTIAL_NOTICE).toBe(true)
     expect(callouts.size).toBe(allRaces.races.length)
     for (const [state, callout] of callouts) {
-      const html = renderToStaticMarkup(<MapCallout callout={callout} stateName={state} anchor={{ x: 0.5, y: 0.5 }} isDefault={false} onClose={() => {}} />)
+      const html = renderToStaticMarkup(<MapCallout callout={callout} stateName={state} anchor={{ x: 0.5, y: 0.5 }} isDefault={false} onClose={() => {}} sharesVerified />)
       expect(html.split(PARTIAL_CALLOUT_NOTICE).length - 1).toBe(1)
       expect(html).toContain('Spent on ads')
     }
@@ -185,7 +185,7 @@ describe('partial-data hotfix text is identical for every race and party', () =>
 
   it('shows the same limits sentence in the panel for every race', () => {
     for (const race of allRaces.races) {
-      const html = renderToStaticMarkup(<RacePanel race={race} fetchedAt={allRaces.fetchedAt} />)
+      const html = renderToStaticMarkup(<RacePanel race={race} fetchedAt={allRaces.fetchedAt} dataVerified />)
       expect(html).toContain(LIMITS_SENTENCE)
       expect(html).not.toContain('may not be included')
     }
