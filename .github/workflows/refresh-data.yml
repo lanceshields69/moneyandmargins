@@ -39,9 +39,9 @@ jobs:
 
       - name: Deploy to Vercel
         run: |
-          npx vercel@latest pull --yes --environment=preview --token="$VERCEL_TOKEN"
-          npx vercel@latest build --token="$VERCEL_TOKEN"
-          npx vercel@latest deploy --prebuilt --token="$VERCEL_TOKEN"
+          npx vercel@latest pull --yes --environment=production --token="$VERCEL_TOKEN"
+          npx vercel@latest build --prod --token="$VERCEL_TOKEN"
+          npx vercel@latest deploy --prebuilt --prod --token="$VERCEL_TOKEN"
 
       - name: Commit refreshed data
         run: |
