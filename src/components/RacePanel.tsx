@@ -13,7 +13,7 @@ function Bar({ label, side, color, striped }: { label: string; side: SideView; c
         <span className="track">
           <span
             className={striped ? 'fill fill-striped' : 'fill'}
-            style={{ width: `${width}%`, ['--bar-color' as string]: color }}
+            style={{ width: `${width}%`, ['--bar-color' as string]: color, ['--row' as string]: striped ? 1 : 0 }}
           />
         </span>
         <span className="amount" title={formatMoneyFull(side.value)}>
@@ -43,9 +43,9 @@ function CommitteeList({ title, committees }: { title: string; committees: Commi
   )
 }
 
-function Nominee({ row }: { row: RowView }) {
+function Nominee({ row, index }: { row: RowView; index: number }) {
   return (
-    <li className="nominee">
+    <li className="nominee" style={{ ['--i' as string]: index }}>
       <div className="nominee-head">
         <span className="swatch" style={{ background: row.partyColor }} aria-hidden="true" />
         <span className="name">{row.name}</span>
@@ -116,8 +116,8 @@ export default function RacePanel({ race, fetchedAt }: RacePanelProps) {
             </p>
           ))}
           <ul className="nominees">
-            {race.rows.map((row) => (
-              <Nominee key={row.candidateId} row={row} />
+            {race.rows.map((row, index) => (
+              <Nominee key={row.candidateId} row={row} index={index} />
             ))}
           </ul>
           <p className="muted scale-note">Bars share one scale within this race. Supporting and opposing amounts are not netted.</p>

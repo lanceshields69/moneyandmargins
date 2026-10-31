@@ -1,7 +1,17 @@
 import type { NationalView, PartyBar, PartyGroup } from '../computeSpending'
 import { formatDate, formatMoney, formatMoneyFull } from '../format'
 
-function Segment({ bar, group, striped }: { bar: PartyBar; group: PartyGroup; striped: boolean }) {
+function Segment({
+  bar,
+  group,
+  striped,
+  stateKey,
+}: {
+  bar: PartyBar
+  group: PartyGroup
+  striped: boolean
+  stateKey: string | null
+}) {
   if (bar.widthPct <= 0) return null
   return (
     <span className="seg" style={{ width: `${bar.widthPct}%` }}>
@@ -11,6 +21,7 @@ function Segment({ bar, group, striped }: { bar: PartyBar; group: PartyGroup; st
       />
       {bar.statePct > 0 && (
         <span
+          key={stateKey}
           className={striped ? 'seg-state state-part-striped' : 'seg-state'}
           style={{ width: `${bar.statePct}%`, ['--tint' as string]: group.tint }}
         />
@@ -19,7 +30,8 @@ function Segment({ bar, group, striped }: { bar: PartyBar; group: PartyGroup; st
   )
 }
 
-function PartyRow({ group, selected }: { group: PartyGroup; selected: boolean }) {
+function PartyRow({ group, stateKey }: { group: PartyGroup; stateKey: string | null }) {
+  const selected = stateKey !== null
   const detail = `Supporting ${formatMoneyFull(group.support.total)}, opposing ${formatMoneyFull(group.oppose.total)}`
   return (
     <div className="nat-line" title={`${group.nominees} nominees`}>
@@ -28,8 +40,8 @@ function PartyRow({ group, selected }: { group: PartyGroup; selected: boolean })
         {group.label}
       </span>
       <span className="track nat-track" aria-hidden="true">
-        <Segment bar={group.support} group={group} striped={false} />
-        <Segment bar={group.oppose} group={group} striped />
+        <Segment bar={group.support} group={group} striped={false} stateKey={stateKey} />
+        <Segment bar={group.oppose} group={group} striped stateKey={stateKey} />
       </span>
       <span className="amount" title={detail}>
         {formatMoney(group.total)}
@@ -56,7 +68,7 @@ export default function NationalChart({ view, stateName, fetchedAt }: NationalCh
         <span className="muted nat-date">As of {formatDate(fetchedAt)}</span>
       </div>
       {view.groups.map((group) => (
-        <PartyRow key={group.party} group={group} selected={view.stateCode !== null} />
+        <PartyRow key={group.party} group={group} stateKey={view.stateCode} />
       ))}
       <p className="nat-key muted">
         <span className="key-item">

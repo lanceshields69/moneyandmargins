@@ -476,3 +476,19 @@ details h4 {
 strong {
   font-weight: 500;
 }
+
+@keyframes reveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+.panel .fill {
+  animation: reveal 650ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 80ms + var(--row, 0) * 120ms);
+}
+.seg-state {
+  animation: reveal 600ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
