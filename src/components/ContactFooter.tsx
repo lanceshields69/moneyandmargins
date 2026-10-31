@@ -34,7 +34,7 @@ export default function ContactFooter({ entries }: { entries: CorrectionEntry[] 
     <>
       {CONTACT_EMAIL && (
         <p>
-          Questions or corrections: {CONTACT_EMAIL}{' '}
+          Questions or corrections? <a href={`mailto:${CONTACT_EMAIL}`}>Send an email</a>{' '}
           <button type="button" className="link-button" onClick={copy}>
             Copy
           </button>
