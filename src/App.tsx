@@ -6,6 +6,7 @@ import NationalCard from './components/NationalCard'
 import RacePanel from './components/RacePanel'
 import ContactFooter from './components/ContactFooter'
 import PreviewBadge from './components/PreviewBadge'
+import infoIcon from './assets/info.svg'
 import Vote411Banner from './components/Vote411Banner'
 import ShareMenu from './components/ShareMenu'
 import UsStatesMap, { rampColor } from './components/UsStatesMap'
@@ -13,7 +14,7 @@ import { buildNationalCard } from './computeNational'
 import { allRaces, callouts, forecastSnapshot, labelPoints, mapViewBox, stateNames } from './data'
 import logo from '../images/logo.png'
 import { DATA_VERIFIED, SHARES_VERIFIED } from './config'
-import { DATA_CHECK_NOTICE, LIMITS_SENTENCE, LIMITS_VERIFIED_SENTENCE } from './copy'
+import { DATA_CHECK_NOTICE, FINAL_FORECAST_TAG, forecastPhrase } from './copy'
 import corrections from '../data/corrections.json'
 import { correctionsBlocks, isCorrectionsHash, type CorrectionEntry } from './corrections'
 import { formatAsOf, formatDate, formatMoney, formatMonthDay } from './format'
@@ -98,6 +99,7 @@ export default function App() {
         fillMethodology(methodologySource(DATA_VERIFIED), {
           updated: allRaces.fetchedAt,
           forecastFrozen: forecastSnapshot.fetchedAt,
+          forecastFinal: forecastSnapshot.tag === FINAL_FORECAST_TAG,
           latestFiling: allRaces.latestDissemination,
           unattributedTotal: allRaces.unattributedTotal,
           approxCommitteeCount: allRaces.approxCommitteeCount,
@@ -120,7 +122,13 @@ export default function App() {
         </a>
       )}
       <header className="header">
-        <ShareMenu />
+        <div className="header-actions">
+          <button type="button" className="how-button" onClick={openHow}>
+            <img src={infoIcon} alt="" width={24} height={24} />
+            <span className="how-button-label">How this map works</span>
+          </button>
+          <ShareMenu />
+        </div>
         <h1>
           <img className="logo" src={logo} alt="Money & Margins" width={399} height={59} />
         </h1>
@@ -215,7 +223,7 @@ export default function App() {
             <a href={forecastSnapshot.sourceUrl} target="_blank" rel="noopener">
               {forecastSnapshot.sourceName}
             </a>{' '}
-            forecast, frozen {formatMonthDay(forecastSnapshot.fetchedAt)}.
+            forecast, {forecastPhrase(forecastSnapshot.tag)} {formatMonthDay(forecastSnapshot.fetchedAt)}.
           </p>
         </div>
         <div className="vote411-wrap">
@@ -245,15 +253,15 @@ export default function App() {
               subtracted from each other, and opposing one candidate is not counted as supporting another.
             </p>
             <p>
-              <strong>Predicted to win:</strong> each nominee&apos;s chance of winning in {forecastSnapshot.sourceName}&apos;s
-              forecast (
+              <strong>Predicted to win:</strong> {forecastSnapshot.sourceName} forecast (
               <a href={forecastSnapshot.sourceUrl} target="_blank" rel="noreferrer">
                 {snapshotHost}
               </a>
-              ), frozen {formatDate(forecastSnapshot.fetchedAt)}. A 55% chance is not a prediction that someone will win.{' '}
-              <strong>Spent on ads:</strong> each party&apos;s share of independent expenditures reported to the FEC in the
-              2026 cycle that support its nominee or oppose the other nominee. Includes primary-season spending and
-              excludes candidate and party-coordinated spending. {DATA_VERIFIED ? `FEC data: ${asOf}` : `Processed FEC data as of ${formatDate(allRaces.fetchedAt)}`}. {DATA_VERIFIED ? LIMITS_VERIFIED_SENTENCE : LIMITS_SENTENCE}
+              ), {forecastPhrase(forecastSnapshot.tag)} {formatDate(forecastSnapshot.fetchedAt)}. <strong>Spent on ads:</strong> each
+              party&apos;s share of reported spending for its nominee or against the other.{' '}
+              <button type="button" className="link-button" onClick={openHow}>
+                How this is counted
+              </button>
             </p>
             <p>
               Official voting information:{' '}

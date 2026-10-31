@@ -70,12 +70,13 @@ function surname(name: string): string {
   return (parts[parts.length - 1] ?? '').toLowerCase()
 }
 
-/** Party-blind display order: surname, then full name, then id. */
+/** Party-blind display order: party name alphabetically (from the label table), then surname, full name, id. */
 export function compareNominees(
-  a: { name: string; candidateId: string },
-  b: { name: string; candidateId: string },
+  a: { name: string; candidateId: string; party: Party },
+  b: { name: string; candidateId: string; party: Party },
 ): number {
   return (
+    PARTY_DISPLAY[a.party].label.localeCompare(PARTY_DISPLAY[b.party].label) ||
     surname(a.name).localeCompare(surname(b.name)) ||
     a.name.localeCompare(b.name) ||
     a.candidateId.localeCompare(b.candidateId)
@@ -141,7 +142,8 @@ export function buildRaceView(
     isSpecial: race.isSpecial,
     rows,
     scaleMax,
-    total: complete.length > 0 ? complete.reduce((sum, r) => sum + (r.support?.value ?? 0) + (r.oppose?.value ?? 0), 0) : null,
+    // Summed in id order, not display order, so the total does not move in the last digit when the display order does.
+    total: complete.length > 0 ? [...complete].sort((a, b) => a.candidateId.localeCompare(b.candidateId)).reduce((sum, r) => sum + (r.support?.value ?? 0) + (r.oppose?.value ?? 0), 0) : null,
     incompleteCount: rows.length - complete.length,
     missingMajor: MAJOR_PARTIES.filter((party) => !rows.some((r) => r.party === party)),
   }

@@ -1,4 +1,5 @@
 import type { Committee } from '../types'
+import { pickPair } from '../computeCallout'
 import { PARTY_DISPLAY, type RaceView, type RowView, type SideView } from '../computeSpending'
 import { DATA_VERIFIED } from '../config'
 import { AMOUNTS_PENDING_LEAD, LIMITS_SENTENCE, LIMITS_VERIFIED_SENTENCE, PANEL_PRIMARY_NOTE, SHARES_PENDING_LINK } from '../copy'
@@ -47,7 +48,7 @@ function CommitteeList({ title, committees }: { title: string; committees: Commi
   )
 }
 
-function Nominee({ row, index, dataVerified, asOf }: { row: RowView; index: number; dataVerified: boolean; asOf: string }) {
+function Nominee({ row, index, dataVerified }: { row: RowView; index: number; dataVerified: boolean }) {
   return (
     <li className="nominee" style={{ ['--i' as string]: index }}>
       <div className="nominee-head">
@@ -77,12 +78,11 @@ function Nominee({ row, index, dataVerified, asOf }: { row: RowView; index: numb
         </>
       )}
 
-      {row.sourceUrl && row.asOf && (
+      {row.sourceUrl && (
         <p className="source muted">
           <a href={row.sourceUrl} target="_blank" rel="noreferrer">
             FEC record
           </a>
-          , {dataVerified ? asOf : `processed data as of ${formatDate(row.asOf)}`}
         </p>
       )}
     </li>
@@ -100,7 +100,19 @@ interface RacePanelProps {
   onOpenHow?: () => void
 }
 
+/**
+ * Rows in the panel. A nominee the forecast covers always keeps a row, even at $0; any other candidate with
+ * nothing reported collapses into one line. Candidates flagged incomplete keep their row and its reason.
+ */
+export function splitRows(race: RaceView, collapse: boolean): { listed: RowView[]; quiet: RowView[] } {
+  if (!collapse) return { listed: race.rows, quiet: [] }
+  const covered = new Set(pickPair(race.rows).map((r) => r.candidateId))
+  const quiet = race.rows.filter((r) => !r.incomplete && !covered.has(r.candidateId) && (r.support?.value ?? 0) === 0 && (r.oppose?.value ?? 0) === 0)
+  return { listed: race.rows.filter((r) => !quiet.includes(r)), quiet }
+}
+
 export default function RacePanel({ race, fetchedAt, asOf = formatDate(fetchedAt), dataVerified = DATA_VERIFIED, onOpenHow }: RacePanelProps) {
+  const { listed, quiet } = race ? splitRows(race, dataVerified) : { listed: [], quiet: [] }
   return (
     <section id="race-details" className="panel" aria-label="Race details" tabIndex={-1}>
       {!race ? (
@@ -125,29 +137,34 @@ export default function RacePanel({ race, fetchedAt, asOf = formatDate(fetchedAt
               <>
                 {race.total === null
                   ? 'Incomplete data'
-                  : `Total independent expenditures, support plus oppose: ${formatMoney(race.total)} (${asOf})`}
-                {race.incompleteCount > 0 &&
-                  `. Leaves out ${race.incompleteCount} nominee${race.incompleteCount === 1 ? '' : 's'} with incomplete data, so this total may be low.`}
+                  : `Total independent expenditures, support plus oppose: ${formatMoney(race.total)}${
+                      race.incompleteCount > 0
+                        ? `. Leaves out ${race.incompleteCount} nominee${race.incompleteCount === 1 ? '' : 's'} with incomplete data, so this total may be low`
+                        : ''
+                    }.`}
                 {race.total !== null && ` ${PANEL_PRIMARY_NOTE}`}
               </>
             )}
           </p>
+          {dataVerified && asOf && <p className="muted summary asof">{`${asOf.charAt(0).toUpperCase()}${asOf.slice(1)}.`}</p>}
           {race.missingMajor.map((party) => (
             <p key={party} className="muted summary">
               No {PARTY_DISPLAY[party].label} nominee listed in the source data.
             </p>
           ))}
+          <p className="muted order-note">Listed alphabetically by party</p>
           <ul className="nominees">
-            {race.rows.map((row, index) => (
-              <Nominee key={row.candidateId} row={row} index={index} dataVerified={dataVerified} asOf={asOf} />
+            {listed.map((row, index) => (
+              <Nominee key={row.candidateId} row={row} index={index} dataVerified={dataVerified} />
             ))}
           </ul>
+          {quiet.length > 0 && <p className="muted quiet">{`Also on the ballot, no reported spending: ${quiet.map((r) => r.name).join(', ')}`}</p>}
           <p className="muted scale-note">Bars share one scale within this race. Supporting and opposing amounts are not netted.</p>
         </>
       )}
       <p className="muted disclaimer">
         Independent expenditures reported to the FEC for the 2026 cycle, including primary-season spending. Excludes
-        candidate committee and party-coordinated spending. {dataVerified ? `FEC data: ${asOf}` : `Processed FEC data as of ${formatDate(fetchedAt)}`}. {dataVerified ? LIMITS_VERIFIED_SENTENCE : LIMITS_SENTENCE}{' '}
+        candidate committee and party-coordinated spending. {dataVerified ? LIMITS_VERIFIED_SENTENCE : `Processed FEC data as of ${formatDate(fetchedAt)}. ${LIMITS_SENTENCE}`}{' '}
         <a href={FEC_SOURCE_URL} target="_blank" rel="noreferrer">
           FEC source
         </a>

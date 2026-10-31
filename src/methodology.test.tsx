@@ -55,7 +55,7 @@ describe('placeholders', () => {
       }
       const full = fillMethodology(md, values)
       expect(full).toContain('Last updated Oct 31, 2026')
-      expect(full).toContain('frozen')
+      expect(full).toMatch(/latest as of|frozen/)
     })
   }
 

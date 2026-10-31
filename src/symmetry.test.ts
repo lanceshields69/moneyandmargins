@@ -5,6 +5,7 @@ import fixtureJson from '../scripts/__fixtures__/spending-fixture.json'
 import {
   buildAllRaces,
   buildRaceView,
+  compareNominees,
   fillFraction,
   PARTY_DISPLAY,
   type RaceView,
@@ -37,7 +38,8 @@ function mirrorRace(race: RaceView): RaceView {
   const mirroredMissing = race.missingMajor.map(swapParty)
   return {
     ...race,
-    rows: race.rows.map(mirrorRow),
+    // Rows are listed by party name, so a swap re-sorts them by the same rule.
+    rows: race.rows.map(mirrorRow).sort(compareNominees),
     missingMajor: (['D', 'R'] as Party[]).filter((p) => mirroredMissing.includes(p)),
   }
 }
@@ -97,15 +99,20 @@ describe('party symmetry on the saved fixture', () => {
     expect(swapped).toEqual(mirrorRace(original))
   })
 
-  it('keeps the same sort order', () => {
-    expect(swapped.rows.map((r) => r.candidateId)).toEqual(original.rows.map((r) => r.candidateId))
+  it('lists by party name, then surname, by the same rule before and after the swap', () => {
+    for (const race of [original, swapped]) {
+      expect(race.rows.map((r) => r.candidateId)).toEqual([...race.rows].sort(compareNominees).map((r) => r.candidateId))
+      const labels = race.rows.map((r) => r.partyLabel)
+      expect(labels).toEqual([...labels].sort((a, b) => a.localeCompare(b)))
+    }
   })
 
   it('keeps bar widths, the shared scale, the race total and the map fill identical', () => {
     expect(swapped.scaleMax).toBe(original.scaleMax)
     expect(swapped.total).toBe(original.total)
     expect(fillFraction(swapped.total, 50_000_000)).toBe(fillFraction(original.total, 50_000_000))
-    expect(swapped.rows.map((r) => [r.support, r.oppose])).toEqual(original.rows.map((r) => [r.support, r.oppose]))
+    const byId = (race: RaceView) => race.rows.map((r) => [r.candidateId, r.support, r.oppose]).sort((a, b) => String(a[0]).localeCompare(String(b[0])))
+    expect(byId(swapped)).toEqual(byId(original))
   })
 
   it('takes every label and color from the party table', () => {

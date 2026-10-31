@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { act } from 'react'
 import { createRoot } from 'react-dom/client'
 import { renderToStaticMarkup } from 'react-dom/server'
@@ -5,6 +7,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import MapCallout from './components/MapCallout'
 import PreviewBadge from './components/PreviewBadge'
 import RacePanel from './components/RacePanel'
+import { forecastPhrase } from './copy'
+import { formatMoney } from './format'
+import { fillMethodology } from './methodology'
 import { AMOUNTS_PENDING_LEAD, CALLOUT_SPENT_NOTE, PANEL_PRIMARY_NOTE, PARTIAL_CALLOUT_NOTICE, SHARES_PENDING_LEAD, SHARES_PENDING_LINK } from './copy'
 import { allRaces, callouts } from './data'
 import verifiedMd from '../docs/methodology.md?raw'
@@ -203,5 +208,93 @@ describe('the Preview badge', () => {
       host.remove()
       vi.doUnmock('./config')
     }
+  })
+})
+
+describe('panel, labels and header fixes', () => {
+  const rowOf = (over: Record<string, unknown>) => ({
+    candidateId: 'X--A', name: 'A Person', party: 'D', partyLabel: 'Democratic', partyColor: 'c', incomplete: false, reason: null,
+    support: { value: 0, widthPct: 0 }, oppose: { value: 0, widthPct: 0 }, topSupportCommittees: [], topOpposeCommittees: [], sourceUrl: 'https://x.test', asOf: '2026-10-31T00:00:00Z', ...over,
+  })
+  const raceOf = (rows: unknown[]) => ({ raceId: 'XX-2026', state: 'XX', raceName: 'Test Senate 2026', isSpecial: false, rows, scaleMax: 1, total: 10, incompleteCount: 0, missingMajor: [] }) as never
+  const panel = (race: never, asOf = 'itemized data through Oct 31, 2026 UTC; fetched Oct 31, 2026, 21:57 UTC') =>
+    renderToStaticMarkup(<RacePanel race={race} fetchedAt={allRaces.fetchedAt} asOf={asOf} dataVerified />)
+
+  it('lists by party name with a note, and collapses candidates with no reported spending into one line', () => {
+    for (const race of allRaces.races) {
+      const html = panel(race as never)
+      expect(html).toContain('Listed alphabetically by party')
+      const labels = [...html.matchAll(/class="party">([^<]+)</g)].map((m) => m[1])
+      expect(labels).toEqual([...labels].sort((a, b) => a.localeCompare(b)))
+    }
+    const tx = panel(allRaces.races.find((r) => r.state === 'TX') as never)
+    expect(tx).toContain('Also on the ballot, no reported spending: Ted Brown')
+    expect(tx).not.toContain('class="name">Ted Brown')
+  })
+
+  it('keeps a row, at $0, for a nominee the forecast covers', () => {
+    const race = raceOf([
+      rowOf({ candidateId: 'X--D', name: 'Dee Dem', party: 'D', partyLabel: 'Democratic', support: { value: 5, widthPct: 5 } }),
+      rowOf({ candidateId: 'X--R', name: 'Ray Rep', party: 'R', partyLabel: 'Republican' }),
+      rowOf({ candidateId: 'X--I', name: 'Ivy Ind', party: 'I', partyLabel: 'Independent or other party' }),
+    ])
+    const html = panel(race)
+    expect(html).toContain('class="name">Ray Rep')
+    expect(html).not.toContain('class="name">Ivy Ind')
+    expect(html).toContain('no reported spending: Ivy Ind')
+  })
+
+  it('shows the data label once near the top, and each candidate line says just "FEC record"', () => {
+    const html = panel(allRaces.races.find((r) => r.state === 'OH') as never)
+    expect(html.split('tem' + 'ized data through').length - 1).toBe(1)
+    expect(html.indexOf('temized data through')).toBeLessThan(html.indexOf('class="nominees"'))
+    for (const m of html.matchAll(/<p class="source muted">(.*?)<\/p>/g)) expect(text(m[1])).toBe('FEC record')
+  })
+
+  it('draws opposing bars outlined and unfilled, never hatched', () => {
+    const css = readFileSync(join(process.cwd(), 'src/app.css'), 'utf-8')
+    const block = /\.fill-striped\s*\{[^}]*\}/.exec(css)?.[0] ?? ''
+    expect(block).toContain('background: transparent')
+    expect(block).toContain('box-shadow: inset')
+    expect(block).not.toContain('repeating-linear-gradient')
+  })
+
+  it('formats millions with one decimal and billions with two', () => {
+    expect(formatMoney(95_000_000)).toBe('$95.0M')
+    expect(formatMoney(100_000_000)).toBe('$100.0M')
+    expect(formatMoney(1_040_700_000)).toBe('$1.04B')
+    expect(formatMoney(784_700)).toBe('$784.7K')
+    expect(formatMoney(950)).toBe('$950')
+  })
+
+  it('says "frozen" only for the snapshot tagged final-pre-election, otherwise "latest as of"', () => {
+    expect(forecastPhrase('final-pre-election')).toBe('frozen')
+    expect(forecastPhrase(null)).toBe('latest as of')
+    expect(forecastPhrase('anything-else')).toBe('latest as of')
+    const text = fillMethodology('VotePredictor\'s forecast, frozen {{forecast_freeze_date}}.', { updated: '2026-10-31T00:00:00Z', forecastFrozen: '2026-10-31T15:38:29Z', latestFiling: null, unattributedTotal: null, approxCommitteeCount: null, approxTotal: null })
+    expect(text).toBe("VotePredictor's forecast, latest as of Oct 31, 2026 UTC.")
+    expect(fillMethodology("forecast, frozen {{forecast_freeze_date}}.", { updated: '2026-10-31T00:00:00Z', forecastFrozen: '2026-11-02T23:00:00Z', forecastFinal: true, latestFiling: null, unattributedTotal: null, approxCommitteeCount: null, approxTotal: null })).toBe('forecast, frozen Nov 2, 2026 UTC.')
+  })
+
+  it('puts the How this map works button left of Share, opens the modal, and shortens the footer paragraph to a link', async () => {
+    window.matchMedia = ((q: string) => ({ matches: false, media: q, addEventListener() {}, removeEventListener() {}, addListener() {}, removeListener() {}, onchange: null, dispatchEvent: () => false })) as typeof window.matchMedia
+    vi.resetModules()
+    vi.doMock('./config', () => ({ CONTACT_EMAIL: 'a@b.test', DATA_VERIFIED: true, SHARES_VERIFIED: true, GLOBAL_PARTIAL_NOTICE: false, IS_PREVIEW_BUILD: false }))
+    const host = document.createElement('div')
+    document.body.appendChild(host)
+    const { default: App } = await import('./App')
+    const root = createRoot(host)
+    act(() => root.render(<App />))
+    const actions = host.querySelector('.header-actions')!
+    expect([...actions.children].map((c) => c.className.split(' ')[0])).toEqual(['how-button', 'share'])
+    expect(actions.querySelector('.how-button')?.textContent).toBe('How this map works')
+    const footerLine = [...host.querySelectorAll('.footer-notes p')].find((p) => p.textContent?.startsWith('Predicted to win'))!
+    expect((footerLine.textContent ?? '').length).toBeLessThan(230)
+    expect(footerLine.textContent).toContain('latest as of')
+    act(() => footerLine.querySelector<HTMLButtonElement>('button')!.click())
+    expect(host.querySelector('[role="dialog"]')).not.toBeNull()
+    act(() => root.unmount())
+    host.remove()
+    vi.doUnmock('./config')
   })
 })

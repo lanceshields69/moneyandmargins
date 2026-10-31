@@ -658,9 +658,14 @@ strong {
   background: var(--bar-color);
 }
 .fill-striped {
-  background: repeating-linear-gradient(135deg, var(--bar-color) 0 3px, transparent 3px 6px);
-  outline: 1px solid var(--bar-color);
-  outline-offset: -1px;
+  /* Opposing: outlined and unfilled, the same as the national card's opposing segment. */
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--bar-color);
+}
+.order-note,
+.quiet {
+  margin: 8px 0 0;
+  font-size: 0.75rem;
 }
 .amount {
   font-weight: 500;
@@ -855,9 +860,6 @@ details h4 {
 }
 @media (min-width: 900px) {
   .share {
-    position: absolute;
-    top: 24px;
-    right: 32px;
     margin: 0;
   }
 }
@@ -896,7 +898,7 @@ details h4 {
     white-space: nowrap;
   }
   .share-menu {
-    top: 54px;
+    top: 41px;
     width: 169px;
     max-width: calc(100vw - 32px);
     padding: 14px 18px;
@@ -1240,4 +1242,75 @@ details h4 {
   font-size: 11px;
   line-height: 16px;
   pointer-events: none;
+}
+
+/* Header actions (Figma "share"): "How this map works" left of the Share pill. Icon only below 1100px. */
+.header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
+  margin-bottom: 12px;
+}
+.how-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 52px;
+  padding: 14px 24px;
+  border: 1px solid #3a3834;
+  border-radius: 45px;
+  background: var(--color-panel);
+  color: #eae8e2;
+  font: inherit;
+  font-size: 15px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.how-button:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+@media (min-width: 900px) {
+  .header-actions {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    margin: 0;
+  }
+}
+@media (max-width: 1099px) {
+  .how-button {
+    width: 52px;
+    padding: 0;
+  }
+  .how-button-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .header-actions {
+    gap: 12px;
+  }
+}
+@media (max-width: 600px) {
+  .header-actions {
+    position: absolute;
+    top: 25px;
+    right: 16px;
+    gap: 8px;
+    margin: 0;
+  }
+  .how-button {
+    width: 36px;
+    height: 36px;
+  }
+  .how-button img {
+    width: 22px;
+    height: 22px;
+  }
 }

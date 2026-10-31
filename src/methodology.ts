@@ -12,6 +12,8 @@ export interface MethodologyValues {
   updated: string
   /** ISO timestamp the forecast snapshot was frozen. */
   forecastFrozen: string
+  /** True only for the snapshot tagged final-pre-election. Any earlier snapshot reads "latest as of", not "frozen". */
+  forecastFinal?: boolean
   /** Latest dissemination date in the data, YYYY-MM-DD, or null when the data does not carry one. */
   latestFiling: string | null
   /** Spending not tied to a candidate, in dollars, or null when there is no such figure. */
@@ -44,6 +46,7 @@ export function fillMethodology(md: string, v: MethodologyValues): string {
     if (value !== null) text = text.split(`{{${name}}}`).join(value)
   }
   set('updated_date', formatDate(v.updated))
+  if (!v.forecastFinal) text = text.replace('frozen on {{forecast_freeze_date}}', 'latest as of {{forecast_freeze_date}}').replace('frozen {{forecast_freeze_date}}', 'latest as of {{forecast_freeze_date}}')
   set('forecast_freeze_date', formatDate(v.forecastFrozen))
   set('latest_filing_date', v.latestFiling ? formatDate(`${v.latestFiling}T00:00:00Z`) : null)
   set('approx_committee_count', v.approxCommitteeCount === null ? null : String(v.approxCommitteeCount))

@@ -8,3 +8,7 @@ export const AMOUNTS_PENDING_LEAD = 'Dollar amounts are being verified. Partial 
 export const PANEL_PRIMARY_NOTE = 'Includes primary-season spending as labeled by the filer.'
 export const LIMITS_VERIFIED_SENTENCE = 'Includes 24- and 48-hour reports, matched against periodic reports so nothing counts twice. Filings made after the fetch are not yet included.'
 export const CALLOUT_SPENT_NOTE = 'Includes primary-season spending as labeled by the filer. Contrast ads may be counted twice.'
+
+/** "frozen [date]" only for the snapshot tagged final-pre-election; any earlier snapshot is "latest as of [date]". */
+export const FINAL_FORECAST_TAG = 'final-pre-election'
+export const forecastPhrase = (tag: string | null): string => (tag === FINAL_FORECAST_TAG ? 'frozen' : 'latest as of')
