@@ -243,7 +243,7 @@ describe('panel, labels and header fixes', () => {
   it('opens with one line, "Total reported: $X. Data through [date].", and each candidate line says just "FEC record"', () => {
     const html = panel(allRaces.races.find((r) => r.state === 'OH') as never)
     const top = text(/<p class="muted summary">(.*?)<\/p>/.exec(html)?.[1] ?? '')
-    expect(top).toMatch(/^Total reported: \$[\d.,]+[KMB]?\. Data through Oct 31, 2026 UTC\.$/)
+    expect(top).toMatch(/^Total reported: \$[\d.,]+[KMB]?\. Data through Oct 31, 2026\.$/)
     expect(html.split('Data through').length - 1).toBe(1)
     expect(html).not.toContain('fetched')
     expect(html).not.toContain('Includes primary-season')
