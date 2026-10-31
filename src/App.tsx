@@ -207,6 +207,14 @@ export default function App() {
               It updates twice a day from the FEC’s processed records, and each page shows its last update time, so
               very recent filings may not appear yet.
             </p>
+            <h3>Who made this?</h3>
+            <p>
+              I’m Lance Shields, a product design director in Los Angeles with more than 20 years of experience, and I
+              built this on my own with Claude Code.{' '}
+              <a href="https://www.lanceshields.design/" target="_blank" rel="noreferrer">
+                See my work &gt;
+              </a>
+            </p>
           </section>
         </div>
       </footer>
