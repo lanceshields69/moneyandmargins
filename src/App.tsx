@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import UsStatesMap, { rampColor } from './components/UsStatesMap'
+import NationalChart from './components/NationalChart'
 import RacePanel from './components/RacePanel'
-import { allRaces } from './data'
+import { buildNationalView } from './computeSpending'
+import { allRaces, stateNames } from './data'
 import logo from '../images/logo.png'
 import { formatDate, formatMoney } from './format'
 
@@ -17,6 +19,7 @@ export default function App() {
   const announce = useRef<HTMLParagraphElement>(null)
 
   const race = selected ? (raceByState.get(selected) ?? null) : null
+  const national = useMemo(() => buildNationalView(allRaces.races, selected), [selected])
 
   useEffect(() => {
     const url = new URL(window.location.href)
@@ -42,19 +45,22 @@ export default function App() {
 
       <main className="layout">
         <div className="map-column">
-          <label className="jump">
-            <span>Jump to a race</span>
-            <select value={selected ?? ''} onChange={(e) => setSelected(e.target.value || null)}>
-              <option value="">Choose a state</option>
-              {sortedRaces.map((r) => (
-                <option key={r.raceId} value={r.state}>
-                  {r.raceName.replace(/ Senate( special election)? 2026$/, '')}
-                  {r.isSpecial ? ' (special election)' : ''}
-                  {r.incompleteCount > 0 ? ' (incomplete data)' : ''}
-                </option>
-              ))}
-            </select>
-          </label>
+          <div className="map-top">
+            <label className="jump">
+              <span>Jump to a race</span>
+              <select value={selected ?? ''} onChange={(e) => setSelected(e.target.value || null)}>
+                <option value="">Choose a state</option>
+                {sortedRaces.map((r) => (
+                  <option key={r.raceId} value={r.state}>
+                    {r.raceName.replace(/ Senate( special election)? 2026$/, '')}
+                    {r.isSpecial ? ' (special election)' : ''}
+                    {r.incompleteCount > 0 ? ' (incomplete data)' : ''}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <NationalChart view={national} stateName={selected ? (stateNames.get(selected) ?? selected) : null} fetchedAt={allRaces.fetchedAt} />
+          </div>
 
           <UsStatesMap
             raceByState={raceByState}
