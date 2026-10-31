@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-10-31T20:40:30.953Z",
+  "fetchedAt": "2026-10-31T21:57:23.492Z",
   "source": "FEC Schedule E independent expenditures, itemized (/schedules/schedule_e/), cycle=2026, 24/48-hour notices included and de-duplicated against periodic reports (see metadata.dedup_method).",
   "metadata": {
     "dedup_method": "Itemized Schedule E rows. Memo subtotals dropped. Within each filing chain only the latest version of a transaction is kept (FEC most_recent flag plus previous_file_number on amendments). For each committee, periodic-report rows (non-notice) stand up to the latest processed periodic coverage end date, and 24/48-hour notices count only after it. If a committee has periodic rows but no coverage end date can be matched, notices are matched one for one to periodic rows on (committee, candidate, support/oppose, amount, date, payee) and the committee is listed as approximate.",
@@ -60,8 +60,8 @@
       "WY": "2026-10-20"
     },
     "raw_sha256": "665efaca2103a5c390ba6fe25362ebc47977ed922578b4829e77dc4c3f122088",
-    "raw_path": "data/raw/2026-10-31T20-40-30-953Z/",
-    "requests": 15
+    "raw_path": "data/raw/2026-10-31T21-57-23-492Z/",
+    "requests": 274
   },
   "totals": [
     {
@@ -73,12 +73,12 @@
       "support": {
         "value": 11489838.35,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4AK00214/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 39127912.889999986,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4AK00214/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -154,12 +154,12 @@
       "support": {
         "value": 10979000.070000002,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6AK00276/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 42326850.83,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6AK00276/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -235,12 +235,12 @@
       "support": {
         "value": 2582150.62,
         "sourceUrl": "https://www.fec.gov/data/candidate/S8AK00140/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S8AK00140/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -273,12 +273,12 @@
       "support": {
         "value": 16798015.889999997,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6AL00476/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 3018.74,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6AL00476/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -330,12 +330,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6AL00518/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6AL00518/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -349,12 +349,12 @@
       "support": {
         "value": 665400,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4AR00103/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4AR00103/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -375,12 +375,12 @@
       "support": {
         "value": 45000,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6AR00199/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 4689265.029999999,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6AR00199/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -414,12 +414,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6AR00223/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6AR00223/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -433,12 +433,12 @@
       "support": {
         "value": 512080.51,
         "sourceUrl": "https://www.fec.gov/data/candidate/S0CO00575/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S0CO00575/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -483,12 +483,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6CO00507/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6CO00507/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -503,12 +503,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6CO00549/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6CO00549/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -520,12 +520,12 @@
       "support": {
         "value": null,
         "sourceUrl": "https://www.fec.gov/data/elections/senate/CO/2026/",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": null,
         "sourceUrl": "https://www.fec.gov/data/elections/senate/CO/2026/",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -539,12 +539,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6CO00564/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6CO00564/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -556,12 +556,12 @@
       "support": {
         "value": null,
         "sourceUrl": "https://www.fec.gov/data/elections/senate/CO/2026/",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": null,
         "sourceUrl": "https://www.fec.gov/data/elections/senate/CO/2026/",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -575,12 +575,12 @@
       "support": {
         "value": 243333.19,
         "sourceUrl": "https://www.fec.gov/data/candidate/S0DE00092/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S0DE00092/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -613,12 +613,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6DE00206/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6DE00206/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -632,12 +632,12 @@
       "support": {
         "value": 3936944.209999997,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6FL00640/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 3495133.2800000003,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6FL00640/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -713,12 +713,12 @@
       "support": {
         "value": 5235987.49,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6FL00830/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 10351024.630000003,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6FL00830/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -776,12 +776,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6FL00863/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6FL00863/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -795,12 +795,12 @@
       "support": {
         "value": 4149591.2100000004,
         "sourceUrl": "https://www.fec.gov/data/candidate/S8GA00180/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 16349925.04,
         "sourceUrl": "https://www.fec.gov/data/candidate/S8GA00180/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -876,12 +876,12 @@
       "support": {
         "value": 2309798.170000002,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6GA00390/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 14032342.64,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6GA00390/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -957,12 +957,12 @@
       "support": {
         "value": 18712302.31000001,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6IA00314/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 65512463.87,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6IA00314/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -1038,12 +1038,12 @@
       "support": {
         "value": 41919334.74000002,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6IA00298/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 76882841.47000001,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6IA00298/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -1119,12 +1119,12 @@
       "support": {
         "value": 697507.86,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6IA00181/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 101120,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6IA00181/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -1158,12 +1158,12 @@
       "support": {
         "value": 9151.75,
         "sourceUrl": "https://www.fec.gov/data/candidate/S8ID00092/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 35155,
         "sourceUrl": "https://www.fec.gov/data/candidate/S8ID00092/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -1191,12 +1191,12 @@
       "support": {
         "value": 119800,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6ID00146/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6ID00146/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -1223,12 +1223,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S0ID00172/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S0ID00172/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -1242,12 +1242,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6ID00187/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6ID00187/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -1261,12 +1261,12 @@
       "support": {
         "value": 9082588.169999998,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6IL00458/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 10489100.920000002,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6IL00458/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -1324,12 +1324,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6IL00615/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6IL00615/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -1343,12 +1343,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6IL00680/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6IL00680/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -1362,12 +1362,12 @@
       "support": {
         "value": 3407377.1599999997,
         "sourceUrl": "https://www.fec.gov/data/candidate/S0KS00315/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 40063534.11,
         "sourceUrl": "https://www.fec.gov/data/candidate/S0KS00315/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -1443,12 +1443,12 @@
       "support": {
         "value": 10656205.220000004,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6KS00312/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 30812791.27000001,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6KS00312/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -1524,12 +1524,12 @@
       "support": {
         "value": 323647.72000000003,
         "sourceUrl": "https://www.fec.gov/data/candidate/S2KS00154/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S2KS00154/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -1550,12 +1550,12 @@
       "support": {
         "value": 8693932.319999998,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6KY00286/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 9501650.27,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6KY00286/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -1613,12 +1613,12 @@
       "support": {
         "value": 30588.68,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6KY00385/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 250000,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6KY00385/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -1652,12 +1652,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6KY00377/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6KY00377/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -1671,12 +1671,12 @@
       "support": {
         "value": 13795239.98,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6LA00664/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 10863071.61,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6LA00664/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -1740,12 +1740,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6LA00615/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6LA00615/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -1759,12 +1759,12 @@
       "support": {
         "value": 18007,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4MA00028/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 61500,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4MA00028/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -1804,12 +1804,12 @@
       "support": {
         "value": 644500,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MA00304/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MA00304/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -1830,12 +1830,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MA00288/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MA00288/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -1849,12 +1849,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S8MA00268/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S8MA00268/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -1868,12 +1868,12 @@
       "support": {
         "value": 8158843.889999999,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6ME00159/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 38021585.50999999,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6ME00159/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -1949,12 +1949,12 @@
       "support": {
         "value": 11311372.690000001,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6ME00464/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 73448416.71000004,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6ME00464/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -2030,12 +2030,12 @@
       "support": {
         "value": 40561593.65999995,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MI00418/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 147777252.77000007,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MI00418/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -2111,12 +2111,12 @@
       "support": {
         "value": 50234107.67,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4MI00595/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 53175120.48,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4MI00595/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -2192,12 +2192,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MI00442/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MI00442/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -2211,12 +2211,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4MI00512/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4MI00512/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -2230,12 +2230,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MI00566/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MI00566/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -2249,12 +2249,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MI00590/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MI00590/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -2268,12 +2268,12 @@
       "support": {
         "value": 3583888.129999999,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MN00440/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 9584583.52,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MN00440/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -2337,12 +2337,12 @@
       "support": {
         "value": 44884.32,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MN00556/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 1030758.73,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MN00556/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -2400,12 +2400,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MN00481/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MN00481/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -2419,12 +2419,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MN00572/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MN00572/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -2438,12 +2438,12 @@
       "support": {
         "value": 810716,
         "sourceUrl": "https://www.fec.gov/data/candidate/S8MS00261/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 5516819.05,
         "sourceUrl": "https://www.fec.gov/data/candidate/S8MS00261/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -2519,12 +2519,12 @@
       "support": {
         "value": 8105547.35,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MS00133/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 1642465.2,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MS00133/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -2576,12 +2576,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4MS00187/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4MS00187/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -2595,12 +2595,12 @@
       "support": {
         "value": 3397296.7900000005,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MT00295/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 1029356.9100000001,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MT00295/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -2658,12 +2658,12 @@
       "support": {
         "value": 3228839.98,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MT00253/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 365180.64,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MT00253/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -2715,12 +2715,12 @@
       "support": {
         "value": 11060553.120000005,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MT00287/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 2020985.8,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MT00287/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -2778,12 +2778,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MT00261/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6MT00261/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -2797,12 +2797,12 @@
       "support": {
         "value": 6414540.89,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6NC00415/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 23502707.33,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6NC00415/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -2878,12 +2878,12 @@
       "support": {
         "value": 4725013.7399999965,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6NC00407/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 42370056.379999995,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6NC00407/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -2959,12 +2959,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S0NC00335/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S0NC00335/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -2978,12 +2978,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6NC00563/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6NC00563/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -2997,12 +2997,12 @@
       "support": {
         "value": 1869983.72,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6NE00129/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 22865451.77999999,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6NE00129/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -3078,12 +3078,12 @@
       "support": {
         "value": 12854336.660000002,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4NE00207/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 31399077.02999999,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4NE00207/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -3159,12 +3159,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6NE00202/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6NE00202/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -3178,12 +3178,12 @@
       "support": {
         "value": 271224.85,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6NE00210/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 132824.9,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6NE00210/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -3217,12 +3217,12 @@
       "support": {
         "value": 189273.41999999998,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6NE00152/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6NE00152/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -3249,12 +3249,12 @@
       "support": {
         "value": 3021404.1399999997,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6NH00141/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 32594082.259999994,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6NH00141/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -3330,12 +3330,12 @@
       "support": {
         "value": 10912667.700000003,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6NH00208/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 22053026.240000002,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6NH00208/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -3411,12 +3411,12 @@
       "support": {
         "value": 105736.25,
         "sourceUrl": "https://www.fec.gov/data/candidate/S2NH00223/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S2NH00223/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -3437,12 +3437,12 @@
       "support": {
         "value": 135.34,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4NJ00185/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4NJ00185/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -3469,12 +3469,12 @@
       "support": {
         "value": 1059.61,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4NJ00532/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4NJ00532/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -3495,12 +3495,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S0NJ00258/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S0NJ00258/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -3514,12 +3514,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4NJ00144/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4NJ00144/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -3533,12 +3533,12 @@
       "support": {
         "value": 274749.93,
         "sourceUrl": "https://www.fec.gov/data/candidate/S0NM00058/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S0NM00058/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -3577,12 +3577,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6NM01186/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6NM01186/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -3596,12 +3596,12 @@
       "support": {
         "value": 70524495.06999995,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6OH00304/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 129142351.84999998,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6OH00304/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -3677,12 +3677,12 @@
       "support": {
         "value": 25090815.539999984,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6OH00163/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 187262811.66000003,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6OH00163/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -3758,12 +3758,12 @@
       "support": {
         "value": 1926514.49,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6OH00429/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6OH00429/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -3784,12 +3784,12 @@
       "support": {
         "value": 1553206.7999999998,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6OH00395/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6OH00395/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -3810,12 +3810,12 @@
       "support": {
         "value": 2640948.9099999988,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6OK04247/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6OK04247/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -3860,12 +3860,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6OK04163/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6OK04163/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -3877,12 +3877,12 @@
       "support": {
         "value": null,
         "sourceUrl": "https://www.fec.gov/data/elections/senate/OK/2026/",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": null,
         "sourceUrl": "https://www.fec.gov/data/elections/senate/OK/2026/",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -3896,12 +3896,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6OK04205/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6OK04205/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -3913,12 +3913,12 @@
       "support": {
         "value": null,
         "sourceUrl": "https://www.fec.gov/data/elections/senate/OK/2026/",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": null,
         "sourceUrl": "https://www.fec.gov/data/elections/senate/OK/2026/",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -3932,12 +3932,12 @@
       "support": {
         "value": 120,
         "sourceUrl": "https://www.fec.gov/data/candidate/S8OR00207/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S8OR00207/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -3958,12 +3958,12 @@
       "support": {
         "value": 25000,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6OR05218/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6OR05218/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -3984,12 +3984,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S0OR00378/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S0OR00378/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -4003,12 +4003,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S2OR00234/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S2OR00234/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -4022,12 +4022,12 @@
       "support": {
         "value": 10,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6RI00163/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6RI00163/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -4048,12 +4048,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4RI00051/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4RI00051/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -4067,12 +4067,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6RI00288/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6RI00288/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -4086,12 +4086,12 @@
       "support": {
         "value": 11253298.190000001,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6SC04437/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 10182155.159999998,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6SC04437/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -4167,12 +4167,12 @@
       "support": {
         "value": 7300194.419999998,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6SC04239/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 17743516.56,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6SC04239/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -4248,12 +4248,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6SC04247/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6SC04247/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -4265,12 +4265,12 @@
       "support": {
         "value": null,
         "sourceUrl": "https://www.fec.gov/data/elections/senate/SC/2026/",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": null,
         "sourceUrl": "https://www.fec.gov/data/elections/senate/SC/2026/",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -4284,12 +4284,12 @@
       "support": {
         "value": 795595.69,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4SD00049/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 1187217.98,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4SD00049/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -4341,12 +4341,12 @@
       "support": {
         "value": 879836.89,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6SD01117/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 985339,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6SD01117/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -4398,12 +4398,12 @@
       "support": {
         "value": 1038595.8400000003,
         "sourceUrl": "https://www.fec.gov/data/candidate/S0TN00169/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S0TN00169/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -4448,12 +4448,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4TN00542/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4TN00542/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -4467,12 +4467,12 @@
       "support": {
         "value": 95028806.41000001,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6TX00388/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 100005777.69,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6TX00388/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -4548,12 +4548,12 @@
       "support": {
         "value": 37187686.990000024,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6TX00479/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 220855061.07999986,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6TX00479/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -4629,12 +4629,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4TX00888/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4TX00888/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -4648,12 +4648,12 @@
       "support": {
         "value": 184544,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6VA00093/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6VA00093/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -4686,12 +4686,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S8VA00321/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S8VA00321/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -4705,12 +4705,12 @@
       "support": {
         "value": 646893.69,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4WV00159/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S4WV00159/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -4737,12 +4737,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6WV00188/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6WV00188/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -4756,12 +4756,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6WV00204/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6WV00204/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
@@ -4775,12 +4775,12 @@
       "support": {
         "value": 1097133.25,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6WY00209/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6WY00209/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [
         {
@@ -4825,12 +4825,12 @@
       "support": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6WY00217/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "oppose": {
         "value": 0,
         "sourceUrl": "https://www.fec.gov/data/candidate/S6WY00217/?tab=independent-expenditures&cycle=2026&election_full=false",
-        "asOf": "2026-10-31T20:40:30.953Z"
+        "asOf": "2026-10-31T21:57:23.492Z"
       },
       "topSupportCommittees": [],
       "topOpposeCommittees": []
