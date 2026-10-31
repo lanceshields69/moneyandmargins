@@ -104,7 +104,7 @@ describe('a normal race', () => {
     for (const side of callout.sides) {
       expect(side.partyLabel).toBe(PARTY_DISPLAY[side.party].label)
       expect(side.partyColor).toBe(PARTY_DISPLAY[side.party].color)
-      expect(side.letter).toBe(side.party)
+      expect(side.chip).toBe(PARTY_DISPLAY[side.party].chip)
     }
   })
 
@@ -153,8 +153,9 @@ describe('flags', () => {
 
   it('shows an independent as the second square and no forecast', () => {
     const callout = calloutFor(fixtures.independent)
-    expect(callout.sides.map((s) => s.letter).sort()).toEqual(['I', 'R'])
-    expect(callout.sides.find((s) => s.letter === 'I')?.partyColor).toBe('var(--color-ind)')
+    expect(callout.sides.map((s) => s.partyLabel).sort()).toEqual(['Independent or other party', 'Republican'])
+    expect(callout.sides.find((s) => s.chip === 'I')?.partyColor).toBe('var(--color-ind)')
+    expect(callout.sides.filter((s) => s.chip === '')).toHaveLength(1)
     expect(callout.winFlag?.label).toBe('No forecast')
     expect(callout.sides.reduce((n, s) => n + (s.adPct ?? 0), 0)).toBe(100)
   })

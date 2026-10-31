@@ -5,10 +5,11 @@ import type { Candidate, Committee, ExpenditureTotals, NomineesFile, Party, Race
 // `party` as plain data and indexes this table; there are no party branches.
 const tintOf = (variable: string) => `color-mix(in oklab, var(${variable}) 45%, white)`
 
-export const PARTY_DISPLAY: Record<Party, { label: string; color: string; tint: string }> = {
-  D: { label: 'Democratic', color: 'var(--color-dem)', tint: tintOf('--color-dem') },
-  R: { label: 'Republican', color: 'var(--color-rep)', tint: tintOf('--color-rep') },
-  I: { label: 'Independent or other party', color: 'var(--color-ind)', tint: tintOf('--color-ind') },
+// `chip` is the mark inside a color chip. Red and blue read on their own, so they carry none; green does not.
+export const PARTY_DISPLAY: Record<Party, { label: string; color: string; tint: string; chip: string }> = {
+  D: { label: 'Democratic', color: 'var(--color-dem)', tint: tintOf('--color-dem'), chip: '' },
+  R: { label: 'Republican', color: 'var(--color-rep)', tint: tintOf('--color-rep'), chip: '' },
+  I: { label: 'Independent or other party', color: 'var(--color-ind)', tint: tintOf('--color-ind'), chip: 'I' },
 }
 
 export interface SideView {

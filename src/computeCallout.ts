@@ -9,7 +9,7 @@ export interface CalloutSide {
   party: Party
   partyLabel: string
   partyColor: string
-  letter: Party
+  chip: string
   adPct: number | null
   winPct: number | null
 }
@@ -69,7 +69,7 @@ function bestOfParty(rows: RowView[], party: Party): RowView | null {
   )[0]
 }
 
-function pickPair(rows: RowView[]): RowView[] {
+export function pickPair(rows: RowView[]): RowView[] {
   const majors = MAJOR_ORDER.map((party) => bestOfParty(rows, party)).filter((r): r is RowView => r !== null)
   if (majors.length >= 2) return majors
   const independent = bestOfParty(rows, 'I')
@@ -99,7 +99,7 @@ export function buildCallout(race: RaceView, forecast: RaceForecast | undefined)
     party: row.party,
     partyLabel: PARTY_DISPLAY[row.party].label,
     partyColor: PARTY_DISPLAY[row.party].color,
-    letter: row.party,
+    chip: PARTY_DISPLAY[row.party].chip,
     adPct: null,
     winPct: null,
   }))
