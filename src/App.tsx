@@ -270,6 +270,11 @@ export default function App() {
               </a>
             </p>
             <p>
+              <a href="/claude-on-building-an-election-map">Claude on building this map</a>
+              {' · '}
+              <a href="/how-to-write-an-mvp-md">How to write an MVP.md</a>
+            </p>
+            <p>
               <button type="button" className="link-button" onClick={openHow}>
                 How this map works
               </button>
@@ -281,7 +286,7 @@ export default function App() {
             <p>
               Election ads are everywhere, but the records of who pays for them are hard to read, so I built a place to
               look up any Senate race and check the sources yourself.
-            </p>
+             <a href="/claude-on-building-an-election-map">Read the longer story</a></p>
             <h3>Is this data biased toward either party?</h3>
             <p>
               Every candidate gets the same calculations and labels whatever their party, but the map shows only

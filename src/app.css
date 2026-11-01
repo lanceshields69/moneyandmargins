@@ -1383,3 +1383,135 @@ details h4 {
     height: 38px;
   }
 }
+
+/* Article pages (static, built by scripts/build-articles.ts): one 640px reading column. */
+.article-page {
+  margin: 0;
+  background: var(--color-ground);
+  color: var(--color-text);
+}
+.article-wrap {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 20px 16px 48px;
+}
+.article-header .logo {
+  display: block;
+  height: 40px;
+  width: auto;
+}
+.article-header p {
+  margin: 8px 0 0;
+  color: #fff;
+  font-size: 1.0625rem;
+}
+.back {
+  margin: 28px 0 8px;
+  font-size: 0.875rem;
+}
+.article h1 {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+.article .deck {
+  margin: 0 0 16px;
+  color: var(--color-muted);
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+.article p,
+.article h2 {
+  font-size: 1rem;
+  line-height: 1.55;
+}
+.article h2 {
+  margin: 36px 0 12px;
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 700;
+}
+.article p {
+  margin: 0 0 16px;
+}
+.article a {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.article .dateline {
+  margin: 0 0 16px;
+  font-size: 0.875rem;
+}
+.byline-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 8px;
+}
+.pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 99px;
+  background: var(--color-panel);
+  color: #fff;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+.article .hero {
+  margin: 24px 0;
+}
+.article .hero img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 3px;
+}
+.share-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: 8px 0 8px;
+  font-size: 0.875rem;
+}
+.share-bar a,
+.share-bar .link-button {
+  color: #fff;
+}
+.lance-note {
+  margin: 28px 0 16px;
+  padding: 0 0 0 16px;
+  border-left: 1px solid var(--color-muted);
+}
+.lance-note .label {
+  margin: 0 0 10px;
+  color: var(--color-muted);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+.disclosure {
+  margin-top: 24px;
+  color: var(--color-muted);
+  font-size: 0.875rem;
+}
+.article-page .footer {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-rule);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+.article-page .footer p {
+  margin: 0 0 8px;
+}
+.article-header {
+  padding: 0;
+}
+.article h1,
+.article h2 {
+  word-spacing: -0.12em;
+}
