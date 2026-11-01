@@ -1546,3 +1546,15 @@ details h4 {
   word-spacing: normal;
   letter-spacing: normal;
 }
+
+/* Test: Display headings set in Halyard Micro Bold (weight 700) instead of Halyard Display Bold. */
+.panel h2,
+.national h2,
+.faq h2,
+.cc-title,
+.how-dialog h2,
+.article h1,
+.article h2 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+}
