@@ -1559,3 +1559,14 @@ details h4 {
   font-weight: 700;
   font-variation-settings: 'wght' 700;
 }
+
+/* Display headings: tabular figures (set on body for the money columns) widen the space glyph in Halyard Display. */
+.panel h2,
+.national h2,
+.faq h2,
+.cc-title,
+.how-dialog h2,
+.article h1,
+.article h2 {
+  font-variant-numeric: normal;
+}
