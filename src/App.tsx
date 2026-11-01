@@ -243,7 +243,7 @@ export default function App() {
         <div className="footer-grid">
           <div className="footer-notes">
             <p>
-              <strong>Early version.</strong> This map shows outside groups’ independent spending reported to the FEC for
+              <strong className="footer-lead">Early version.</strong> This map shows outside groups’ independent spending reported to the FEC for
               2026 Senate races, placed in the candidate’s state.{' '}
               <button type="button" className="link-button" onClick={openHow}>
                 How this works
@@ -251,11 +251,11 @@ export default function App() {
               explains what’s left out.
             </p>
             <p>
-              <strong>Supporting and opposing.</strong> Groups label each filing as supporting or opposing a candidate, and
+              <strong className="footer-lead">Supporting and opposing.</strong> Groups label each filing as supporting or opposing a candidate, and
               they choose the label. We show both and never subtract one from the other.
             </p>
             <p>
-              <strong>Predicted to win:</strong> {forecastSnapshot.sourceName} forecast (
+              <strong className="footer-lead">Predicted to win:</strong> {forecastSnapshot.sourceName} forecast (
               <a href={forecastSnapshot.sourceUrl} target="_blank" rel="noreferrer">
                 {snapshotHost}
               </a>

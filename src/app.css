@@ -1545,3 +1545,8 @@ details h4 {
 .article h2 {
   font-variant-numeric: normal;
 }
+
+/* Footer lead-ins (Early version, Supporting and opposing, Predicted to win) in white. */
+.footer-lead {
+  color: #fff;
+}
