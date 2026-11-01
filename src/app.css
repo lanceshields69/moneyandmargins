@@ -1547,7 +1547,7 @@ details h4 {
   letter-spacing: normal;
 }
 
-/* Test: Display headings set in Halyard Micro Bold (weight 700) instead of Halyard Display Bold. */
+/* Test: Display headings set in Inter Bold (weight 700) instead of Halyard Display Bold. */
 .panel h2,
 .national h2,
 .faq h2,
@@ -1555,6 +1555,6 @@ details h4 {
 .how-dialog h2,
 .article h1,
 .article h2 {
-  font-family: var(--font-sans);
+  font-family: 'Inter', system-ui, sans-serif;
   font-weight: 700;
 }
