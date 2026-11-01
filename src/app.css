@@ -954,7 +954,7 @@ details h4 {
 .panel h2 {
   font-family: var(--font-display);
   font-weight: 700;
-  word-spacing: -0.12em;
+  word-spacing: -0.05em;
   letter-spacing: 0.02em;
 }
 .contact-line {
@@ -1097,7 +1097,7 @@ details h4 {
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: -0.01em;
-  word-spacing: -0.12em;
+  word-spacing: -0.05em;
   line-height: 1.2;
 }
 .how-close {
@@ -1229,7 +1229,7 @@ details h4 {
 }
 .how-body h3 {
   font-family: var(--font-sans);
-  word-spacing: -0.12em;
+  word-spacing: -0.05em;
   letter-spacing: -0.01em;
 }
 .legend-neutral {
@@ -1513,7 +1513,7 @@ details h4 {
 }
 .article h1,
 .article h2 {
-  word-spacing: -0.25em; /* Halyard Display's space glyph is wide; tighten it so headings read as words */
+  word-spacing: -0.05em; /* Halyard Display's space is wide; a light tightening keeps words apart at phone sizes */
 }
 
 /* Text link to the Claude article, left of the How this map works button. */
