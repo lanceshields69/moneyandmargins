@@ -1550,3 +1550,9 @@ details h4 {
 .footer-lead {
   color: #fff;
 }
+
+/* Hero image on the Claude article: a thin gray border. */
+.article .hero img {
+  border: 1px solid var(--color-muted);
+  box-sizing: border-box;
+}
