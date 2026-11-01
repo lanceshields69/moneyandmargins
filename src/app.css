@@ -1551,8 +1551,8 @@ details h4 {
   color: #fff;
 }
 
-/* Hero image on the Claude article: a thin gray border. */
+/* Hero image on the Claude article: a thin border. */
 .article .hero img {
-  border: 1px solid #5e5896;
+  border: 1px solid #393834;
   box-sizing: border-box;
 }
