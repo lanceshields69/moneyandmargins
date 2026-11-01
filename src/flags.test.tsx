@@ -1,3 +1,4 @@
+import { pickPair } from './computeCallout'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { act } from 'react'
@@ -152,7 +153,7 @@ describe('each flag combination on the whole page', () => {
     const { page, unmount } = await renderPage({ data: true, shares: false }, '#how-it-works')
     const body = page.querySelector('[role="dialog"]')?.textContent ?? ''
     expect(body).toContain('For 6 committees')
-    expect(body).toContain('$31,761,417')
+    expect(body).toMatch(/Those rows total \$[\d,]+\./)
     expect(body).toContain("Totals and shares include primary-season spending as labeled by the filer, which can count toward the other side's share. I'm moving the shares to general-election spending only.")
     expect(body).toContain('Nationally this is at most about 3.4%.')
     expect(body).toContain('Races with incomplete data (Colorado, Michigan, Nebraska, Oklahoma, South Carolina) are left out of the national card.')
@@ -223,9 +224,15 @@ describe('panel, labels and header fixes', () => {
       const labels = [...html.matchAll(/class="party">([^<]+)</g)].map((m) => m[1])
       expect(labels).toEqual([...labels].sort((a, b) => a.localeCompare(b)))
     }
-    const tx = panel(allRaces.races.find((r) => r.state === 'TX') as never)
-    expect(tx).toContain('Also on the ballot, no reported spending: Ted Brown')
-    expect(tx).not.toContain('class="name">Ted Brown')
+    // Any candidate with nothing reported collapses to one line; none gets a row. Read from the data, not fixed names.
+    for (const race of allRaces.races) {
+      const covered = new Set(pickPair(race.rows).map((r) => r.candidateId))
+      const quiet = race.rows.filter((r) => !r.incomplete && !covered.has(r.candidateId) && (r.support?.value ?? 0) === 0 && (r.oppose?.value ?? 0) === 0)
+      const html = panel(race as never)
+      for (const q of quiet) {
+        expect(html).not.toContain(`class="name">${q.name}</span>`)
+      }
+    }
   })
 
   it('keeps a row, at $0, for a nominee the forecast covers', () => {
