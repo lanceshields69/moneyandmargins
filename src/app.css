@@ -1534,3 +1534,15 @@ details h4 {
     display: none;
   }
 }
+
+/* Test: Display headings use the font's own spacing (no word-spacing or letter-spacing adjustment). */
+.panel h2,
+.national h2,
+.faq h2,
+.cc-title,
+.how-dialog h2,
+.article h1,
+.article h2 {
+  word-spacing: normal;
+  letter-spacing: normal;
+}
