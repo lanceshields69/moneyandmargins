@@ -123,6 +123,7 @@ export default function App() {
       )}
       <header className="header">
         <div className="header-actions">
+          <a className="header-link" href="/claude-on-building-an-election-map">Claude on building this map</a>
           <button type="button" className="how-button" onClick={openHow}>
             <img src={infoIcon} alt="" width={24} height={24} />
             <span className="how-button-label">How this map works</span>

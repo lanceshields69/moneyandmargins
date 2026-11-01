@@ -1515,3 +1515,22 @@ details h4 {
 .article h2 {
   word-spacing: -0.25em; /* Halyard Display's space glyph is wide; tighten it so headings read as words */
 }
+
+/* Text link to the Claude article, left of the How this map works button. */
+.header-link {
+  color: #fff;
+  font-size: 15px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+@media (max-width: 1099px) {
+  .header-link {
+    font-size: 14px;
+  }
+}
+@media (max-width: 600px) {
+  .header-link {
+    display: none;
+  }
+}

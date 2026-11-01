@@ -301,7 +301,8 @@ describe('panel, labels and header fixes', () => {
     const root = createRoot(host)
     act(() => root.render(<App />))
     const actions = host.querySelector('.header-actions')!
-    expect([...actions.children].map((c) => c.className.split(' ')[0])).toEqual(['how-button', 'share'])
+    expect([...actions.children].map((c) => c.className.split(' ')[0])).toEqual(['header-link', 'how-button', 'share'])
+    expect(actions.querySelector('.header-link')?.textContent).toBe('Claude on building this map')
     expect(actions.querySelector('.how-button')?.textContent).toBe('How this map works')
     const footerLine = [...host.querySelectorAll('.footer-notes p')].find((p) => p.textContent?.startsWith('Predicted to win'))!
     expect((footerLine.textContent ?? '').length).toBeLessThan(230)
