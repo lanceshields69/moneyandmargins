@@ -1513,5 +1513,5 @@ details h4 {
 }
 .article h1,
 .article h2 {
-  word-spacing: -0.12em;
+  word-spacing: -0.25em; /* Halyard Display's space glyph is wide; tighten it so headings read as words */
 }
