@@ -243,15 +243,16 @@ export default function App() {
         <div className="footer-grid">
           <div className="footer-notes">
             <p>
-              <strong>Early version.</strong> This map shows independent expenditures that outside groups reported to the
-              FEC for 2026 Senate races, placed in the candidate&apos;s state. It does not show candidate committee or
-              party-coordinated spending, donors, or where ads ran.
+              <strong>Early version.</strong> This map shows outside groups’ independent spending reported to the FEC for
+              2026 Senate races, placed in the candidate’s state.{' '}
+              <button type="button" className="link-button" onClick={openHow}>
+                How this works
+              </button>{' '}
+              explains what’s left out.
             </p>
             <p>
-              <strong>Supporting and opposing.</strong> Outside groups report each independent expenditure to the FEC as
-              supporting or opposing a named candidate. Supporting means spending to elect that candidate. Opposing means
-              spending to defeat them. The groups choose the label. The two amounts are shown as reported and are never
-              subtracted from each other, and opposing one candidate is not counted as supporting another.
+              <strong>Supporting and opposing.</strong> Groups label each filing as supporting or opposing a candidate, and
+              they choose the label. We show both and never subtract one from the other.
             </p>
             <p>
               <strong>Predicted to win:</strong> {forecastSnapshot.sourceName} forecast (
