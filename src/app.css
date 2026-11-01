@@ -1384,14 +1384,14 @@ details h4 {
   }
 }
 
-/* Article pages (static, built by scripts/build-articles.ts): one 640px reading column. */
+/* Article pages (static, built by scripts/build-articles.ts): one 730px reading column. */
 .article-page {
   margin: 0;
   background: var(--color-ground);
   color: var(--color-text);
 }
 .article-wrap {
-  max-width: 640px;
+  max-width: 730px;
   margin: 0 auto;
   padding: 20px 16px 48px;
 }
