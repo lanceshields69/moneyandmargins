@@ -1,0 +1,216 @@
+{
+  "checkedAt": "2026-11-01T02:30:47.042Z",
+  "base": "https://votepredictor.com/senate/",
+  "pages": {
+    "AK": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "AL": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "AR": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "CO": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "DE": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "FL": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "GA": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "IA": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "ID": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "IL": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "KS": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "KY": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "LA": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "MA": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "ME": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "MI": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "MN": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "MS": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "MT": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "NC": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "NE": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "NH": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "NJ": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "NM": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "OH": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "OK": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "OR": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "RI": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "SC": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "SD": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "TN": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "TX": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "VA": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "WV": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    },
+    "WY": {
+      "ok": true,
+      "status": 200,
+      "titleMatches": true,
+      "hasOtherForecasts": true
+    }
+  }
+}

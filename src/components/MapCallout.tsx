@@ -1,5 +1,8 @@
 import { GLOBAL_PARTIAL_NOTICE, SHARES_VERIFIED } from '../config'
+import arrowIcon from '../assets/arrow-up-right.svg'
 import infoIcon from '../assets/info.svg'
+import { hasOtherForecasts } from '../otherForecasts'
+import { OTHER_FORECASTS_TITLE, otherForecastsUrl } from '../votepredictor'
 import { PARTIAL_CALLOUT_NOTICE, SHARES_PENDING_LEAD, SHARES_PENDING_LINK } from '../copy'
 import { useEffect, useState, type ReactNode } from 'react'
 import leaderUrl from '../assets/callout-leader.svg'
@@ -57,6 +60,17 @@ function Row({ label, sides, pick, flag, onInfo }: {
         </span>
       ))}
     </div>
+  )
+}
+
+/** A plain link out to VotePredictor's own page for the race. Nothing from that page is copied here. */
+function OtherForecasts({ state, pill = false }: { state: string; pill?: boolean }) {
+  if (!hasOtherForecasts(state)) return null
+  return (
+    <a className={pill ? 'cc-other cc-other-pill' : 'cc-other'} href={otherForecastsUrl(state)} target="_blank" rel="noopener noreferrer" title={OTHER_FORECASTS_TITLE}>
+      Other forecasts
+      <img src={arrowIcon} alt="" aria-hidden="true" />
+    </a>
   )
 }
 
@@ -133,6 +147,11 @@ export default function MapCallout({ callout, stateName, anchor, isDefault, deta
             <Square side={side} />
           </span>
         ))}
+        {sheet && (
+          <button type="button" className="cc-close" onClick={onClose} aria-label="Close">
+            ×
+          </button>
+        )}
       </div>
       {sharesVerified ? (
         <Row label="Spent on ads:" sides={callout.sides} pick={(s) => s.adPct} flag={callout.adFlag} onInfo={onOpenHow} />
@@ -146,6 +165,7 @@ export default function MapCallout({ callout, stateName, anchor, isDefault, deta
         </p>
       ))}
       {sharesVerified && globalPartialNotice && <p className="cc-partial">{PARTIAL_CALLOUT_NOTICE}</p>}
+      {!sheet && <OtherForecasts state={callout.state} />}
     </div>
   )
   const live = <p className="sr-only" aria-live="polite">{summary(stateName, callout, sharesVerified)}</p>
@@ -155,15 +175,19 @@ export default function MapCallout({ callout, stateName, anchor, isDefault, deta
       <>
         <div className={expanded ? 'cc-sheet cc-sheet-open' : 'cc-sheet'}>
           {card}
-          {detail && (
+          {(detail || hasOtherForecasts(callout.state)) && (
             <div className="cc-sheet-extra">
-              <button type="button" className="cc-toggle" aria-expanded={expanded} onClick={() => setExpanded((v) => !v)}>
-                {expanded ? 'Hide details' : 'Show details'}
-              </button>
-              {expanded && <div className="cc-detail">{detail}</div>}
-              <button type="button" className="cc-close" onClick={onClose} aria-label="Close">
-                ×
-              </button>
+              <div className="cc-sheet-links">
+                {detail ? (
+                  <button type="button" className="cc-toggle" aria-expanded={expanded} onClick={() => setExpanded((v) => !v)}>
+                    {expanded ? 'Hide details' : 'Show details'}
+                  </button>
+                ) : (
+                  <span />
+                )}
+                <OtherForecasts state={callout.state} pill />
+              </div>
+              {expanded && detail && <div className="cc-detail">{detail}</div>}
             </div>
           )}
         </div>

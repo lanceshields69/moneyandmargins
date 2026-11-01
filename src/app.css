@@ -371,9 +371,10 @@ strong {
     font-size: 14px;
     line-height: 20px;
   }
+  /* Value columns end 32px short of the edge so the close button has its own column; the chips sit over their columns. */
   .cc-sheet .cc-head,
   .cc-sheet .cc-row {
-    grid-template-columns: 1fr 64px 64px;
+    grid-template-columns: 1fr 56px 56px 32px;
   }
   .cc-sheet .cc-head {
     height: 20px;
@@ -411,8 +412,7 @@ strong {
   }
   .cc-toggle {
     display: block;
-    width: 100%;
-    padding: 10px 0;
+    padding: 0;
     border: 0;
     background: transparent;
     color: #fff;
@@ -429,10 +429,13 @@ strong {
     padding: 4px 0 0;
   }
   .cc-sheet .cc-close {
-    display: block;
-    width: 40px;
-    height: 40px;
-    margin: -40px 0 0 auto;
+    display: grid;
+    place-items: center;
+    justify-self: end;
+    width: 32px;
+    height: 32px;
+    margin: -6px -6px 0 0;
+    padding: 0;
     border: 0;
     background: transparent;
     color: #fff;
@@ -441,12 +444,26 @@ strong {
     line-height: 1;
     cursor: pointer;
   }
-  .cc-sheet-open .cc-close {
-    position: sticky;
-    bottom: 8px;
-    margin-top: 8px;
-    border-radius: 50%;
-    background: var(--color-callout);
+  .cc-sheet-links {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+  }
+  .cc-sheet-links .cc-other-pill {
+    gap: 6px;
+    padding: 5px 14px;
+    border: 0.5px solid rgba(234, 232, 226, 0.7);
+    border-radius: 33px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    line-height: 19px;
+    white-space: nowrap;
+  }
+  .cc-sheet-links .cc-other-pill img {
+    width: 17px;
+    height: 17px;
   }
 }
 
@@ -870,9 +887,6 @@ details h4 {
 }
 @media (max-width: 600px) {
   .share {
-    position: absolute;
-    top: 25px;
-    right: 16px;
     margin: 0;
   }
   .share-button {
@@ -1334,4 +1348,38 @@ details h4 {
 .cc-info:focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: 1px;
+}
+
+/* "Other forecasts" link (Figma 4:2 and 27:423). */
+.cc-other {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  margin-top: 5px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 10px;
+  line-height: 11px;
+  text-decoration: none;
+}
+.cc-other img {
+  display: block;
+  width: 11px;
+  height: 11px;
+}
+.cc-other:hover,
+.cc-other:focus-visible {
+  color: #fff;
+  text-decoration: underline;
+}
+.cc-other:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* On phones the logo gives way to the two header icons. */
+@media (max-width: 600px) {
+  .logo {
+    height: 38px;
+  }
 }
