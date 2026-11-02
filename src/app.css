@@ -1556,3 +1556,44 @@ details h4 {
   border: 1px solid #393834;
   box-sizing: border-box;
 }
+
+/* Prediction markers: a 22px state-abbreviation badge at each state's label point. */
+.rating-marker {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  color: #000;
+  font-size: 11px;
+  line-height: 12px;
+  letter-spacing: -0.02em;
+  pointer-events: none;
+}
+.rating-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin-top: 56px; /* clears the map's own legend, which hangs below the map */
+  font-size: 0.8125rem;
+}
+.rating-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.rating-swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+.rating-source {
+  flex-basis: 100%;
+  font-size: 0.75rem;
+}

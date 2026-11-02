@@ -103,6 +103,8 @@ export interface RaceForecast {
   state: string
   /** The Democratic nominee's win probability, clamped 0.01 to 0.99 by the source. */
   pDemWin: number | null
+  /** VotePredictor's rating label, e.g. "Safe R", "Lean D", "Likely D", "Toss-up". Null with no forecast. */
+  rating: string | null
   basis: string | null
   nPolls: number | null
   candidates: { democrat: string | null; republican: string | null } | null
@@ -116,7 +118,7 @@ export interface ApiRace {
   location: string
   as_of: string | null
   model_version: string | null
-  forecast: { p_dem_win: number; source: string; n_polls: number | null } | null
+  forecast: { p_dem_win: number; source: string; n_polls: number | null; rating?: string | null } | null
   candidates: { democrat: string | null; republican: string | null } | null
   no_forecast?: { reason?: string; actual_matchup?: string } | null
 }

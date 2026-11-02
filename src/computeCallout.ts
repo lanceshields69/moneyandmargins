@@ -169,6 +169,7 @@ function normalizeRace(race: ApiRace): RaceForecast {
   return {
     state: race.location,
     pDemWin: race.forecast?.p_dem_win ?? null,
+    rating: race.forecast?.rating ?? null,
     basis: race.forecast?.source ?? null,
     nPolls: race.forecast?.n_polls ?? null,
     candidates: race.candidates,
