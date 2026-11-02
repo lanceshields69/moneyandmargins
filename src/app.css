@@ -235,7 +235,7 @@ strong {
 }
 .cc-head-cell {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 }
 .cc-square {
   display: inline-flex;
@@ -254,19 +254,22 @@ strong {
    lines up with every row without those rows needing to know about it. Dashed at unofficial, solid at certified;
    its color is the leading side's own party color, so the highlight never favors a fixed party regardless of
    who leads (CLAUDE.md rule 1). */
+.cc-body {
+  position: relative;
+}
 .cc-lead-col {
   position: absolute;
-  top: 4px;
-  bottom: 4px;
+  top: -4px;
+  bottom: -4px;
   width: 28px;
   border-radius: 4px;
   pointer-events: none;
 }
 .cc-lead-col-0 {
-  right: 41px; /* card right padding (8px) + the second column (28px) + the column gap (5px) */
+  right: 33px; /* the second column (28px) + the column gap (5px) */
 }
 .cc-lead-col-1 {
-  right: 8px; /* card right padding */
+  right: 0;
 }
 .cc-lead-col-dashed {
   border: 1.5px dashed;
@@ -287,7 +290,7 @@ strong {
   font-weight: 300;
 }
 .cc-value {
-  justify-self: end;
+  justify-self: center;
   white-space: nowrap;
   font-weight: 500;
 }

@@ -97,21 +97,25 @@ function ResultRow({ sides, result }: { sides: CalloutSide[]; result: Callout['r
           </span>
         ))}
       </div>
-      {result.stage !== 'not-added' && result.asOf && (
-        <p className="cc-note cc-result-note">
-          {result.stage === 'counting' && result.percentReporting !== null && `${result.percentReporting}% reporting · `}
-          {formatDateTime(result.asOf)}
-          {result.sourceUrl && (
-            <>
-              {' · '}
-              <a href={result.sourceUrl} target="_blank" rel="noopener noreferrer">
-                Source
-              </a>
-            </>
-          )}
-        </p>
-      )}
     </>
+  )
+}
+
+function ResultNote({ result }: { result: Callout['result'] }) {
+  if (result.stage === 'not-added' || !result.asOf) return null
+  return (
+    <p className="cc-note cc-result-note">
+      {result.stage === 'counting' && result.percentReporting !== null && `${result.percentReporting}% reporting · `}
+      {formatDateTime(result.asOf)}
+      {result.sourceUrl && (
+        <>
+          {' · '}
+          <a href={result.sourceUrl} target="_blank" rel="noopener noreferrer">
+            Source
+          </a>
+        </>
+      )}
+    </p>
   )
 }
 
@@ -197,36 +201,39 @@ export default function MapCallout({ callout, stateName, anchor, isDefault, deta
   const leadingOutline = (callout.result.stage === 'unofficial' || callout.result.stage === 'certified') && leadingIndex !== -1 ? (callout.result.stage === 'unofficial' ? 'dashed' : 'solid') : null
   const card = (
     <div className="cc-card" role="group" aria-label={`${stateName} Senate race`}>
-      {leadingOutline && (
-        <span
-          className={`cc-lead-col cc-lead-col-${leadingIndex} cc-lead-col-${leadingOutline}`}
-          style={{ borderColor: callout.sides[leadingIndex].partyColor }}
-          aria-hidden="true"
-        />
-      )}
-      <div className="cc-head">
-        <h2 className="cc-title">{stateName}</h2>
-        {callout.sides.map((side) => {
-          const isLeading = side.candidateId === callout.result.leadingCandidateId
-          return (
-            <span key={side.candidateId} className="cc-head-cell">
-              <Square side={side} checked={isLeading && callout.result.stage === 'certified'} />
-            </span>
-          )
-        })}
-        {sheet && (
-          <button type="button" className="cc-close" onClick={onClose} aria-label="Close">
-            ×
-          </button>
+      <div className="cc-body">
+        {leadingOutline && (
+          <span
+            className={`cc-lead-col cc-lead-col-${leadingIndex} cc-lead-col-${leadingOutline}`}
+            style={{ borderColor: callout.sides[leadingIndex].partyColor }}
+            aria-hidden="true"
+          />
         )}
+        <div className="cc-head">
+          <h2 className="cc-title">{stateName}</h2>
+          {callout.sides.map((side) => {
+            const isLeading = side.candidateId === callout.result.leadingCandidateId
+            return (
+              <span key={side.candidateId} className="cc-head-cell">
+                <Square side={side} checked={isLeading && callout.result.stage === 'certified'} />
+              </span>
+            )
+          })}
+          {sheet && (
+            <button type="button" className="cc-close" onClick={onClose} aria-label="Close">
+              ×
+            </button>
+          )}
+        </div>
+        {sharesVerified ? (
+          <Row label="Spent on ads:" sides={callout.sides} pick={(s) => s.adPct} flag={callout.adFlag} onInfo={onOpenHow} />
+        ) : (
+          <PendingRow onOpenHow={onOpenHow} />
+        )}
+        <Row label="Predicted to win:" sides={callout.sides} pick={(s) => s.winPct} flag={callout.winFlag} />
+        <ResultRow sides={callout.sides} result={callout.result} />
       </div>
-      {sharesVerified ? (
-        <Row label="Spent on ads:" sides={callout.sides} pick={(s) => s.adPct} flag={callout.adFlag} onInfo={onOpenHow} />
-      ) : (
-        <PendingRow onOpenHow={onOpenHow} />
-      )}
-      <Row label="Predicted to win:" sides={callout.sides} pick={(s) => s.winPct} flag={callout.winFlag} />
-      <ResultRow sides={callout.sides} result={callout.result} />
+      <ResultNote result={callout.result} />
       {notes.map((note) => (
         <p key={note} className="cc-note">
           {note}
