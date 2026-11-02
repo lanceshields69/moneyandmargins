@@ -1,7 +1,9 @@
 // Read-only check of VotePredictor against the latest frozen snapshot. It never writes a snapshot and never changes
 // what the site shows. Prints a table and exits 0; a threshold breach is reported, not fatal.
 //   tsx scripts/check-forecast.ts [--threshold=0.05]
+import { execSync } from 'node:child_process'
 import { readdirSync, readFileSync } from 'node:fs'
+import { forecastChanged, type ForecastPoint } from './lib/forecast-change'
 import type { ApiRace, FrozenSnapshotFile, NomineesFile } from '../src/types'
 
 const BASE = 'https://votepredictor.com/api/v1'
@@ -12,13 +14,14 @@ const latest = JSON.parse(readFileSync(new URL(`../data/frozen/${folders[folders
 const nominees = JSON.parse(readFileSync(new URL('../data/nominees.json', import.meta.url), 'utf-8')) as NomineesFile
 
 const frozen = new Map(latest.races.map((r) => [r.race_id, r]))
-const rows: { race: string; frozen: number | null; live: number | null; diff: number | null; rating: string | null; asOf: string | null }[] = []
+
+const rows: { race: string; frozen: number | null; frozenRating: string | null; live: number | null; diff: number | null; rating: string | null; asOf: string | null }[] = []
 for (const race of nominees.races) {
   const id = `2026_SEN_${race.state}`
   const live = (await (await fetch(`${BASE}/race/${id}`)).json()) as ApiRace
   const was = frozen.get(id)?.forecast?.p_dem_win ?? null
   const now = live.forecast?.p_dem_win ?? null
-  rows.push({ race: race.state, frozen: was, live: now, diff: was !== null && now !== null ? now - was : null, rating: (live.forecast as { rating?: string } | null)?.rating ?? null, asOf: live.as_of ?? null })
+  rows.push({ race: race.state, frozen: was, frozenRating: frozen.get(id)?.forecast?.rating ?? null, live: now, diff: was !== null && now !== null ? now - was : null, rating: (live.forecast as { rating?: string } | null)?.rating ?? null, asOf: live.as_of ?? null })
 }
 
 const moved = rows.filter((r) => r.diff !== null && Math.abs(r.diff) >= threshold)
@@ -29,6 +32,15 @@ for (const r of rows) {
   const f = (v: number | null) => (v === null ? '  -  ' : `${(v * 100).toFixed(1)}%`.padStart(6))
   const d = r.diff === null ? '   -  ' : `${r.diff >= 0 ? '+' : ''}${(r.diff * 100).toFixed(1)}`.padStart(6)
   console.log(`${r.race.padEnd(5)} ${f(r.frozen)}  ${f(r.live)}  ${d} pts  ${r.rating ?? '-'}`)
+}
+if (process.argv.includes('--freeze-if-changed')) {
+  const liveMap = new Map<string, ForecastPoint>(rows.map((r) => [r.race, { rating: r.rating, pDemWin: r.live }]))
+  const frozenMap = new Map<string, ForecastPoint>(rows.map((r) => [r.race, { rating: r.frozenRating, pDemWin: r.frozen }]))
+  const change = forecastChanged(frozenMap, liveMap)
+  if (change.changed) {
+    console.log(`\nFreezing a new snapshot: ${change.reasons.join('; ')}`)
+    execSync('npx tsx scripts/freeze-forecast.ts', { stdio: 'inherit' })
+  } else console.log('\nNo change large enough to freeze a new snapshot.')
 }
 console.log(`\nMoved by ${(threshold * 100).toFixed(0)} points or more: ${moved.length}${moved.length ? ` (${moved.map((m) => m.race).join(', ')})` : ''}`)
 console.log(`Null live forecasts: ${nullNow.join(', ') || 'none'}`)

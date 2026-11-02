@@ -79,12 +79,12 @@ jobs:
         if: steps.verify.outcome == 'success'
         run: mv data/spending.candidate.json data/spending.json
 
-      # Read-only: compares VotePredictor with the latest frozen snapshot and writes the table to the run summary.
-      # It never freezes a snapshot, so the site's numbers only change when someone decides to freeze one.
-      - name: Check forecasts against the frozen snapshot
+      # Compares VotePredictor with the latest frozen snapshot and writes the table to the run summary. When a rating
+      # label changes or a probability moves a point or more, it freezes a new snapshot; the commit step saves it.
+      - name: Check forecasts and freeze on change
         if: steps.gate.outputs.run == 'true'
         continue-on-error: true
-        run: npx tsx scripts/check-forecast.ts | tee -a "$GITHUB_STEP_SUMMARY"
+        run: npx tsx scripts/check-forecast.ts --freeze-if-changed | tee -a "$GITHUB_STEP_SUMMARY"
 
       - name: Run tests and data checks
         if: steps.verify.outcome == 'success'
@@ -97,7 +97,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/verification.json
+          git add data/verification.json data/frozen
           if [ "${{ steps.verify.outcome }}" = "success" ]; then git add data/spending.json; fi
           git diff --cached --quiet || git commit -m "Refresh FEC spending data"
           git pull --rebase origin "$GITHUB_REF_NAME"
