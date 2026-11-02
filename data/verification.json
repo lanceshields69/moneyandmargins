@@ -1117,6 +1117,285 @@
           ]
         }
       ]
+    },
+    {
+      "ran_at": "2026-11-02T00:43:53.992Z",
+      "fetched_at": "2026-11-02T00:43:51.035Z",
+      "raw_sha256": "56000f6f6a4c174ea26710920c988d8b83bc04dfbafcf27c82adb7de17006748",
+      "passed": false,
+      "blocked": false,
+      "checks": [
+        {
+          "id": "race_drops",
+          "blocking": true,
+          "name": "No race total dropped more than 2% and $100K since the previous run",
+          "pass": true,
+          "summary": "0 race(s) dropped",
+          "details": []
+        },
+        {
+          "id": "export_reconciliation",
+          "blocking": true,
+          "name": "Named committees match the saved FEC exports within 1% (rows up to the export dates)",
+          "pass": true,
+          "summary": "schedule_e-2026-10-31T14_33_41.csv: 2 of 2 lines match; schedule_e-2026-10-31T14_36_56.csv: 2 of 2 lines match",
+          "details": [
+            {
+              "file": "schedule_e-2026-10-31T14_33_41.csv",
+              "committee": "Texas PAC",
+              "line": "supporting Paxton",
+              "up_to": "2026-10-31",
+              "export_total": 69696482.85,
+              "our_total": 69696482.85,
+              "difference": 0,
+              "difference_pct": 0,
+              "pass": true
+            },
+            {
+              "file": "schedule_e-2026-10-31T14_33_41.csv",
+              "committee": "Texas PAC",
+              "line": "opposing Talarico",
+              "up_to": "2026-10-31",
+              "export_total": 112153741.9,
+              "our_total": 112153741.9,
+              "difference": 0,
+              "difference_pct": 0,
+              "pass": true
+            },
+            {
+              "file": "schedule_e-2026-10-31T14_36_56.csv",
+              "committee": "SLF PAC",
+              "line": "opposing Brown",
+              "up_to": "2026-10-31",
+              "export_total": 92676723.84,
+              "our_total": 92579986.59,
+              "difference": -96737.25,
+              "difference_pct": 0.1,
+              "pass": true
+            },
+            {
+              "file": "schedule_e-2026-10-31T14_36_56.csv",
+              "committee": "SLF PAC",
+              "line": "supporting Husted",
+              "up_to": "2026-10-31",
+              "export_total": 3065289.45,
+              "our_total": 3065289.45,
+              "difference": 0,
+              "difference_pct": 0,
+              "pass": true
+            }
+          ]
+        },
+        {
+          "id": "double_count",
+          "blocking": false,
+          "name": "Possible double count (same committee, date and amount on two candidates) under 2% in every race",
+          "pass": false,
+          "summary": "10 race(s) over 2%; overall 3.4%",
+          "details": [
+            {
+              "race": "MA",
+              "overcount": 61500,
+              "race_total": 724007,
+              "share_pct": 8.49
+            },
+            {
+              "race": "AK",
+              "overcount": 7846941.29,
+              "race_total": 106601673.48,
+              "share_pct": 7.36
+            },
+            {
+              "race": "NH",
+              "overcount": 4931729.1,
+              "race_total": 68689295.75,
+              "share_pct": 7.18
+            },
+            {
+              "race": "SD",
+              "overcount": 226127.95,
+              "race_total": 3847989.56,
+              "share_pct": 5.88
+            },
+            {
+              "race": "MI",
+              "overcount": 12651603.55,
+              "race_total": 300037953.41,
+              "share_pct": 4.22
+            },
+            {
+              "race": "NE",
+              "overcount": 2785212.21,
+              "race_total": 70375204.3,
+              "share_pct": 3.96
+            },
+            {
+              "race": "OH",
+              "overcount": 16091897.47,
+              "race_total": 417650377.19,
+              "share_pct": 3.85
+            },
+            {
+              "race": "TX",
+              "overcount": 16100551.61,
+              "race_total": 455804521.51,
+              "share_pct": 3.53
+            },
+            {
+              "race": "IA",
+              "overcount": 6847859.13,
+              "race_total": 205930928.22,
+              "share_pct": 3.33
+            },
+            {
+              "race": "GA",
+              "overcount": 934101.46,
+              "race_total": 36863760.75,
+              "share_pct": 2.53
+            }
+          ]
+        },
+        {
+          "id": "primary_share",
+          "blocking": false,
+          "name": "Primary-labeled spending under 10% in every race",
+          "pass": false,
+          "summary": "19 race(s) over 10%",
+          "details": [
+            {
+              "race": "IL",
+              "primary": 19571689.09,
+              "race_total": 19571689.09,
+              "share_pct": 100
+            },
+            {
+              "race": "OR",
+              "primary": 25120,
+              "race_total": 25120,
+              "share_pct": 100
+            },
+            {
+              "race": "RI",
+              "primary": 10,
+              "race_total": 10,
+              "share_pct": 100
+            },
+            {
+              "race": "CO",
+              "primary": 510198.01,
+              "race_total": 512080.51,
+              "share_pct": 99.63
+            },
+            {
+              "race": "WY",
+              "primary": 1034645.03,
+              "race_total": 1115875.3,
+              "share_pct": 92.72
+            },
+            {
+              "race": "KY",
+              "primary": 16510652.77,
+              "race_total": 18476171.27,
+              "share_pct": 89.36
+            },
+            {
+              "race": "VA",
+              "primary": 150080,
+              "race_total": 184544,
+              "share_pct": 81.32
+            },
+            {
+              "race": "OK",
+              "primary": 2120079.34,
+              "race_total": 2659690.97,
+              "share_pct": 79.71
+            },
+            {
+              "race": "TN",
+              "primary": 780511.44,
+              "race_total": 1058631.64,
+              "share_pct": 73.73
+            },
+            {
+              "race": "LA",
+              "primary": 16696642.01,
+              "race_total": 24758311.59,
+              "share_pct": 67.44
+            },
+            {
+              "race": "AL",
+              "primary": 10851552.64,
+              "race_total": 17015828.9,
+              "share_pct": 63.77
+            },
+            {
+              "race": "MN",
+              "primary": 8968388.98,
+              "race_total": 14405507.25,
+              "share_pct": 62.26
+            },
+            {
+              "race": "WV",
+              "primary": 337584.92,
+              "race_total": 646893.69,
+              "share_pct": 52.19
+            },
+            {
+              "race": "MT",
+              "primary": 4285777.18,
+              "race_total": 21102213.24,
+              "share_pct": 20.31
+            },
+            {
+              "race": "SD",
+              "primary": 565848.47,
+              "race_total": 3847989.56,
+              "share_pct": 14.71
+            },
+            {
+              "race": "AR",
+              "primary": 740900,
+              "race_total": 5399665.03,
+              "share_pct": 13.72
+            },
+            {
+              "race": "MI",
+              "primary": 39077906.56,
+              "race_total": 300037953.41,
+              "share_pct": 13.02
+            },
+            {
+              "race": "NJ",
+              "primary": 135.34,
+              "race_total": 1194.95,
+              "share_pct": 11.33
+            },
+            {
+              "race": "AK",
+              "primary": 10913335.99,
+              "race_total": 106601673.48,
+              "share_pct": 10.24
+            }
+          ]
+        },
+        {
+          "id": "totals_identity",
+          "blocking": false,
+          "name": "All-races total equals aligned plus unattributed plus excluded within 0.5%",
+          "pass": true,
+          "summary": "gap 0 (0%)",
+          "details": [
+            {
+              "all_races": 2183398240.25,
+              "aligned": 1738758884.42,
+              "unattributed": 20634606.25,
+              "excluded": 424004749.58,
+              "gap": 0,
+              "gap_pct": 0
+            }
+          ]
+        }
+      ]
     }
   ]
 }
