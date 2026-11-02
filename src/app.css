@@ -1606,13 +1606,10 @@ details h4 {
   font-size: 0.75rem;
 }
 
-/* Phones: the legend sits in the normal flow under the map. */
+/* Phones: the prediction markers and key are hidden. */
 @media (max-width: 600px) {
+  .rating-marker,
   .rating-legend {
-    position: static;
-    transform: none;
-    width: auto;
-    max-width: none;
-    margin-top: 12px;
+    display: none;
   }
 }
