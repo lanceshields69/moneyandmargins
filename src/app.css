@@ -1575,12 +1575,17 @@ details h4 {
   pointer-events: none;
 }
 .rating-legend {
+  position: absolute;
+  left: 65%; /* centered between Texas and Florida */
+  top: calc(100% + 40px);
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 90%;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: 8px 16px;
-  margin-top: 56px; /* clears the map's own legend, which hangs below the map */
   font-size: 0.8125rem;
 }
 .rating-key {
@@ -1598,4 +1603,15 @@ details h4 {
   flex-basis: 100%;
   text-align: center;
   font-size: 0.75rem;
+}
+
+/* Phones: the legend sits in the normal flow under the map. */
+@media (max-width: 600px) {
+  .rating-legend {
+    position: static;
+    transform: none;
+    width: auto;
+    max-width: none;
+    margin-top: 12px;
+  }
 }

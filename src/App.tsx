@@ -209,9 +209,8 @@ export default function App() {
               </button>
             </p>
           </div>
+          <RatingLegend source={`VotePredictor, ${forecastPhrase(forecastSnapshot.tag)} ${formatMonthDay(forecastSnapshot.fetchedAt)}.`} />
         </div>
-
-        <RatingLegend source={`VotePredictor, ${forecastPhrase(forecastSnapshot.tag)} ${formatMonthDay(forecastSnapshot.fetchedAt)}.`} />
 
         {!active && <p className="map-hint muted">Tap a highlighted state to see its race.</p>}
 
