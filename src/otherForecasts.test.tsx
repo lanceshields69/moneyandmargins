@@ -42,9 +42,10 @@ describe('the Other forecasts link', () => {
     }
   })
 
-  it('shows no percentage or rating from VotePredictor: the callout holds only our two rows and the link', () => {
+  it('shows no percentage or rating from VotePredictor: the callout holds only our rows and the link', () => {
     const html = callout('TX')
-    expect(html.split('class="cc-row').length - 1).toBe(2)
+    // Spent on ads, Predicted to win, and the Result row's shares
+    expect(html.split('class="cc-row').length - 1).toBe(3)
   })
 })
 

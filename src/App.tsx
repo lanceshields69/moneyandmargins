@@ -2,8 +2,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import ErrorBoundary from './components/ErrorBoundary'
 import MapCallout from './components/MapCallout'
 import MethodologyModal from './components/MethodologyModal'
-import RatingLegend from './components/RatingLegend'
-import RatingMarkers, { buildMarkers } from './components/RatingMarkers'
+import MarkLegend from './components/MarkLegend'
+import StateMarks, { buildStateMarks, marksFromCallouts } from './components/StateMarks'
 import NationalCard from './components/NationalCard'
 import RacePanel from './components/RacePanel'
 import ContactFooter from './components/ContactFooter'
@@ -86,8 +86,8 @@ export default function App() {
     return () => window.removeEventListener('hashchange', onHashChange)
   }, [validStates])
 
-  const ratingMarkers = useMemo(
-    () => buildMarkers(forecastSnapshot.races, (st) => labelPoints.get(st), mapViewBox),
+  const stateMarks = useMemo(
+    () => buildStateMarks(marksFromCallouts(callouts, (st) => stateNames.get(st) ?? st), (st) => labelPoints.get(st), mapViewBox),
     [],
   )
   const callout = active ? callouts.get(active) : undefined
@@ -163,7 +163,7 @@ export default function App() {
           </div>
 
         <div className="map-wrap" id="map">
-          <RatingMarkers markers={ratingMarkers} />
+          <StateMarks marks={stateMarks} />
           <UsStatesMap
             raceByState={raceByState}
             maxTotal={allRaces.maxTotal}
@@ -209,7 +209,7 @@ export default function App() {
               </button>
             </p>
           </div>
-          <RatingLegend source={`VotePredictor, ${forecastPhrase(forecastSnapshot.tag)} ${formatMonthDay(forecastSnapshot.fetchedAt)}.`} />
+          <MarkLegend />
         </div>
 
         {!active && <p className="map-hint muted">Tap a highlighted state to see its race.</p>}

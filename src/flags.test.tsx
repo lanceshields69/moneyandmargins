@@ -40,8 +40,8 @@ describe('SHARES_VERIFIED gates the "Spent on ads" percentages', () => {
       expect(text(html)).toContain(SHARES_MESSAGE)
       expect(html).toContain('Spent on ads:')
       expect(html).not.toContain(PARTIAL_CALLOUT_NOTICE)
-      // only the "Predicted to win" row carries percentages
-      expect(html.split('cc-value').length - 1).toBe(c.winFlag ? 0 : c.sides.length)
+      // the Predicted to win row carries percentages (unless flagged), and the Result row's shares always render (as '--' until added)
+      expect(html.split('cc-value').length - 1).toBe((c.winFlag ? 0 : c.sides.length) + c.sides.length)
       seen.add(row.split('Predicted')[0])
     }
     expect(seen.size).toBe(1) // identical for every race and party
@@ -52,7 +52,8 @@ describe('SHARES_VERIFIED gates the "Spent on ads" percentages', () => {
     const html = callout(state, true)
     expect(text(html)).not.toContain(SHARES_MESSAGE)
     expect(html).not.toContain(PARTIAL_CALLOUT_NOTICE)
-    expect(html.split('cc-value').length - 1).toBe(callouts.get(state)!.sides.length * 2)
+    // Spent on ads, Predicted to win, and the Result row's shares
+    expect(html.split('cc-value').length - 1).toBe(callouts.get(state)!.sides.length * 3)
   })
 })
 

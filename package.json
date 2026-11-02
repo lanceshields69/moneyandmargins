@@ -12,7 +12,7 @@
     "build:geometry": "tsx scripts/build-us-states.ts",
     "fetch:races": "tsx scripts/fetch-races.ts",
     "check:incomplete": "tsx scripts/check-incomplete.ts",
-    "prebuild": "npm run check:incomplete"
+    "prebuild": "npm run check:incomplete && tsx scripts/validate-results.ts"
   },
   "dependencies": {
     "react": "^18.3.1",
