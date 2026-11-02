@@ -1578,6 +1578,7 @@ details h4 {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: 8px 16px;
   margin-top: 56px; /* clears the map's own legend, which hangs below the map */
   font-size: 0.8125rem;
@@ -1595,5 +1596,6 @@ details h4 {
 }
 .rating-source {
   flex-basis: 100%;
+  text-align: center;
   font-size: 0.75rem;
 }
