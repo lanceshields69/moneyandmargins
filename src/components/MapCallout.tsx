@@ -13,6 +13,8 @@ import { usePhone } from '../usePhone'
 const CARD_WIDTH = 171
 const LEADER_X = 84.5
 const MARKER_CENTER = 35.5
+/** Lifts the card, leader line and square together so they clear the prediction markers on the state's label point. */
+const LIFT = '0 -20px'
 const LEADER_HEIGHT = 39.0214
 const EDGE = 4
 /** Below this share of the map's height there is no room above the point, so the card goes underneath. */
@@ -201,10 +203,12 @@ export default function MapCallout({ callout, stateName, anchor, isDefault, deta
   const y = anchor.y * 100
   const below = anchor.y < FLIP_BELOW_Y
   const cardStyle = {
+    translate: LIFT,
     left: `clamp(${EDGE}px, calc(${x}% - ${LEADER_X}px), calc(100% - ${CARD_WIDTH + EDGE}px))`,
     ...(below ? { top: `calc(${y}% + ${MARKER_CENTER}px)` } : { bottom: `calc(${100 - y}% + ${MARKER_CENTER}px)` }),
   }
   const leaderStyle = {
+    translate: LIFT,
     left: `calc(${x}% - 3.5px)`,
     top: below ? `calc(${y}% - 3.5px)` : `calc(${y}% - ${MARKER_CENTER}px)`,
   }
