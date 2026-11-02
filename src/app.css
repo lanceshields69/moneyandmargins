@@ -247,13 +247,30 @@ strong {
   font-weight: 700;
   line-height: 1;
 }
-.cc-square-dashed {
-  outline: 1.5px dashed #fff;
-  outline-offset: 1.5px;
+/* The leading side's highlight (Figma node 4:2): a rounded box over that side's whole column — the square and
+   every percentage below it — not just the square. Sized to the fixed 28px value columns (see .cc-row), so it
+   lines up with every row without those rows needing to know about it. Dashed at unofficial, solid at certified;
+   its color is the leading side's own party color, so the highlight never favors a fixed party regardless of
+   who leads (CLAUDE.md rule 1). */
+.cc-lead-col {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  width: 28px;
+  border-radius: 4px;
+  pointer-events: none;
 }
-.cc-square-solid {
-  outline: 1.5px solid #fff;
-  outline-offset: 1.5px;
+.cc-lead-col-0 {
+  right: 41px; /* card right padding (8px) + the second column (28px) + the column gap (5px) */
+}
+.cc-lead-col-1 {
+  right: 8px; /* card right padding */
+}
+.cc-lead-col-dashed {
+  border: 1.5px dashed;
+}
+.cc-lead-col-solid {
+  border: 1.5px solid;
 }
 .cc-result-heading {
   display: flex;

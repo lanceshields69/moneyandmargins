@@ -21,10 +21,10 @@ const EDGE = 4
 /** Below this share of the map's height there is no room above the point, so the card goes underneath. */
 const FLIP_BELOW_Y = 0.2
 
-function Square({ side, outline, checked }: { side: CalloutSide; outline?: 'dashed' | 'solid' | null; checked?: boolean }) {
+function Square({ side, checked }: { side: CalloutSide; checked?: boolean }) {
   return (
     <span
-      className={`cc-square${outline ? ` cc-square-${outline}` : ''}`}
+      className="cc-square"
       style={{ background: side.partyColor }}
       role="img"
       aria-label={`${side.partyLabel}, ${side.name}`}
@@ -193,16 +193,27 @@ export default function MapCallout({ callout, stateName, anchor, isDefault, deta
   }, [onClose])
 
   const notes = [callout.isSpecial ? 'Special election' : null, callout.incompleteNote].filter((n): n is string => n !== null)
+  // Figma (node 4:2) highlights the leading side's whole column — square plus every row below it — not just the
+  // square: a dashed box at unofficial, solid at certified. The box sits over the fixed-width value column, so one
+  // absolutely-positioned element lines up with every row without the rows needing to know about each other.
+  const leadingIndex = callout.sides.findIndex((s) => s.candidateId === callout.result.leadingCandidateId)
+  const leadingOutline = (callout.result.stage === 'unofficial' || callout.result.stage === 'certified') && leadingIndex !== -1 ? (callout.result.stage === 'unofficial' ? 'dashed' : 'solid') : null
   const card = (
     <div className="cc-card" role="group" aria-label={`${stateName} Senate race`}>
+      {leadingOutline && (
+        <span
+          className={`cc-lead-col cc-lead-col-${leadingIndex} cc-lead-col-${leadingOutline}`}
+          style={{ borderColor: callout.sides[leadingIndex].partyColor }}
+          aria-hidden="true"
+        />
+      )}
       <div className="cc-head">
         <h2 className="cc-title">{stateName}</h2>
         {callout.sides.map((side) => {
           const isLeading = side.candidateId === callout.result.leadingCandidateId
-          const outline = isLeading && (callout.result.stage === 'unofficial' || callout.result.stage === 'certified') ? (callout.result.stage === 'unofficial' ? 'dashed' : 'solid') : null
           return (
             <span key={side.candidateId} className="cc-head-cell">
-              <Square side={side} outline={outline} checked={isLeading && callout.result.stage === 'certified'} />
+              <Square side={side} checked={isLeading && callout.result.stage === 'certified'} />
             </span>
           )
         })}
