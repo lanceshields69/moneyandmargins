@@ -10,7 +10,7 @@ export default function RatingLegend({ source }: { source: string }) {
       </span>
       <span className="rating-key">
         <span className="rating-swatch" style={{ background: `linear-gradient(to right, ${RATING_COLORS.lean.D} 50%, ${RATING_COLORS.lean.R} 50%)` }} />
-        Lean (includes Likely)
+        Lean
       </span>
       <span className="rating-key">
         <span className="rating-swatch" style={{ background: RATING_COLORS.tossup }} />
