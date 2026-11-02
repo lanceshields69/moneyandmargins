@@ -10,9 +10,11 @@ import leaderUrl from '../assets/callout-leader.svg'
 import type { Callout, CalloutSide } from '../computeCallout'
 import { usePhone } from '../usePhone'
 
-// Measurements from the Figma design (node 4:2).
-const CARD_WIDTH = 171
-const LEADER_X = 84.5
+// Measurements from the Figma design (node 4:2). Widened from the original 171px so "Results (unofficial):", the
+// longest Result heading, fits on one line with its two values, same as every other row — must match .cc-card's
+// width in app.css.
+const CARD_WIDTH = 195
+const LEADER_X = 96.5
 const MARKER_CENTER = 35.5
 /** Lifts the card, leader line and square together so they clear the prediction markers on the state's label point. */
 const LIFT = '0 -20px'
@@ -79,22 +81,16 @@ function Row({ label, sides, pick, flag, onInfo }: {
 function ResultRow({ sides, result }: { sides: CalloutSide[]; result: Callout['result'] }) {
   const headingText =
     result.stage === 'not-added'
-      ? 'Results (not added)'
+      ? 'Results (not added):'
       : result.stage === 'counting'
-        ? 'Results (counting)'
+        ? 'Results (counting):'
         : result.stage === 'unofficial'
-          ? 'Results (unofficial)'
-          : 'Results (certified)'
+          ? 'Results (unofficial):'
+          : 'Results (certified):'
   return (
     <>
-      <div className="cc-result-heading">
-        <span className="cc-result-heading-text">{headingText}</span>
-        {result.stage === 'counting' && result.percentReporting !== null && (
-          <span className="cc-result-pct">{result.percentReporting}% reporting</span>
-        )}
-      </div>
       <div className="cc-row">
-        <span className="cc-label" aria-hidden="true" />
+        <span className="cc-label">{headingText}</span>
         {sides.map((side) => (
           <span key={side.candidateId} className="cc-value">
             {result.stage === 'not-added' ? '--' : `${result.shares[side.candidateId] ?? '--'}%`}
@@ -103,6 +99,7 @@ function ResultRow({ sides, result }: { sides: CalloutSide[]; result: Callout['r
       </div>
       {result.stage !== 'not-added' && result.asOf && (
         <p className="cc-note cc-result-note">
+          {result.stage === 'counting' && result.percentReporting !== null && `${result.percentReporting}% reporting · `}
           {formatDateTime(result.asOf)}
           {result.sourceUrl && (
             <>

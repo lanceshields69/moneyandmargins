@@ -203,7 +203,9 @@ strong {
 }
 .cc-card {
   position: relative;
-  width: 171px;
+  /* Widened from the original 171px (Figma node 4:2) so "Results (unofficial):", the longest Result heading, fits
+     on one line with its two values, matching src/components/MapCallout.tsx's CARD_WIDTH. */
+  width: 195px;
   background: var(--color-callout);
   border: 0.657px solid var(--color-callout-rule);
   border-radius: 4px;
@@ -271,21 +273,6 @@ strong {
 }
 .cc-lead-col-solid {
   border: 1.5px solid;
-}
-.cc-result-heading {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  align-items: baseline;
-  gap: 0 6px;
-  text-align: right;
-}
-.cc-result-heading-text {
-  font-weight: 500;
-}
-.cc-result-pct {
-  font-weight: 300;
-  white-space: nowrap;
 }
 .cc-result-note {
   margin-top: 3px;
