@@ -1576,8 +1576,9 @@ details h4 {
 }
 .rating-legend {
   position: absolute;
-  left: 65%; /* centered between Texas and Florida */
-  top: calc(100% + 40px);
+  /* Row sits level with the "Total dollars" title: the map legend's bottom is -7% of the map, and the title's middle is 71px above it. */
+  left: calc(65% + 30px); /* between Texas and Florida, nudged toward Florida */
+  bottom: calc(-7% + 36px);
   transform: translateX(-50%);
   width: max-content;
   max-width: 90%;
