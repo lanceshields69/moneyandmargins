@@ -1576,16 +1576,15 @@ details h4 {
 }
 .rating-legend {
   position: absolute;
-  left: 65%; /* centered between Texas and Florida */
+  left: calc(65% + 30px); /* between Texas and Florida, nudged toward Florida */
   top: calc(100% + 40px);
   transform: translateX(-50%);
   width: max-content;
   max-width: 90%;
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 8px 16px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
   font-size: 0.8125rem;
 }
 .rating-key {
@@ -1600,8 +1599,7 @@ details h4 {
   border-radius: 50%;
 }
 .rating-source {
-  flex-basis: 100%;
-  text-align: center;
+  margin-top: 4px;
   font-size: 0.75rem;
 }
 
