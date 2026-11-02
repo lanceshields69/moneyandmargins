@@ -18,7 +18,7 @@ for (const race of nominees.races) {
   const live = (await (await fetch(`${BASE}/race/${id}`)).json()) as ApiRace
   const was = frozen.get(id)?.forecast?.p_dem_win ?? null
   const now = live.forecast?.p_dem_win ?? null
-  rows.push({ race: race.state, frozen: was, live: now, diff: was !== null && now !== null ? now - was : null, rating: live.forecast?.rating ?? null, asOf: live.as_of ?? null })
+  rows.push({ race: race.state, frozen: was, live: now, diff: was !== null && now !== null ? now - was : null, rating: (live.forecast as { rating?: string } | null)?.rating ?? null, asOf: live.as_of ?? null })
 }
 
 const moved = rows.filter((r) => r.diff !== null && Math.abs(r.diff) >= threshold)
