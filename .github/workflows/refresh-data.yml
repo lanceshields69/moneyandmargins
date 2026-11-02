@@ -79,6 +79,13 @@ jobs:
         if: steps.verify.outcome == 'success'
         run: mv data/spending.candidate.json data/spending.json
 
+      # Read-only: compares VotePredictor with the latest frozen snapshot and writes the table to the run summary.
+      # It never freezes a snapshot, so the site's numbers only change when someone decides to freeze one.
+      - name: Check forecasts against the frozen snapshot
+        if: steps.gate.outputs.run == 'true'
+        continue-on-error: true
+        run: npx tsx scripts/check-forecast.ts | tee -a "$GITHUB_STEP_SUMMARY"
+
       - name: Run tests and data checks
         if: steps.verify.outcome == 'success'
         run: |
