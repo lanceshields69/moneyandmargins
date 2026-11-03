@@ -1,0 +1,18 @@
+{
+  "fetchedAt": "2026-11-03T21:06:10.901Z",
+  "approxCommitteeCount": 7,
+  "approxTotal": 47864629.64,
+  "doubleCountTotal": 74704412.49,
+  "doubleCountPct": 3.39,
+  "unattributedTotal": 21688998.11,
+  "incompleteRaces": [
+    "CO",
+    "MI",
+    "NE",
+    "OK",
+    "SC"
+  ],
+  "dedupShortfallCount": 13,
+  "dedupShortfallTotal": 1345406.86,
+  "dedupShortfallPct": 0.06
+}
