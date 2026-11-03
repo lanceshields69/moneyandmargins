@@ -106,6 +106,12 @@ export default function ShareCard({ stateName, callout, national, shapePath, sha
       <text x={600} y={358} fontSize={16} fontWeight={700} fill="#fff">
         Spending aligned with each party&apos;s nominees
       </text>
+      {!adFlag && (
+        <g fontSize={12} fill="#eae8e2" opacity={0.8}>
+          <text x={1030} y={356} textAnchor="end">Nation</text>
+          <text x={1100} y={356} textAnchor="end">{stateName}</text>
+        </g>
+      )}
       {adFlag ? (
         <text x={600} y={400} fontSize={16} fill="#eae8e2">
           {callout.adFlag?.reason ? `${adFlag}: ${callout.adFlag.reason}` : adFlag}
@@ -113,23 +119,29 @@ export default function ShareCard({ stateName, callout, national, shapePath, sha
       ) : (
         national.groups.map((group, i) => {
           const y = 378 + i * 42
+          const supportWidth = (group.supporting.widthPct / 100) * 200
+          const opposeWidth = (group.opposing.widthPct / 100) * 200
           return (
             <g key={group.party}>
               <text x={600} y={y + 12} fontSize={14} fill="#eae8e2">
                 {group.label}
               </text>
-              <rect x={740} y={y} width={240} height={10} rx={5} fill="#393834" />
-              <rect x={740} y={y} width={(group.supporting.widthPct / 100) * 240} height={10} rx={5} fill={group.color} />
-              <rect x={740} y={y + 14} width={240} height={10} rx={5} fill="none" stroke={group.color} strokeWidth={1.5} strokeDasharray="3 3" />
-              <rect x={740} y={y + 14} width={(group.opposing.widthPct / 100) * 240} height={10} rx={5} fill={group.color} opacity={0.5} />
-              <text x={1100} y={y + 12} textAnchor="end" fontSize={14} fill="#fff" style={{ fontVariantNumeric: 'tabular-nums' }}>
+              <rect x={740} y={y} width={200} height={10} rx={5} fill="#393834" />
+              <rect x={740} y={y} width={supportWidth} height={10} rx={5} fill={group.color} />
+              <rect x={740} y={y} width={(group.supporting.statePct / 100) * supportWidth} height={10} rx={5} fill={group.tint} />
+              <rect x={740} y={y + 14} width={200} height={10} rx={5} fill="none" stroke={group.color} strokeWidth={1.5} strokeDasharray="3 3" />
+              <rect x={740} y={y + 14} width={opposeWidth} height={10} rx={5} fill={group.color} opacity={0.5} />
+              <rect x={740} y={y + 14} width={(group.opposing.statePct / 100) * opposeWidth} height={10} rx={5} fill={group.tint} />
+              <text x={1030} y={y + 12} textAnchor="end" fontSize={14} fill="#fff" style={{ fontVariantNumeric: 'tabular-nums' }}>
                 {formatMoney(group.total)}
+              </text>
+              <text x={1100} y={y + 12} textAnchor="end" fontSize={14} fill={group.tint} style={{ fontVariantNumeric: 'tabular-nums' }}>
+                {formatMoney(group.stateTotal)}
               </text>
             </g>
           )
         })
       )}
-
       <text x={580} y={548} fontSize={24} fontWeight={600} fill="#eae8e2">
         Money &amp; Margins
       </text>
