@@ -275,3 +275,25 @@ describe('restated-for-less sentence', () => {
     expect(methodologyFigures === null || typeof methodologyFigures === 'object').toBe(true)
   })
 })
+
+describe('duplicate-removal bullet follows the approximate-committee count', () => {
+  const base = { updated: '2026-10-31T16:09:12.954Z', forecastFrozen: '2026-10-31T15:38:29Z', latestFiling: null, unattributedTotal: null, doubleCountSentence: null, incompleteRacesSentence: null }
+
+  it('is omitted when no committee needed approximate matching, with no zero or braces', () => {
+    const text = fillMethodology(verifiedMd, { ...base, approxCommitteeCount: 0, approxTotal: 0 })
+    expect(text).not.toContain('Duplicate removal is imperfect')
+    expect(text).not.toMatch(/For 0 committees|\$0|\{\{/)
+    expect(text).toContain('**Primary-season spending.**')
+  })
+
+  it('is omitted when the figures are missing', () => {
+    const text = fillMethodology(verifiedMd, { ...base, approxCommitteeCount: null, approxTotal: null })
+    expect(text).not.toContain('Duplicate removal is imperfect')
+  })
+
+  it('shows the count and dollars when one or more committees needed it', () => {
+    const text = fillMethodology(verifiedMd, { ...base, approxCommitteeCount: 3, approxTotal: 1234567 })
+    expect(text).toContain('For 3 committees, the FEC data')
+    expect(text).toContain('Those rows total $1,234,567.')
+  })
+})

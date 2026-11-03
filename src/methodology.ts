@@ -51,8 +51,10 @@ export function fillMethodology(md: string, v: MethodologyValues): string {
   if (!v.forecastFinal) text = text.replace('frozen on {{forecast_freeze_date}}', 'latest as of {{forecast_freeze_date}}').replace('frozen {{forecast_freeze_date}}', 'latest as of {{forecast_freeze_date}}')
   set('forecast_freeze_date', formatDate(v.forecastFrozen))
   set('latest_filing_date', v.latestFiling ? formatDate(`${v.latestFiling}T00:00:00Z`) : null)
-  set('approx_committee_count', v.approxCommitteeCount === null ? null : String(v.approxCommitteeCount))
-  set('approx_total', v.approxTotal === null ? null : money.format(v.approxTotal))
+  // Zero committees needing the key match is not a figure to print ("For 0 committees... $0"): the bullet goes.
+  const approx = v.approxCommitteeCount !== null && v.approxCommitteeCount > 0 && v.approxTotal !== null
+  set('approx_committee_count', approx ? String(v.approxCommitteeCount) : null)
+  set('approx_total', approx ? money.format(v.approxTotal as number) : null)
   set('double_count_sentence', v.doubleCountSentence ?? '')
   set('incomplete_races_sentence', v.incompleteRacesSentence ?? null) // missing: the bullet is dropped below
   set('dedup_shortfall_sentence', v.dedupShortfallSentence ?? null) // missing: the bullet is dropped below
