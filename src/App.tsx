@@ -12,7 +12,7 @@ import ShareMenu from './components/ShareMenu'
 import UsStatesMap, { rampColor } from './components/UsStatesMap'
 import StateMarks, { buildStateMarks, marksFromCallouts } from './components/StateMarks'
 import { buildNationalCard } from './computeNational'
-import { allRaces, callouts, forecastSnapshot, labelPoints, mapViewBox, seatForecastSources, stateNames } from './data'
+import { allRaces, callouts, forecastSnapshot, labelPoints, mapViewBox, methodologyFigures, seatForecastSources, stateNames } from './data'
 import SeatForecastCarousel from './components/SeatForecastCarousel'
 import logo from '../images/logo.png'
 import { DATA_VERIFIED, SHARES_VERIFIED } from './config'
@@ -22,7 +22,7 @@ import { correctionsBlocks, isCorrectionsHash, type CorrectionEntry } from './co
 import { formatDate, formatDateOnly, formatMoney, formatMonthDay } from './format'
 import { initialSelection, parseHashState } from './defaultState'
 import verification from '../data/verification.json'
-import { doubleCountSentence, fillMethodology, incompleteRacesSentence, isHowHash, methodologySource, parseMethodology } from './methodology'
+import { dedupShortfallSentence, doubleCountSentence, fillMethodology, incompleteRacesSentence, isHowHash, methodologySource, parseMethodology } from './methodology'
 import { usePhone } from './usePhone'
 
 export default function App() {
@@ -140,6 +140,7 @@ export default function App() {
           approxCommitteeCount: allRaces.approxCommitteeCount,
           approxTotal: allRaces.approxTotal,
           doubleCountSentence: doubleCountSentence(verification),
+          dedupShortfallSentence: dedupShortfallSentence(methodologyFigures, allRaces.fetchedAt),
           incompleteRacesSentence: incompleteRacesSentence(allRaces.races.filter((r) => r.incompleteCount > 0).map((r) => stateNames.get(r.state) ?? r.state)),
         }),
       ),

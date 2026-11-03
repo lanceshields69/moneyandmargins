@@ -9,7 +9,7 @@ import MethodologyModal from './components/MethodologyModal'
 import { DATA_VERIFIED, GLOBAL_PARTIAL_NOTICE, IS_PREVIEW_BUILD, SHARES_VERIFIED } from './config'
 import { DATA_CHECK_NOTICE, PARTIAL_CALLOUT_NOTICE } from './copy'
 import { allRaces, callouts } from './data'
-import { doubleCountSentence, fillMethodology, incompleteRacesSentence, isHowHash, methodologySource, parseMethodology, splitMethodology, type MethodologyValues } from './methodology'
+import { dedupShortfallSentence, doubleCountSentence, fillMethodology, incompleteRacesSentence, isHowHash, methodologySource, parseMethodology, splitMethodology, type MethodologyValues } from './methodology'
 
 ;(globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true
 
@@ -236,5 +236,42 @@ describe('double-count and incomplete-races sentences', () => {
     expect(text).toContain('A contrast ad can be reported on two lines.\n')
     expect(text).not.toContain('Nationally')
     expect(text).not.toContain('Left out.') // a bullet that is only its missing sentence goes
+  })
+})
+
+describe('restated-for-less sentence', () => {
+  const base = { updated: '2026-10-31T16:09:12.954Z', forecastFrozen: '2026-10-31T15:38:29Z', latestFiling: null, unattributedTotal: null, approxCommitteeCount: null, approxTotal: null, doubleCountSentence: null, incompleteRacesSentence: null }
+  const fetched = '2026-10-31T20:40:30.953Z'
+  const figures = { fetchedAt: fetched, dedupShortfallPct: 0.07 }
+
+  it('states the percent from the figures file, two decimals, with the fixed half-point clause', () => {
+    expect(dedupShortfallSentence(figures, fetched)).toBe("As of the latest check, that affects about 0.07% of total spending, and no race's shares moved by more than half a point.")
+    expect(dedupShortfallSentence({ ...figures, dedupShortfallPct: 0 }, fetched)).toContain('about 0.00% of')
+  })
+
+  it('fills the live page text, in place after Incomplete races, with no raw braces', () => {
+    const text = fillMethodology(verifiedMd, { ...base, dedupShortfallSentence: dedupShortfallSentence(figures, fetched) })
+    expect(text).toContain("- **Restated for less.** In a few cases, a committee's regular report restates fewer dollars than its earlier notices, and the difference is dropped. As of the latest check, that affects about 0.07% of total spending")
+    expect(text.indexOf('**Restated for less.**')).toBeGreaterThan(text.indexOf('- **Contrast ads.**'))
+    expect(text).not.toMatch(/\{\{|\}\}/)
+  })
+
+  it('drops the bullet, with no blank or zero, when the figures file is missing', () => {
+    expect(dedupShortfallSentence(null, fetched)).toBeNull()
+    const text = fillMethodology(verifiedMd, { ...base, dedupShortfallSentence: dedupShortfallSentence(null, fetched) })
+    expect(text).not.toContain('Restated for less')
+    expect(text).not.toContain('0.00%')
+    expect(text).not.toMatch(/\{\{|\}\}/)
+  })
+
+  it('drops it too when the figure is absent, not finite, or made for a different fetch', () => {
+    expect(dedupShortfallSentence({ fetchedAt: fetched }, fetched)).toBeNull()
+    expect(dedupShortfallSentence({ fetchedAt: fetched, dedupShortfallPct: Number.NaN }, fetched)).toBeNull()
+    expect(dedupShortfallSentence(figures, '2026-11-01T00:00:00.000Z')).toBeNull()
+  })
+
+  it('treats the page as having no figures file on this branch until verify.ts writes one', async () => {
+    const { methodologyFigures } = await import('./data')
+    expect(methodologyFigures === null || typeof methodologyFigures === 'object').toBe(true)
   })
 })

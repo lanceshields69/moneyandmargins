@@ -44,6 +44,7 @@ I'm still working on these, and I'll note here when each one is fixed.
 - **Primary-season spending.** Totals and shares include primary-season spending as labeled by the filer, which can count toward the other side's share. I'm moving the shares to general-election spending only.
 - **Contrast ads.** A contrast ad can be reported on two lines, so a state's total can count some spending twice. {{double_count_sentence}}
 - **Incomplete races.** {{incomplete_races_sentence}}
+- **Restated for less.** In a few cases, a committee's regular report restates fewer dollars than its earlier notices, and the difference is dropped. {{dedup_shortfall_sentence}}
 
 ## How it stays even-handed
 

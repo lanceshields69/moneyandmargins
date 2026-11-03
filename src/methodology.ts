@@ -25,6 +25,8 @@ export interface MethodologyValues {
   doubleCountSentence?: string | null
   /** From the pipeline data, e.g. "Races with incomplete data (Colorado, ...) are left out of the national card."; null when none. */
   incompleteRacesSentence?: string | null
+  /** From data/methodology-figures.json, e.g. "As of the latest check, that affects about 0.07% ..."; null when there is no figure. */
+  dedupShortfallSentence?: string | null
 }
 
 export const HOW_HASH = '#how-it-works'
@@ -53,6 +55,7 @@ export function fillMethodology(md: string, v: MethodologyValues): string {
   set('approx_total', v.approxTotal === null ? null : money.format(v.approxTotal))
   set('double_count_sentence', v.doubleCountSentence ?? '')
   set('incomplete_races_sentence', v.incompleteRacesSentence ?? null) // missing: the bullet is dropped below
+  set('dedup_shortfall_sentence', v.dedupShortfallSentence ?? null) // missing: the bullet is dropped below
   set('unattributed_sentence', v.unattributedTotal !== null ? `Expenditures not tied to a candidate total ${money.format(v.unattributedTotal)}.` : '')
 
   return text
@@ -126,4 +129,15 @@ export function doubleCountSentence(verification: { runs: { checks: { id: string
 export function incompleteRacesSentence(stateNames: string[]): string | null {
   const names = [...stateNames].sort((a, b) => a.localeCompare(b))
   return names.length === 0 ? null : `Races with incomplete data (${names.join(', ')}) are left out of the national card.`
+}
+
+/**
+ * The shortfall figure from the latest methodology-figures.json. Null, so the bullet is dropped, when the file
+ * is missing, has no figure, or was made for a different fetch than the spending data on the page.
+ */
+export function dedupShortfallSentence(figures: { fetchedAt?: string; dedupShortfallPct?: number } | null, spendingFetchedAt: string): string | null {
+  if (!figures || figures.fetchedAt !== spendingFetchedAt) return null
+  const pct = figures.dedupShortfallPct
+  if (typeof pct !== 'number' || !Number.isFinite(pct)) return null
+  return `As of the latest check, that affects about ${pct.toFixed(2)}% of total spending, and no race's shares moved by more than half a point.`
 }

@@ -11,6 +11,10 @@ import type { NomineesFile, SpendingFile } from './types'
 import type { SeatForecastEntry } from './seatForecastSources'
 
 const snapshotFiles = import.meta.glob('../data/frozen/*/snapshot.json', { eager: true })
+// Optional: written by scripts/verify.ts, so it does not exist until the first run that passes. A glob, not an
+// import, so a missing file is an empty object rather than a build error.
+const methodologyFiguresFiles = import.meta.glob('../data/methodology-figures.json', { eager: true, import: 'default' })
+export const methodologyFigures = (Object.values(methodologyFiguresFiles)[0] ?? null) as { fetchedAt?: string; dedupShortfallPct?: number } | null
 const seatForecastFiles = import.meta.glob('../data/frozen-seats/*/snapshot.json', { eager: true })
 
 /** The newest seat-forecast snapshot, by folder name (a sortable timestamp). Parallel to latestSnapshot, for the
