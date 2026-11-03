@@ -18,6 +18,8 @@ const TIGHT = { wordSpacing: '-0.25em' } as const
 
 export interface ShareCardProps {
   stateName: string
+  /** Opens the embed code. The link is left out of the downloaded PNG. */
+  onUseOnSite?: () => void
   callout: Callout
   /** The map's "Spending aligned" card, built for this state. */
   national: NationalCardData
@@ -69,7 +71,7 @@ function Track({ group, y, height }: { group: PartyAligned; y: number; height: n
   )
 }
 
-export default function ShareCard({ stateName, callout, national, shapePath, shapeBox, dataAsOf, forecastHost }: ShareCardProps) {
+export default function ShareCard({ stateName, callout, national, shapePath, shapeBox, dataAsOf, forecastHost, onUseOnSite }: ShareCardProps) {
   const { sides, result } = callout
   const title = titleLines(stateName)
   const lineGap = (36 * title.size) / 30
@@ -197,10 +199,19 @@ export default function ShareCard({ stateName, callout, national, shapePath, sha
       <text x={513} y={T + 294} fontFamily={FONT_TEXT} fontSize={14} letterSpacing={-0.28} fill="#fff" textLength={165} lengthAdjust="spacingAndGlyphs">
         MoneyandMargins.app
       </text>
-      <text x={498} y={T + 316} fontFamily={FONT_TEXT} fontSize={14} fill="#eae8e2" textLength={158.5} lengthAdjust="spacingAndGlyphs">
-        Use this on your site?
-      </text>
-      <Icon raw={arrowRaw} x={661.5} y={T + 303.5} size={16.5} />
+      <g
+        data-export-omit="true"
+        role={onUseOnSite ? 'button' : undefined}
+        tabIndex={onUseOnSite ? 0 : undefined}
+        style={onUseOnSite ? { cursor: 'pointer' } : undefined}
+        onClick={onUseOnSite}
+        onKeyDown={onUseOnSite ? (event) => (event.key === 'Enter' || event.key === ' ') && onUseOnSite() : undefined}
+      >
+        <text x={498} y={T + 316} fontFamily={FONT_TEXT} fontSize={14} fill="#eae8e2" textLength={158.5} lengthAdjust="spacingAndGlyphs">
+          Use this on your site?
+        </text>
+        <Icon raw={arrowRaw} x={661.5} y={T + 303.5} size={16.5} />
+      </g>
     </svg>
   )
 }

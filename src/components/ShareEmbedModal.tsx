@@ -18,6 +18,7 @@ interface ShareEmbedModalProps {
 export default function ShareEmbedModal({ stateCode, stateName, card, onClose }: ShareEmbedModalProps) {
   const dialog = useRef<HTMLDivElement>(null)
   const preview = useRef<HTMLDivElement>(null)
+  const embedSection = useRef<HTMLElement>(null)
   const [copied, setCopied] = useState(false)
   const code = embedCode(stateCode)
 
@@ -82,7 +83,7 @@ export default function ShareEmbedModal({ stateCode, stateName, card, onClose }:
         <section className="embed-section">
           <h3>Share image</h3>
           <div className="embed-preview" ref={preview}>
-            <ShareCard stateName={stateName} {...card} />
+            <ShareCard stateName={stateName} {...card} onUseOnSite={() => embedSection.current?.scrollIntoView({ block: 'center' })} />
           </div>
           <button type="button" className="embed-button" onClick={download}>
             Download PNG
@@ -90,7 +91,7 @@ export default function ShareEmbedModal({ stateCode, stateName, card, onClose }:
           </button>
         </section>
 
-        <section className="embed-section">
+        <section className="embed-section" ref={embedSection}>
           <h3>Get embed code</h3>
           <pre className="embed-code">
             <code>{code}</code>

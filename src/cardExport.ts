@@ -3,6 +3,7 @@ import { CARD_HEIGHT, CARD_WIDTH } from './components/ShareCard'
 /** Renders the card's SVG to a 1200x630 PNG and downloads it. The fonts are the system ones, as the SVG is drawn in an image. */
 export async function downloadCardPng(svg: SVGSVGElement, filename: string): Promise<void> {
   const copy = svg.cloneNode(true) as SVGSVGElement
+  copy.querySelectorAll('[data-export-omit]').forEach((node) => node.remove())
   copy.setAttribute('width', String(CARD_WIDTH))
   copy.setAttribute('height', String(CARD_HEIGHT))
   const url = URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(copy)], { type: 'image/svg+xml' }))

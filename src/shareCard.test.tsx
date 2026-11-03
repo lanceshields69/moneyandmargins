@@ -45,3 +45,24 @@ describe('the share card numbers', () => {
     expect([...mirrored].sort()).toEqual([...original].sort())
   })
 })
+
+describe('the use-on-your-site link', () => {
+  it('is a button when the card is given a handler, and marked to be left out of the PNG', () => {
+    const callout = callouts.get('TX')!
+    const html = renderToStaticMarkup(
+      <ShareCard
+        stateName="Texas"
+        callout={callout}
+        national={buildNationalCard(allRaces.races, 'TX')}
+        shapePath={statePaths.get('TX') ?? ''}
+        shapeBox={stateBoxes.get('TX') ?? '0 0 1 1'}
+        dataAsOf="Oct 31, 2026"
+        forecastHost="votepredictor.com"
+        onUseOnSite={() => {}}
+      />,
+    )
+    expect(html).toContain('Use this on your site?')
+    expect(html).toContain('data-export-omit="true"')
+    expect(html).toContain('role="button"')
+  })
+})
