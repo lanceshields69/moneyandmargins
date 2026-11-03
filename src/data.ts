@@ -7,6 +7,7 @@ import { parseCsv } from './csv'
 import { buildAllRaces } from './computeSpending'
 import { buildAllCallouts, latestSnapshot } from './computeCallout'
 import { buildResultsByRace, type ResultsRaceRow, type ResultsVoteRow } from './results'
+import type { RaceFlagsFile } from './raceFlags'
 import type { NomineesFile, SpendingFile } from './types'
 import type { SeatForecastEntry } from './seatForecastSources'
 
@@ -27,9 +28,14 @@ function latestSeatForecastSnapshot(files: Record<string, unknown>): readonly Se
   return (mod.default ?? mod).sources ?? []
 }
 
+// Optional: written by scripts/verify.ts. A glob so a missing file is no flags rather than a build error.
+const raceFlagFiles = import.meta.glob('../data/race-flags.json', { eager: true, import: 'default' })
+const raceFlags = (Object.values(raceFlagFiles)[0] ?? null) as RaceFlagsFile | null
+
 export const allRaces = buildAllRaces(
   nomineesJson as unknown as NomineesFile,
   spendingJson as unknown as SpendingFile,
+  raceFlags,
 )
 
 export const forecastSnapshot = latestSnapshot(snapshotFiles)

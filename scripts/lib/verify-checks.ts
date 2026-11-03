@@ -7,7 +7,7 @@ import type { IeRow } from './dedup-ie'
 export interface CheckResult {
   id: string
   name: string
-  /** A failed blocking check stops the refresh from replacing spending.json. Advisory checks are recorded and count toward shares_ready only. */
+  /** A failed blocking check stops the refresh from replacing spending.json: a failed fetch, a reference row missing from the raw pull, or totals that do not add up. Everything else is a flag or an advisory, recorded and counted toward shares_ready only. */
   blocking: boolean
   pass: boolean
   summary: string
@@ -50,8 +50,8 @@ export function checkRaceDrops(previous: Record<string, number> | null, current:
   }
   return {
     id: 'race_drops',
-    blocking: true,
-    name: 'No race total dropped more than 2% and $100K since the previous run',
+    blocking: false,
+    name: 'Flag: a race whose total dropped more than 2% and $100K since the previous run is held out as incomplete data, not blocked',
     pass: details.length === 0,
     summary: previous ? `${details.length} race(s) dropped` : 'No previous run to compare with',
     details,
@@ -348,7 +348,7 @@ export function checkTotalsIdentity(t: TotalsBreakdown, tolerancePct = 0.5): Che
   const gapPct = pct(Math.abs(gap), t.allRaces)
   return {
     id: 'totals_identity',
-    blocking: false,
+    blocking: true,
     name: `All-races total equals aligned plus unattributed plus excluded within ${tolerancePct}%`,
     pass: gapPct <= tolerancePct,
     summary: `gap ${round(gap)} (${round(gapPct)}%)`,

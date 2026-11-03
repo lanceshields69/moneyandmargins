@@ -9,6 +9,8 @@ import { buildAllRaces } from '../src/computeSpending'
 import type { NomineesFile, SpendingFile } from '../src/types'
 import { dedupeIeRows, periodicCutoffs, type ReportCoverage } from './lib/dedup-ie'
 import { methodologyFigures, type MethodologyFigures } from './lib/methodology-figures'
+import { computeRaceFlags, validateReviews } from './lib/race-flags'
+import type { RaceFlag, RaceFlagsFile, RaceReview } from '../src/raceFlags'
 import { toIeRow, type RawScheduleERow } from './lib/fec-itemized'
 import {
   appendRun,
@@ -84,6 +86,11 @@ const auditRows: AuditRow[] = dedup.coveredByPeriodicRows.flatMap((r) =>
 const raceTotals = (file: SpendingFile): Record<string, number> =>
   Object.fromEntries(buildAllRaces(nominees, file).races.map((r) => [r.state, r.total ?? 0]))
 
+// Race totals by race ID, for the drop flag. Built without any flags, so a flag never feeds back into the totals.
+const raceTotalsById = (file: SpendingFile): Record<string, { state: string; total: number }> =>
+  Object.fromEntries(buildAllRaces(nominees, file).races.map((r) => [r.raceId, { state: r.state, total: r.total ?? 0 }]))
+const totalsOnly = (m: Record<string, { total: number }>) => Object.fromEntries(Object.entries(m).map(([k, v]) => [k, v.total]))
+
 // 5. Where every dollar of the all-races total goes.
 function breakdown(): TotalsBreakdown {
   const out: TotalsBreakdown = { allRaces: 0, aligned: 0, unattributed: 0, excluded: 0 }
@@ -128,7 +135,7 @@ function fetchCompleteness(): CheckResult {
 
 const totals = breakdown()
 const checks: CheckResult[] = [
-  checkRaceDrops(previous ? raceTotals(previous) : null, raceTotals(candidate)),
+  checkRaceDrops(previous ? totalsOnly(raceTotalsById(previous)) : null, totalsOnly(raceTotalsById(candidate))),
   fetchCompleteness(),
   checkDedupAudit(auditRows, dedup.periodicRows, dedup.memoPeriodicRows, raceTotals(candidate), totals.allRaces),
   checkDoubleCount(raceRows),
@@ -150,6 +157,19 @@ const figures: MethodologyFigures = methodologyFigures({
   allRacesTotal: totals.allRaces,
 })
 
+// Races held out as incomplete data because their total dropped. Written, with the carried-over flags and the
+// human reviews applied, only when nothing blocked; the page ignores a file made for other spending data.
+const reviews = existsSync(new URL('data/race-review.json', root)) ? readJson<RaceReview[]>('data/race-review.json') : []
+validateReviews(reviews)
+const carried = existsSync(new URL('data/race-flags.json', root)) ? readJson<RaceFlagsFile>('data/race-flags.json').flags : []
+const raceFlags: RaceFlag[] = computeRaceFlags({
+  previous: previous ? totalsOnly(raceTotalsById(previous)) : null,
+  current: raceTotalsById(candidate),
+  carried,
+  reviews,
+  fetchedAt: candidate.fetchedAt,
+})
+
 const run = {
   ran_at: new Date().toISOString(),
   fetched_at: candidate.fetchedAt,
@@ -165,6 +185,7 @@ writeFileSync(historyPath, JSON.stringify(next, null, 2) + '\n')
 
 const lines = [
   '## Verification',
+  ...raceFlags.map((f) => `- FLAG ${f.raceId}: total dropped ${f.dropPct}% ($${f.drop}) from ${f.prior} to ${f.now}; held out as incomplete data`),
   ...checks.map((c) => `- ${c.pass ? 'PASS' : c.blocking ? 'FAIL (blocking)' : 'FAIL (advisory)'} ${c.id}: ${c.summary}`),
   `- shares_ready: ${next.shares_ready} (${next.runs.length} run${next.runs.length === 1 ? '' : 's'} on record; ${next.shares_ready_rule})`,
 ]
@@ -175,4 +196,5 @@ if (run.blocked) {
   process.exitCode = 1
 } else {
   writeFileSync(new URL('data/methodology-figures.json', root), JSON.stringify(figures, null, 2) + '\n')
+  writeFileSync(new URL('data/race-flags.json', root), JSON.stringify({ fetchedAt: candidate.fetchedAt, flags: raceFlags } satisfies RaceFlagsFile, null, 2) + '\n')
 }
