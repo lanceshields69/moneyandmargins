@@ -8,6 +8,12 @@ export const FLAG_MAX_DOLLARS = 100_000
 const round = (n: number) => Math.round(n * 100) / 100
 const isLargeDrop = (before: number, now: number) => before - now > FLAG_MAX_DOLLARS && (100 * (before - now)) / before > FLAG_MAX_PCT
 
+/** Race IDs are the race list's own (`MS-2026`). An ID that is not in it would never match, so it fails loudly. */
+export function validateRaceIds(source: string, ids: string[], knownRaceIds: ReadonlySet<string>): void {
+  const unknown = ids.filter((id) => !knownRaceIds.has(id))
+  if (unknown.length > 0) throw new Error(`${source}: unknown race ID(s) ${unknown.map((u) => JSON.stringify(u)).join(', ')}; use an ID from the race list, like "MS-2026"`)
+}
+
 export function validateReviews(reviews: RaceReview[]): void {
   for (const r of reviews) {
     if (!r.raceId || !r.reason?.trim() || !r.date || !Number.isFinite(r.total)) {

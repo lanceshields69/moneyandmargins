@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { computeRaceFlags, validateReviews } from './race-flags'
+import { computeRaceFlags, validateRaceIds, validateReviews } from './race-flags'
 import { checkRaceDrops, checkTotalsIdentity, checkFetchCompleteness, type ReconcileTarget } from './verify-checks'
 import type { ExportRow } from './verify-checks'
 import type { RaceFlag, RaceReview } from '../../src/raceFlags'
@@ -42,6 +42,13 @@ describe('race drop flag', () => {
   it('rejects a review without a reason, date or total', () => {
     expect(() => validateReviews([{ raceId: 'A', total: 1, reason: ' ', date: '2026-11-04' }])).toThrow('race-review.json')
     expect(() => validateReviews([{ raceId: 'A', total: Number.NaN, reason: 'x', date: '2026-11-04' }])).toThrow('race-review.json')
+  })
+
+  it('fails loudly on a race ID that is not in the race list, so a review cannot silently fail to match', () => {
+    const known = new Set(['MS-2026', 'OH-2026'])
+    expect(() => validateRaceIds('data/race-review.json', ['MS-2026'], known)).not.toThrow()
+    expect(() => validateRaceIds('data/race-review.json', ['2026-SEN-MS'], known)).toThrow('unknown race ID(s) "2026-SEN-MS"')
+    expect(() => validateRaceIds('data/race-flags.json', ['ms-2026'], known)).toThrow('use an ID from the race list')
   })
 
   it('treats every race the same: swapping two races swaps the flags', () => {

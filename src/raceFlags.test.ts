@@ -12,6 +12,14 @@ const flag = (raceId: string): RaceFlag => ({ raceId, state: raceId.slice(0, 2),
 const file = (...ids: string[]): RaceFlagsFile => ({ fetchedAt: spending.fetchedAt, flags: ids.map(flag) })
 const flaggedIds = (all: ReturnType<typeof buildAllRaces>) => all.races.filter((r) => r.incompleteCount > 0 && r.rows.every((x) => x.reason?.startsWith(RACE_FLAG_REASON))).map((r) => r.raceId).sort()
 
+describe('race IDs', () => {
+  it('are the race list\'s own, XX-2026, so the flags and review files key on the same IDs the page uses', () => {
+    expect(nominees.races.every((r) => /^[A-Z]{2}-2026$/.test(r.id))).toBe(true)
+    expect(nominees.races.map((r) => r.id)).toContain('MS-2026')
+    expect(buildAllRaces(nominees, spending).races.map((r) => r.raceId)).toEqual(nominees.races.map((r) => r.id))
+  })
+})
+
 describe('a flagged race on the page', () => {
   const plain = buildAllRaces(nominees, spending)
   const flagged = buildAllRaces(nominees, spending, file('MS-2026'))

@@ -9,7 +9,7 @@ import { buildAllRaces } from '../src/computeSpending'
 import type { NomineesFile, SpendingFile } from '../src/types'
 import { dedupeIeRows, periodicCutoffs, type ReportCoverage } from './lib/dedup-ie'
 import { methodologyFigures, type MethodologyFigures } from './lib/methodology-figures'
-import { computeRaceFlags, validateReviews } from './lib/race-flags'
+import { computeRaceFlags, validateRaceIds, validateReviews } from './lib/race-flags'
 import type { RaceFlag, RaceFlagsFile, RaceReview } from '../src/raceFlags'
 import { toIeRow, type RawScheduleERow } from './lib/fec-itemized'
 import {
@@ -161,7 +161,10 @@ const figures: MethodologyFigures = methodologyFigures({
 // human reviews applied, only when nothing blocked; the page ignores a file made for other spending data.
 const reviews = existsSync(new URL('data/race-review.json', root)) ? readJson<RaceReview[]>('data/race-review.json') : []
 validateReviews(reviews)
+const knownRaceIds = new Set(nominees.races.map((r) => r.id))
+validateRaceIds('data/race-review.json', reviews.map((r) => r.raceId), knownRaceIds)
 const carried = existsSync(new URL('data/race-flags.json', root)) ? readJson<RaceFlagsFile>('data/race-flags.json').flags : []
+validateRaceIds('data/race-flags.json', carried.map((f) => f.raceId), knownRaceIds)
 const raceFlags: RaceFlag[] = computeRaceFlags({
   previous: previous ? totalsOnly(raceTotalsById(previous)) : null,
   current: raceTotalsById(candidate),
