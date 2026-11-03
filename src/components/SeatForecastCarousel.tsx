@@ -75,15 +75,13 @@ function Card({ entry }: { entry: SeatForecastEntry }) {
 
 export interface SeatForecastCarouselProps {
   sources: readonly SeatForecastEntry[]
-  /** The exact box size, computed by the caller from the race panel's own height and the row's available width
-   * (desktop only; the panel doesn't exist on phones, and this falls back to the CSS-driven default size). */
-  sizePx?: { width: number; height: number } | null
 }
 
 /** Crossfades every 3s through the chamber-wide seat forecast from each of several forecasters. Never fetches: the
  * data comes from a frozen snapshot (scripts/freeze-seat-forecasts.ts), the same philosophy as the race forecasts
- * powering the map callout. Pauses on a single card for a visitor who has asked for reduced motion. */
-export default function SeatForecastCarousel({ sources, sizePx }: SeatForecastCarouselProps) {
+ * powering the map callout. Pauses on a single card for a visitor who has asked for reduced motion. Sized to the
+ * Figma frame's own 664x511 (node 74:1669), never larger, shrinking only if the row is narrower than that. */
+export default function SeatForecastCarousel({ sources }: SeatForecastCarouselProps) {
   const [index, setIndex] = useState(0)
   const reducedMotion = useRef(typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
 
@@ -97,12 +95,7 @@ export default function SeatForecastCarousel({ sources, sizePx }: SeatForecastCa
   const current = sources[Math.min(index, sources.length - 1)]
 
   return (
-    <div
-      className="seat-forecast"
-      role="group"
-      aria-label="Forecast to win the Senate"
-      style={sizePx ? { width: sizePx.width, height: sizePx.height, maxWidth: 'none', flex: 'none' } : undefined}
-    >
+    <div className="seat-forecast" role="group" aria-label="Forecast to win the Senate">
       {sources.map((entry, i) => (
         <div key={entry.key} className={i === index ? 'seat-forecast-card seat-forecast-card-active' : 'seat-forecast-card'} aria-hidden={i === index ? undefined : true}>
           <Card entry={entry} />
