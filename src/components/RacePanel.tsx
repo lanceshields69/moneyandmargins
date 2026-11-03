@@ -8,7 +8,8 @@ import { AMOUNTS_PENDING_LEAD, SHARES_PENDING_LINK } from '../copy'
 import { formatMoney, formatMoneyFull } from '../format'
 import { CONTACT_EMAIL } from '../config'
 import { buildMailto } from '../corrections'
-import { mapViewBox, stateNames, statePaths } from '../data'
+import { allRaces, callouts, forecastSnapshot, stateBoxes, statePaths, stateNames } from '../data'
+import { buildNationalCard } from '../computeNational'
 import ShareEmbedModal from './ShareEmbedModal'
 
 const FEC_SOURCE_URL = 'https://www.fec.gov/data/independent-expenditures/'
@@ -161,12 +162,19 @@ export default function RacePanel({ race, fetchedAt, dataThrough, dataVerified =
             </button>
           </p>
           {shareOpen &&
+            callouts.get(race.state) &&
             createPortal(
               <ShareEmbedModal
                 stateCode={race.state}
                 stateName={stateNames.get(race.state) ?? race.state}
-                shapePath={statePaths.get(race.state) ?? ''}
-                viewBox={mapViewBox.join(' ')}
+                card={{
+                  callout: callouts.get(race.state)!,
+                  national: buildNationalCard(allRaces.races, race.state),
+                  shapePath: statePaths.get(race.state) ?? '',
+                  shapeBox: stateBoxes.get(race.state) ?? '0 0 1 1',
+                  dataAsOf: dataThrough ?? 'unknown',
+                  forecastSource: `${forecastSnapshot.sourceName}, ${new URL(forecastSnapshot.sourceUrl).host}`,
+                }}
                 onClose={() => setShareOpen(false)}
               />,
               document.body,

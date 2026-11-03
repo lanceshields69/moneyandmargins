@@ -34,3 +34,15 @@ const geometry = usStatesData as unknown as { viewBox: string; states: { usps: s
 export const mapViewBox = geometry.viewBox.split(' ').map(Number) as [number, number, number, number]
 export const labelPoints = new Map(geometry.states.map((s) => [s.usps, s.labelPoint]))
 export const statePaths = new Map(geometry.states.map((s) => [s.usps, s.d]))
+
+/** The outline's bounding box as an SVG viewBox, from its absolute M/L/Z coordinates. */
+function outlineBox(d: string): string {
+  const numbers = (d.match(/-?\d+(\.\d+)?/g) ?? []).map(Number)
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity
+  for (let i = 0; i + 1 < numbers.length; i += 2) {
+    minX = Math.min(minX, numbers[i]); maxX = Math.max(maxX, numbers[i])
+    minY = Math.min(minY, numbers[i + 1]); maxY = Math.max(maxY, numbers[i + 1])
+  }
+  return `${minX} ${minY} ${maxX - minX} ${maxY - minY}`
+}
+export const stateBoxes = new Map(geometry.states.map((s) => [s.usps, outlineBox(s.d)]))

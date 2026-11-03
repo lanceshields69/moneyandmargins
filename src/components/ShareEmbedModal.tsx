@@ -1,31 +1,25 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import closeIcon from '../assets/close.svg'
 import copyIcon from '../assets/share/copy.svg'
 import downloadIcon from '../assets/share/download-simple.svg'
+import { downloadCardPng } from '../cardExport'
 import { CC_BY_CREDIT, embedCode } from '../embed'
+import ShareCard, { type ShareCardProps } from './ShareCard'
 
 const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
 interface ShareEmbedModalProps {
   stateCode: string
   stateName: string
-  /** The state's outline as an SVG path in the map's viewBox. */
-  shapePath: string
-  viewBox: string
+  card: Omit<ShareCardProps, 'stateName'>
   onClose: () => void
 }
 
-export default function ShareEmbedModal({ stateCode, stateName, shapePath, viewBox, onClose }: ShareEmbedModalProps) {
+export default function ShareEmbedModal({ stateCode, stateName, card, onClose }: ShareEmbedModalProps) {
   const dialog = useRef<HTMLDivElement>(null)
+  const preview = useRef<HTMLDivElement>(null)
   const [copied, setCopied] = useState(false)
   const code = embedCode(stateCode)
-  const shapeRef = useRef<SVGPathElement>(null)
-  const [crop, setCrop] = useState(viewBox)
-
-  useLayoutEffect(() => {
-    const box = shapeRef.current?.getBBox()
-    if (box) setCrop(`${box.x} ${box.y} ${box.width} ${box.height}`)
-  }, [shapePath])
 
   useEffect(() => {
     const opener = document.activeElement as HTMLElement | null
@@ -69,6 +63,11 @@ export default function ShareEmbedModal({ stateCode, stateName, shapePath, viewB
     }
   }
 
+  const download = () => {
+    const svg = preview.current?.querySelector('svg')
+    if (svg) void downloadCardPng(svg, `money-and-margins-${stateCode.toLowerCase()}-senate-2026.png`)
+  }
+
   return (
     <div className="embed-scrim" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
       <div className="embed-modal" role="dialog" aria-modal="true" aria-labelledby="share-title" ref={dialog}>
@@ -82,12 +81,10 @@ export default function ShareEmbedModal({ stateCode, stateName, shapePath, viewB
 
         <section className="embed-section">
           <h3>Share image</h3>
-          <div className="embed-preview" aria-hidden="true">
-            <svg viewBox={crop} width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-              <path ref={shapeRef} d={shapePath} fill="#544a99" stroke="#eae8e2" strokeOpacity="0.3" />
-            </svg>
+          <div className="embed-preview" ref={preview}>
+            <ShareCard stateName={stateName} {...card} />
           </div>
-          <button type="button" className="embed-button" aria-disabled="true">
+          <button type="button" className="embed-button" onClick={download}>
             Download PNG
             <img src={downloadIcon} alt="" width={18} height={18} />
           </button>
