@@ -40,6 +40,24 @@ export default function App() {
   // An embedded card's "Use this on your site?" link sends visitors here with ?share=1, asking the race's own
   // share and embed panel to open right away instead of making them find it themselves.
   const [shareRequested] = useState(() => new URLSearchParams(window.location.search).get('share') === '1')
+  // Matches the forecast carousel's height to the "Spending aligned" card's own height (a flex sibling in
+  // .map-top). CSS alone can't do this: a flex item with align-self:stretch, aspect-ratio and width:auto can
+  // collapse to a 0 width, since the stretched cross-size from a later layout pass isn't reliably transferred
+  // back into the main-size calculation. Its height is modest, so unlike the (abandoned) race-panel-height
+  // attempt, no extra "available row width" constraint is needed here.
+  const [carouselHeight, setCarouselHeight] = useState<number | null>(null)
+  useEffect(() => {
+    const el = document.querySelector<HTMLElement>('.national')
+    if (!el || typeof ResizeObserver === 'undefined') {
+      setCarouselHeight(null)
+      return
+    }
+    // getBoundingClientRect(), not entries[0].contentRect: .national has padding and a border, and contentRect
+    // excludes both, undershooting the card's real on-screen height by exactly that amount.
+    const observer = new ResizeObserver(() => setCarouselHeight(el.getBoundingClientRect().height))
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
   useEffect(() => {
     if (!shareRequested) return
     const url = new URL(window.location.href)
@@ -103,6 +121,8 @@ export default function App() {
   const callout = active ? callouts.get(active) : undefined
   const race = active ? (raceByState.get(active) ?? null) : null
   const national = useMemo(() => buildNationalCard(allRaces.races, active), [active])
+  // Figma node 74:1669's card is 664x511; keep this ratio in sync with SeatForecastCarousel's own SVG viewBox.
+  const carouselSize = useMemo(() => (carouselHeight ? { width: carouselHeight * (664 / 511), height: carouselHeight } : null), [carouselHeight])
   const point = active ? labelPoints.get(active) : undefined
   const [vx, vy, vw, vh] = mapViewBox
   const anchor = point ? { x: (point[0] - vx) / vw, y: (point[1] - vy) / vh } : null
@@ -169,7 +189,7 @@ export default function App() {
               ))}
             </select>
           </label>
-            {seatForecastSources.length > 0 && <SeatForecastCarousel sources={seatForecastSources} />}
+            {seatForecastSources.length > 0 && <SeatForecastCarousel sources={seatForecastSources} sizePx={carouselSize} />}
             {SHARES_VERIFIED && <NationalCard card={national} stateName={active ? (stateNames.get(active) ?? active) : null} />}
           </div>
 

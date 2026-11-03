@@ -529,7 +529,7 @@ strong {
    src/components/SeatForecastCarousel.tsx and scripts/freeze-seat-forecasts.ts. */
 .seat-forecast {
   position: relative;
-  flex: 0 0 664px;
+  flex: 0 0 auto;
   width: 664px;
   max-width: 100%;
   aspect-ratio: 664 / 511;

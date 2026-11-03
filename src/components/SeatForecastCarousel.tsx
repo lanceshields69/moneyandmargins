@@ -8,6 +8,9 @@ const ROTATE_MS = 3000
 const DOME_WIDTH = 663.755
 const DOME_HEIGHT = 433.334
 const DOME_PATH = (/<path[^>]*\bd="([^"]+)"/.exec(domeRaw)?.[1]) ?? ''
+/** Halyard Display inherits font-variant-numeric: tabular-nums from body, which blows out its word-spacing at
+ * large sizes; same fix as ShareCard.tsx's TIGHT constant. */
+const TIGHT = { wordSpacing: '-0.08em' } as const
 
 /** "Nov 2nd": a short month/day with an ordinal suffix, matching the Figma frame's "Forecast updated Nov 2nd". */
 function ordinalMonthDay(iso: string): string {
@@ -31,7 +34,7 @@ function Card({ entry }: { entry: SeatForecastEntry }) {
         <rect x={boundaryX} y={0} width={DOME_WIDTH - boundaryX} height={DOME_HEIGHT} fill={PARTY_DISPLAY.R.color} />
       </g>
 
-      <text x={17} y={123} fontFamily="var(--font-display)" fontWeight={600} fontSize={44} fill="var(--color-text)">
+      <text x={17} y={123} fontFamily="var(--font-display)" fontWeight={600} fontSize={44} fill="var(--color-text)" style={TIGHT}>
         <tspan x={17} dy={0}>
           Forecast
         </tspan>
@@ -44,7 +47,7 @@ function Card({ entry }: { entry: SeatForecastEntry }) {
       </text>
 
       <a href={entry.sourceUrl} target="_blank" rel="noreferrer">
-        <text x={DOME_WIDTH} y={121} textAnchor="end" fontFamily="var(--font-display)" fontWeight={600} fontSize={42} fill="var(--color-text)">
+        <text x={DOME_WIDTH} y={121} textAnchor="end" fontFamily="var(--font-display)" fontWeight={600} fontSize={42} fill="var(--color-text)" style={TIGHT}>
           {entry.sourceName}
         </text>
       </a>
@@ -75,13 +78,15 @@ function Card({ entry }: { entry: SeatForecastEntry }) {
 
 export interface SeatForecastCarouselProps {
   sources: readonly SeatForecastEntry[]
+  /** The exact box size, computed by the caller from the "Spending aligned" card's own height. Falls back to the
+   * Figma frame's native 664x511 (shrinking only on narrow/mobile widths) until that's been measured. */
+  sizePx?: { width: number; height: number } | null
 }
 
 /** Crossfades every 3s through the chamber-wide seat forecast from each of several forecasters. Never fetches: the
  * data comes from a frozen snapshot (scripts/freeze-seat-forecasts.ts), the same philosophy as the race forecasts
- * powering the map callout. Pauses on a single card for a visitor who has asked for reduced motion. Sized to the
- * Figma frame's own 664x511 (node 74:1669), never larger, shrinking only if the row is narrower than that. */
-export default function SeatForecastCarousel({ sources }: SeatForecastCarouselProps) {
+ * powering the map callout. Pauses on a single card for a visitor who has asked for reduced motion. */
+export default function SeatForecastCarousel({ sources, sizePx }: SeatForecastCarouselProps) {
   const [index, setIndex] = useState(0)
   const reducedMotion = useRef(typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
 
@@ -95,7 +100,12 @@ export default function SeatForecastCarousel({ sources }: SeatForecastCarouselPr
   const current = sources[Math.min(index, sources.length - 1)]
 
   return (
-    <div className="seat-forecast" role="group" aria-label="Forecast to win the Senate">
+    <div
+      className="seat-forecast"
+      role="group"
+      aria-label="Forecast to win the Senate"
+      style={sizePx ? { width: sizePx.width, height: sizePx.height, flex: 'none' } : undefined}
+    >
       {sources.map((entry, i) => (
         <div key={entry.key} className={i === index ? 'seat-forecast-card seat-forecast-card-active' : 'seat-forecast-card'} aria-hidden={i === index ? undefined : true}>
           <Card entry={entry} />
