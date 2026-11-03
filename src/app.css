@@ -534,6 +534,7 @@ strong {
 .seat-forecast {
   position: relative;
   flex: 1 1 320px;
+  width: auto;
   max-width: 440px;
   aspect-ratio: 664 / 511;
 }
@@ -542,6 +543,7 @@ strong {
   inset: 0;
   opacity: 0;
   pointer-events: none;
+  transition: opacity 700ms ease;
 }
 .seat-forecast-card a {
   pointer-events: auto;
@@ -549,12 +551,6 @@ strong {
 .seat-forecast-card-active {
   opacity: 1;
   pointer-events: auto;
-  animation: seat-forecast-fade 600ms ease-in both;
-}
-@keyframes seat-forecast-fade {
-  from {
-    opacity: 0;
-  }
 }
 .seat-forecast-dots {
   position: absolute;
