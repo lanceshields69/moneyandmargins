@@ -14,7 +14,7 @@ const T = 21.25
 const FONT_DISPLAY = "'halyard-display', 'halyard-micro', system-ui, sans-serif"
 const FONT_TEXT = "'halyard-micro', system-ui, sans-serif"
 const TRACK = '#0a2540'
-const TIGHT = { wordSpacing: '-0.25em' } as const
+const TIGHT = { wordSpacing: '-0.08em' } as const
 
 export interface ShareCardProps {
   stateName: string
