@@ -8,9 +8,9 @@ const ROTATE_MS = 3000
 const DOME_WIDTH = 663.755
 const DOME_HEIGHT = 433.334
 const DOME_PATH = (/<path[^>]*\bd="([^"]+)"/.exec(domeRaw)?.[1]) ?? ''
-/** Halyard Display inherits font-variant-numeric: tabular-nums from body, which blows out its word-spacing at
- * large sizes; same fix as ShareCard.tsx's TIGHT constant. */
-const TIGHT = { wordSpacing: '-0.08em' } as const
+/** Halyard Display inherits font-variant-numeric: tabular-nums from body, which widens the space glyph at large
+ * sizes. Headings on the article pages turn it off for the same reason (see app.css's .article h1). */
+const HEADLINE = { fontVariantNumeric: 'normal', wordSpacing: 0 } as const
 
 /** "Nov 2nd": a short month/day with an ordinal suffix, matching the Figma frame's "Forecast updated Nov 2nd". */
 function ordinalMonthDay(iso: string): string {
@@ -34,7 +34,7 @@ function Card({ entry }: { entry: SeatForecastEntry }) {
         <rect x={boundaryX} y={0} width={DOME_WIDTH - boundaryX} height={DOME_HEIGHT} fill={PARTY_DISPLAY.R.color} />
       </g>
 
-      <text x={17} y={123} fontFamily="var(--font-display)" fontWeight={600} fontSize={44} fill="var(--color-text)" style={TIGHT}>
+      <text x={17} y={123} fontFamily="var(--font-display)" fontWeight={600} fontSize={44} fill="var(--color-text)" style={HEADLINE}>
         <tspan x={17} dy={0}>
           Forecast
         </tspan>
@@ -47,7 +47,7 @@ function Card({ entry }: { entry: SeatForecastEntry }) {
       </text>
 
       <a href={entry.sourceUrl} target="_blank" rel="noreferrer">
-        <text x={DOME_WIDTH} y={121} textAnchor="end" fontFamily="var(--font-display)" fontWeight={600} fontSize={42} fill="var(--color-text)" style={TIGHT}>
+        <text x={DOME_WIDTH} y={121} textAnchor="end" fontFamily="var(--font-display)" fontWeight={600} fontSize={42} fill="var(--color-text)" style={HEADLINE}>
           {entry.sourceName}
         </text>
       </a>
