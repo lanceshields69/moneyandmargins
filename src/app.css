@@ -556,18 +556,18 @@ strong {
   transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3.2px;
   pointer-events: none;
 }
 .seat-forecast-dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 999px;
   background: #d9d9d9;
   transition: width 200ms ease;
 }
 .seat-forecast-dot-active {
-  width: 19px;
+  width: 15.2px;
 }
 .national-head {
   display: flex;
