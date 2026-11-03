@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import closeIcon from '../assets/close.svg'
 import copyIcon from '../assets/share/copy.svg'
 import downloadIcon from '../assets/share/download-simple.svg'
@@ -19,6 +19,13 @@ export default function ShareEmbedModal({ stateCode, stateName, shapePath, viewB
   const dialog = useRef<HTMLDivElement>(null)
   const [copied, setCopied] = useState(false)
   const code = embedCode(stateCode)
+  const shapeRef = useRef<SVGPathElement>(null)
+  const [crop, setCrop] = useState(viewBox)
+
+  useLayoutEffect(() => {
+    const box = shapeRef.current?.getBBox()
+    if (box) setCrop(`${box.x} ${box.y} ${box.width} ${box.height}`)
+  }, [shapePath])
 
   useEffect(() => {
     const opener = document.activeElement as HTMLElement | null
@@ -76,8 +83,8 @@ export default function ShareEmbedModal({ stateCode, stateName, shapePath, viewB
         <section className="embed-section">
           <h3>Share image</h3>
           <div className="embed-preview" aria-hidden="true">
-            <svg viewBox={viewBox} width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-              <path d={shapePath} fill="#544a99" stroke="#eae8e2" strokeOpacity="0.3" />
+            <svg viewBox={crop} width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+              <path ref={shapeRef} d={shapePath} fill="#544a99" stroke="#eae8e2" strokeOpacity="0.3" />
             </svg>
           </div>
           <button type="button" className="embed-button" disabled>

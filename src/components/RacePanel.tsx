@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import type { Committee } from '../types'
 import { pickPair } from '../computeCallout'
 import { PARTY_DISPLAY, type RaceView, type RowView, type SideView } from '../computeSpending'
@@ -6,6 +8,8 @@ import { AMOUNTS_PENDING_LEAD, SHARES_PENDING_LINK } from '../copy'
 import { formatMoney, formatMoneyFull } from '../format'
 import { CONTACT_EMAIL } from '../config'
 import { buildMailto } from '../corrections'
+import { mapViewBox, stateNames, statePaths } from '../data'
+import ShareEmbedModal from './ShareEmbedModal'
 
 const FEC_SOURCE_URL = 'https://www.fec.gov/data/independent-expenditures/'
 
@@ -113,6 +117,7 @@ export function splitRows(race: RaceView, collapse: boolean): { listed: RowView[
 
 export default function RacePanel({ race, fetchedAt, dataThrough, dataVerified = DATA_VERIFIED, onOpenHow }: RacePanelProps) {
   const { listed, quiet } = race ? splitRows(race, dataVerified) : { listed: [], quiet: [] }
+  const [shareOpen, setShareOpen] = useState(false)
   return (
     <section id="race-details" className="panel" aria-label="Race details" tabIndex={-1}>
       {!race ? (
@@ -150,6 +155,22 @@ export default function RacePanel({ race, fetchedAt, dataThrough, dataVerified =
           </ul>
           {quiet.length > 0 && <p className="muted quiet">{`Also on the ballot, no reported spending: ${quiet.map((r) => r.name).join(', ')}`}</p>}
           <p className="muted scale-note">Bars share one scale within this race. Supporting and opposing amounts are not netted.</p>
+          <p className="embed-entry">
+            <button type="button" className="link-button" aria-haspopup="dialog" onClick={() => setShareOpen(true)}>
+              Share or embed this race
+            </button>
+          </p>
+          {shareOpen &&
+            createPortal(
+              <ShareEmbedModal
+                stateCode={race.state}
+                stateName={stateNames.get(race.state) ?? race.state}
+                shapePath={statePaths.get(race.state) ?? ''}
+                viewBox={mapViewBox.join(' ')}
+                onClose={() => setShareOpen(false)}
+              />,
+              document.body,
+            )}
         </>
       )}
       <p className="muted disclaimer">

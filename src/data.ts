@@ -30,6 +30,7 @@ export const stateNames = new Map(
   (usStatesData as { states: { usps: string; name: string }[] }).states.map((s) => [s.usps, s.name]),
 )
 
-const geometry = usStatesData as unknown as { viewBox: string; states: { usps: string; labelPoint: [number, number] }[] }
+const geometry = usStatesData as unknown as { viewBox: string; states: { usps: string; d: string; labelPoint: [number, number] }[] }
 export const mapViewBox = geometry.viewBox.split(' ').map(Number) as [number, number, number, number]
 export const labelPoints = new Map(geometry.states.map((s) => [s.usps, s.labelPoint]))
+export const statePaths = new Map(geometry.states.map((s) => [s.usps, s.d]))
