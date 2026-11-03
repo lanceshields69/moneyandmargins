@@ -525,17 +525,13 @@ strong {
   border-radius: 6px;
   padding: 12px 14px;
 }
-.map-top:has(.seat-forecast) .national {
-  margin-left: 0;
-}
-
 /* "Forecast to win the Senate" carousel (Figma node 77:1812). Crossfades every 3s between sources; see
    src/components/SeatForecastCarousel.tsx and scripts/freeze-seat-forecasts.ts. */
 .seat-forecast {
   position: relative;
-  flex: 1 1 320px;
-  width: auto;
-  max-width: 440px;
+  flex: 0 0 664px;
+  width: 664px;
+  max-width: 100%;
   aspect-ratio: 664 / 511;
 }
 .seat-forecast-card {
