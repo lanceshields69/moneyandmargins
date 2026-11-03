@@ -24,6 +24,7 @@ function Embed() {
         dataAsOf={dataAsOf}
         forecastHost={forecastHost}
         onUseOnSite={() => window.open(`${window.location.origin}/?share=1#${state}`, '_blank', 'noopener')}
+        onSiteClick={() => window.open(`${window.location.origin}/#${state}`, '_blank', 'noopener')}
       />
     </div>
   )
