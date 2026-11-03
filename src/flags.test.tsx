@@ -153,8 +153,11 @@ describe('each flag combination on the whole page', () => {
   it('fills the methodology placeholders from the pipeline metadata when data is verified', async () => {
     const { page, unmount } = await renderPage({ data: true, shares: false }, '#how-it-works')
     const body = page.querySelector('[role="dialog"]')?.textContent ?? ''
-    expect(body).toContain('For 6 committees')
-    expect(body).toMatch(/Those rows total \$[\d,]+\./)
+    // The count moves with every refresh, so the expected values come from the same data the page reads.
+    const n = allRaces.approxCommitteeCount
+    expect(n).toBeGreaterThan(0)
+    expect(body).toContain(`For ${n} ${n === 1 ? 'committee' : 'committees'}`)
+    expect(body).toContain(`Those rows total ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(allRaces.approxTotal as number)}.`)
     expect(body).toContain("Totals and shares include primary-season spending as labeled by the filer, which can count toward the other side's share. I'm moving the shares to general-election spending only.")
     expect(body).toContain('Nationally this is at most about 3.4%.')
     expect(body).toContain('Races with incomplete data (Colorado, Michigan, Nebraska, Oklahoma, South Carolina) are left out of the national card.')
