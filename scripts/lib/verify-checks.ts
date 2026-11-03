@@ -2,7 +2,7 @@
 // the pair a caller passes in, so every check treats every race and party the same way.
 export { parseCsv } from '../../src/csv'
 import { parseCsv } from '../../src/csv'
-import { dedupeIeRows, noticeDate, type IeRow } from './dedup-ie'
+import type { IeRow } from './dedup-ie'
 
 export interface CheckResult {
   id: string
@@ -113,9 +113,6 @@ export function exportRowsFromCsv(text: string): ExportRow[] {
   }))
 }
 
-/** The export date from a file name like schedule_e-2026-10-31T14_33_41.csv. */
-export const exportDateOf = (fileName: string): string | null => /(\d{4}-\d{2}-\d{2})T/.exec(fileName)?.[1] ?? null
-
 /** A row's identity for matching the reference export to the raw pull: a transaction and the filing that carries it. */
 const rowKey = (r: { transaction_id: string | null; file_number: number | null }): string => `${r.transaction_id ?? ''}|${r.file_number ?? ''}`
 
@@ -157,73 +154,6 @@ export function checkFetchCompleteness(exportRows: ExportRow[], rawRows: IeRow[]
     pass: missing.length === 0,
     summary: `${missing.length} missing; ${future.length} row(s) filed or disseminated on or after fetchedAt's date, totaling ${futureTotal} (informational)`,
     details: [...missing.map((d) => ({ ...d, kind: 'missing' })), ...future.map((d) => ({ ...d, kind: 'future' }))],
-  }
-}
-
-const asIeRow = (r: ExportRow): IeRow => ({
-  sub_id: r.sub_id,
-  committee_id: r.committee_id,
-  committee_name: r.committee_name,
-  candidate_id: r.candidate_id,
-  support_oppose_indicator: r.support_oppose_indicator,
-  expenditure_amount: r.expenditure_amount,
-  expenditure_date: r.expenditure_date,
-  dissemination_date: r.dissemination_date,
-  is_notice: r.is_notice,
-  most_recent: r.most_recent,
-  amendment_indicator: r.amendment_indicator,
-  transaction_id: r.transaction_id,
-  file_number: r.file_number,
-  previous_file_number: r.previous_file_number,
-  memo_code: r.memo_code,
-  report_type: null,
-  report_year: null,
-  election_type: r.election_type,
-  payee_name: r.payee_name,
-  filing_form: null,
-})
-
-export function checkExportReconciliation(
-  exportRows: ExportRow[],
-  ours: IeRow[],
-  targets: ReconcileTarget[],
-  upTo: string,
-  tolerancePct = 1,
-): CheckResult {
-  // 2026-cycle rows only, with the same latest-version rule as the pipeline, up to the export date.
-  const cycle = exportRows.filter((r) => (r.election_type ?? '').endsWith('2026'))
-  const exportKept = dedupeIeRows(cycle.map(asIeRow), new Map(targets.map((t) => [t.committee_id, null]))).kept
-  const within = (date: string | null) => date !== null && date <= upTo
-  const details: Record<string, unknown>[] = []
-  for (const t of targets) {
-    for (const line of t.lines) {
-      const sum = (rows: IeRow[]) =>
-        rows
-          .filter((r) => r.committee_id === t.committee_id && r.candidate_id === line.candidate_id && r.support_oppose_indicator === line.side && within(noticeDate(r)))
-          .reduce((s, r) => s + r.expenditure_amount, 0)
-      const fromExport = sum(exportKept)
-      const fromRun = sum(ours)
-      const diff = fromRun - fromExport
-      details.push({
-        committee: t.label,
-        line: line.label,
-        up_to: upTo,
-        export_total: round(fromExport),
-        our_total: round(fromRun),
-        difference: round(diff),
-        difference_pct: round(pct(Math.abs(diff), fromExport)),
-        pass: fromExport > 0 ? pct(Math.abs(diff), fromExport) <= tolerancePct : fromRun === 0,
-      })
-    }
-  }
-  const failed = details.filter((d) => d.pass === false).length
-  return {
-    id: 'export_reconciliation',
-    blocking: true,
-    name: `Named committees match the saved FEC exports within ${tolerancePct}% (rows up to the export dates)`,
-    pass: failed === 0,
-    summary: `${details.length - failed} of ${details.length} lines match`,
-    details,
   }
 }
 

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { methodologyFigures, type MethodologyFigureInputs } from './methodology-figures'
 import type { IeRow } from './dedup-ie'
-import type { RaceRow } from './verify-checks'
+import type { AuditRow, RaceRow } from './verify-checks'
 
 let n = 0
 function row(over: Partial<RaceRow> = {}): RaceRow {
@@ -44,6 +44,11 @@ const base: MethodologyFigureInputs = {
   ],
   unattributedTotal: 2500,
   incompleteRaces: ['MI', 'CO'],
+  // A shortfall window: a notice with no matching periodic row, out of 10,000 all-races spending.
+  auditRows: [{ ...row({ committee_id: 'C5', candidate_id: 'S1', is_notice: true, expenditure_amount: 1000 }), race: 'AL', party: 'R' } as AuditRow],
+  periodicRows: [],
+  memoPeriodicRows: [],
+  allRacesTotal: 10_000,
 }
 
 describe('methodologyFigures', () => {
@@ -81,6 +86,19 @@ describe('methodologyFigures', () => {
     expect(() => methodologyFigures({ ...base, fetchedAt: '' })).toThrow('no fetchedAt')
   })
 
+  it('counts a dedup shortfall window and its share of all-races spending', () => {
+    const f = methodologyFigures(base)
+    expect(f.dedupShortfallCount).toBe(1)
+    expect(f.dedupShortfallTotal).toBe(1000)
+    expect(f.dedupShortfallPct).toBe(10)
+  })
+
+  it('reports no shortfall when every covered notice matches its periodic evidence', () => {
+    const f = methodologyFigures({ ...base, auditRows: [] })
+    expect(f.dedupShortfallCount).toBe(0)
+    expect(f.dedupShortfallTotal).toBe(0)
+    expect(f.dedupShortfallPct).toBe(0)
+  })
 })
 
 export type { IeRow }
