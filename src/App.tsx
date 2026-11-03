@@ -13,7 +13,8 @@ import Vote411Banner from './components/Vote411Banner'
 import ShareMenu from './components/ShareMenu'
 import UsStatesMap, { rampColor } from './components/UsStatesMap'
 import { buildNationalCard } from './computeNational'
-import { allRaces, callouts, forecastSnapshot, labelPoints, mapViewBox, stateNames } from './data'
+import { allRaces, callouts, forecastSnapshot, labelPoints, mapViewBox, seatForecastSources, stateNames } from './data'
+import SeatForecastCarousel from './components/SeatForecastCarousel'
 import logo from '../images/logo.png'
 import { DATA_VERIFIED, SHARES_VERIFIED } from './config'
 import { DATA_CHECK_NOTICE, FINAL_FORECAST_TAG, forecastPhrase } from './copy'
@@ -168,6 +169,7 @@ export default function App() {
               ))}
             </select>
           </label>
+            {seatForecastSources.length > 0 && <SeatForecastCarousel sources={seatForecastSources} />}
             {SHARES_VERIFIED && <NationalCard card={national} stateName={active ? (stateNames.get(active) ?? active) : null} />}
           </div>
 
