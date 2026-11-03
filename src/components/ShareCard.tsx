@@ -20,6 +20,8 @@ export interface ShareCardProps {
   stateName: string
   /** Opens the embed code. The link is left out of the downloaded PNG. */
   onUseOnSite?: () => void
+  /** Opens the site from the URL line. Only the embedded card sets this; the PNG keeps the text. */
+  onSiteClick?: () => void
   callout: Callout
   /** The map's "Spending aligned" card, built for this state. */
   national: NationalCardData
@@ -71,7 +73,7 @@ function Track({ group, y, height }: { group: PartyAligned; y: number; height: n
   )
 }
 
-export default function ShareCard({ stateName, callout, national, shapePath, shapeBox, dataAsOf, forecastHost, onUseOnSite }: ShareCardProps) {
+export default function ShareCard({ stateName, callout, national, shapePath, shapeBox, dataAsOf, forecastHost, onUseOnSite, onSiteClick }: ShareCardProps) {
   const { sides, result } = callout
   const title = titleLines(stateName)
   const lineGap = (36 * title.size) / 30
@@ -196,7 +198,21 @@ export default function ShareCard({ stateName, callout, national, shapePath, sha
       <text x={504.6} y={T + 269} fontFamily={FONT_DISPLAY} fontWeight={500} fontSize={25} letterSpacing={-0.25} fill="#eae8e2" style={TIGHT} textLength={173.4} lengthAdjust="spacingAndGlyphs">
         Money &amp; Margins
       </text>
-      <text x={513} y={T + 294} fontFamily={FONT_TEXT} fontSize={14} letterSpacing={-0.28} fill="#fff" textLength={165} lengthAdjust="spacingAndGlyphs">
+      <text
+        x={513}
+        y={T + 294}
+        fontFamily={FONT_TEXT}
+        fontSize={14}
+        letterSpacing={-0.28}
+        fill="#fff"
+        textLength={165}
+        lengthAdjust="spacingAndGlyphs"
+        role={onSiteClick ? 'link' : undefined}
+        tabIndex={onSiteClick ? 0 : undefined}
+        style={onSiteClick ? { cursor: 'pointer' } : undefined}
+        onClick={onSiteClick}
+        onKeyDown={onSiteClick ? (event) => (event.key === 'Enter' || event.key === ' ') && onSiteClick() : undefined}
+      >
         MoneyandMargins.app
       </text>
       <g
