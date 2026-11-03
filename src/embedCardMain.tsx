@@ -14,7 +14,7 @@ const forecastHost = new URL(forecastSnapshot.sourceUrl).host.replace(/^www\./, 
 function Embed() {
   if (!callout) return <p style={{ color: '#eae8e2', fontFamily: 'system-ui, sans-serif' }}>No 2026 Senate race for this state.</p>
   return (
-    <div style={{ width: '100%', maxWidth: 1200, aspectRatio: '1200 / 630' }}>
+    <div style={{ width: '100%', maxWidth: 1200, aspectRatio: '1200 / 630', maxHeight: '100%' }}>
       <ShareCard
         stateName={callout.raceName.replace(/ Senate 2026$/, '')}
         callout={callout}
