@@ -178,12 +178,14 @@ interface MapCalloutProps {
   globalPartialNotice?: boolean
   /** The race detail panel, shown inside the bottom sheet when it is expanded (phones only). */
   detail?: ReactNode
+  /** Starts the bottom sheet expanded, e.g. when a link asks to open the share panel directly. */
+  initialExpanded?: boolean
   onClose: () => void
 }
 
-export default function MapCallout({ callout, stateName, anchor, isDefault, detail, onClose, sharesVerified = SHARES_VERIFIED, onOpenHow, globalPartialNotice = GLOBAL_PARTIAL_NOTICE }: MapCalloutProps) {
+export default function MapCallout({ callout, stateName, anchor, isDefault, detail, initialExpanded, onClose, sharesVerified = SHARES_VERIFIED, onOpenHow, globalPartialNotice = GLOBAL_PARTIAL_NOTICE }: MapCalloutProps) {
   const sheet = usePhone()
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(initialExpanded ?? false)
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {

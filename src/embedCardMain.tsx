@@ -23,7 +23,7 @@ function Embed() {
         shapeBox={stateBoxes.get(state) ?? '0 0 1 1'}
         dataAsOf={dataAsOf}
         forecastHost={forecastHost}
-        onUseOnSite={() => window.open(`${window.location.origin}/embed`, '_blank', 'noopener')}
+        onUseOnSite={() => window.open(`${window.location.origin}/?share=1#${state}`, '_blank', 'noopener')}
       />
     </div>
   )

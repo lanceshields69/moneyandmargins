@@ -1785,6 +1785,14 @@ details h4 {
 .embed-button[aria-disabled="true"] {
   cursor: not-allowed;
 }
+.embed-entry {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 16px;
+}
+.embed-entry .embed-button {
+  gap: 8px;
+}
 .embed-button:focus-visible,
 .embed-close:focus-visible {
   outline: 2px solid var(--color-focus);
