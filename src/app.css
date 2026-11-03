@@ -1643,8 +1643,8 @@ details h4 {
 .state-chip {
   position: absolute;
   z-index: 2;
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   border-radius: 2px;
   transform: translate(-50%, -50%);
   pointer-events: none;
