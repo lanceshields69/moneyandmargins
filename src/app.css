@@ -1640,90 +1640,14 @@ details h4 {
 
 /* State marks (MVP.md "Map"): a circle before counting, a neutral ring while counting, a square with the party
    letter at Unofficial (dashed) or Certified (solid). All three are the same 22px badge at the state's label point. */
-.state-mark {
+.state-chip {
   position: absolute;
   z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 22px;
   height: 22px;
+  border-radius: 2px;
   transform: translate(-50%, -50%);
-  color: #000;
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 12px;
-  letter-spacing: -0.02em;
-  cursor: default;
-  /* A mouse click passes through to the state shape beneath; Tab still reaches the mark, since tabIndex works
-     independent of pointer-events. */
   pointer-events: none;
-}
-.state-mark-circle {
-  border-radius: 50%;
-}
-.state-mark-ring {
-  border-radius: 50%;
-  border: 2px solid var(--color-muted);
-  background: transparent !important;
-}
-.state-mark-square {
-  border-radius: 3px;
-  color: #000;
-}
-.state-mark-dashed {
-  outline: 2px dashed currentColor;
-  outline-offset: 2px;
-}
-.state-mark-solid {
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
-}
-.state-mark:focus-visible {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 3px;
-}
-.mark-legend {
-  position: absolute;
-  /* Row sits level with the "Total dollars" title: the map legend's bottom is -7% of the map, and the title's middle is 71px above it. */
-  left: calc(65% + 30px); /* between Texas and Florida, nudged toward Florida */
-  bottom: calc(-7% + 36px);
-  transform: translateX(-50%);
-  width: max-content;
-  max-width: 90%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 8px 16px;
-  font-size: 0.8125rem;
-}
-.mark-key {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-.mark-sample {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: var(--color-muted);
-}
-.mark-sample-ring {
-  background: transparent;
-  border: 2px solid var(--color-muted);
-}
-.mark-sample-square {
-  border-radius: 3px;
-}
-
-/* Phones: the marks and legend are hidden. */
-@media (max-width: 600px) {
-  .state-mark,
-  .mark-legend {
-    display: none;
-  }
 }
 
 .embed-scrim {

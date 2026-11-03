@@ -10,6 +10,7 @@ import infoIcon from './assets/info.svg'
 import Vote411Banner from './components/Vote411Banner'
 import ShareMenu from './components/ShareMenu'
 import UsStatesMap, { rampColor } from './components/UsStatesMap'
+import StateMarks, { buildStateMarks, marksFromCallouts } from './components/StateMarks'
 import { buildNationalCard } from './computeNational'
 import { allRaces, callouts, forecastSnapshot, labelPoints, mapViewBox, seatForecastSources, stateNames } from './data'
 import SeatForecastCarousel from './components/SeatForecastCarousel'
@@ -115,6 +116,10 @@ export default function App() {
   const callout = active ? callouts.get(active) : undefined
   const race = active ? (raceByState.get(active) ?? null) : null
   const national = useMemo(() => buildNationalCard(allRaces.races, active), [active])
+  const stateMarks = useMemo(
+    () => buildStateMarks(marksFromCallouts(callouts, (st) => stateNames.get(st) ?? st), (st) => labelPoints.get(st), mapViewBox),
+    [],
+  )
   // Figma node 74:1669's card is 664x511; keep this ratio in sync with SeatForecastCarousel's own SVG viewBox.
   const carouselSize = useMemo(() => (carouselHeight ? { width: carouselHeight * (664 / 511), height: carouselHeight } : null), [carouselHeight])
   const point = active ? labelPoints.get(active) : undefined
@@ -188,6 +193,7 @@ export default function App() {
           </div>
 
         <div className="map-wrap" id="map">
+          <StateMarks marks={stateMarks} />
           <UsStatesMap
             raceByState={raceByState}
             maxTotal={allRaces.maxTotal}
