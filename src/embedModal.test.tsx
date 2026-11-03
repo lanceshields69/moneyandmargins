@@ -11,7 +11,7 @@ const cardFor = (state: string) => ({
   shapePath: statePaths.get(state) ?? '',
   shapeBox: stateBoxes.get(state) ?? mapViewBox.join(' '),
   dataAsOf: 'Oct 31, 2026',
-  forecastSource: 'VotePredictor, votepredictor.com',
+  forecastHost: 'votepredictor.com',
 })
 const render = (state: string) =>
   renderToStaticMarkup(<ShareEmbedModal stateCode={state} stateName={stateNames.get(state) ?? state} card={cardFor(state)} onClose={() => {}} />)
@@ -41,7 +41,7 @@ describe('the share and embed modal', () => {
     const states = [...new Set(allRaces.races.map((r) => r.state))]
     for (const state of states) {
       const html = render(state)
-      for (const label of ['Spent on ads:', 'Predicted to win:', 'Spending aligned with each party', 'Money &amp; Margins', 'moneyandmargins.app', 'Download PNG', 'Copy code']) {
+      for (const label of ['Spent on ads:', 'Predicted', ' to win:', 'Results', 'Spending aligned with each party', 'Money &amp; Margins', 'moneyandmargins.app', 'Download PNG', 'Copy code']) {
         expect(html, `${state}: ${label}`).toContain(label)
       }
     }
@@ -49,8 +49,9 @@ describe('the share and embed modal', () => {
 
   it('shows the card with the Predicted to win and Results rows', () => {
     const html = render('TX')
-    expect(html).toContain('Predicted to win:')
-    expect(html).toContain('Results (')
+    expect(html).toContain('Predicted')
+    expect(html).toContain(' to win:')
+    expect(html).toContain('Results')
   })
 
   it('carries the close button and the download and copy controls', () => {

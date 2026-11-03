@@ -173,7 +173,7 @@ export default function RacePanel({ race, fetchedAt, dataThrough, dataVerified =
                   shapePath: statePaths.get(race.state) ?? '',
                   shapeBox: stateBoxes.get(race.state) ?? '0 0 1 1',
                   dataAsOf: dataThrough ?? 'unknown',
-                  forecastSource: `${forecastSnapshot.sourceName}, ${new URL(forecastSnapshot.sourceUrl).host}`,
+                  forecastHost: new URL(forecastSnapshot.sourceUrl).host.replace(/^www\./, ''),
                 }}
                 onClose={() => setShareOpen(false)}
               />,

@@ -14,7 +14,7 @@ const render = (callout: Callout, state: string) =>
       shapePath={statePaths.get(state) ?? ''}
       shapeBox={stateBoxes.get(state) ?? '0 0 1 1'}
       dataAsOf="Oct 31, 2026"
-      forecastSource="VotePredictor, votepredictor.com"
+      forecastHost="votepredictor.com"
     />,
   )
 
