@@ -12,7 +12,21 @@
       html,
       body {
         margin: 0;
+        height: 100%;
+        overflow: hidden;
         background: #181714;
+      }
+      #root {
+        height: 100%;
+      }
+      #root > div {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      #root svg {
+        display: block;
       }
     </style>
   </head>
