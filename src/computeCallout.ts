@@ -1,4 +1,5 @@
 import { PARTY_DISPLAY, type RaceView, type RowView } from './computeSpending'
+import { buildResultCallout, type RaceResultData, type ResultCallout } from './results'
 import type { ApiRace, ForecastSnapshot, FrozenSnapshotFile, Party, RaceForecast } from './types'
 
 const MAJOR_ORDER: readonly Party[] = ['D', 'R']
@@ -29,6 +30,8 @@ export interface Callout {
   excluded: string[]
   /** Forecast problems worth reporting, such as a forecast naming a different matchup. */
   discrepancies: string[]
+  /** The Result row: not-added until a race has a row in data/results-races.csv (see docs/results-entry.md). */
+  result: ResultCallout
 }
 
 /**
@@ -90,7 +93,7 @@ function forecastNamesMatch(forecast: RaceForecast, byParty: Map<Party, RowView>
   })
 }
 
-export function buildCallout(race: RaceView, forecast: RaceForecast | undefined): Callout {
+export function buildCallout(race: RaceView, forecast: RaceForecast | undefined, raceResult?: RaceResultData): Callout {
   const pair = pickPair(race.rows)
   const sorted = [...pair].sort((a, b) => a.partyLabel.localeCompare(b.partyLabel) || a.candidateId.localeCompare(b.candidateId))
   const sides: CalloutSide[] = sorted.map((row) => ({
@@ -114,6 +117,7 @@ export function buildCallout(race: RaceView, forecast: RaceForecast | undefined)
     incompleteNote: null,
     excluded: race.rows.filter((r) => !pair.includes(r)).map((r) => r.name),
     discrepancies: [],
+    result: buildResultCallout(sorted.map((r) => r.candidateId), raceResult),
   }
 
   if (race.incompleteCount > 0) {
@@ -201,7 +205,7 @@ export function latestSnapshot(files: Record<string, unknown>): ForecastSnapshot
   return normalizeSnapshot(mod.default ?? mod)
 }
 
-export function buildAllCallouts(races: RaceView[], snapshot: ForecastSnapshot): Map<string, Callout> {
+export function buildAllCallouts(races: RaceView[], snapshot: ForecastSnapshot, resultsByRace?: Map<string, RaceResultData>): Map<string, Callout> {
   const forecastByState = new Map(snapshot.races.map((r) => [r.state, r]))
-  return new Map(races.map((race) => [race.state, buildCallout(race, forecastByState.get(race.state))]))
+  return new Map(races.map((race) => [race.state, buildCallout(race, forecastByState.get(race.state), resultsByRace?.get(race.raceId))]))
 }

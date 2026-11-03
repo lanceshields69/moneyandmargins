@@ -4,14 +4,17 @@ import infoIcon from '../assets/info.svg'
 import { hasOtherForecasts } from '../otherForecasts'
 import { OTHER_FORECASTS_TITLE, otherForecastsUrl } from '../votepredictor'
 import { PARTIAL_CALLOUT_NOTICE, SHARES_PENDING_LEAD, SHARES_PENDING_LINK } from '../copy'
+import { formatDateTime } from '../format'
 import { useEffect, useState, type ReactNode } from 'react'
 import leaderUrl from '../assets/callout-leader.svg'
 import type { Callout, CalloutSide } from '../computeCallout'
 import { usePhone } from '../usePhone'
 
-// Measurements from the Figma design (node 4:2).
-const CARD_WIDTH = 171
-const LEADER_X = 84.5
+// Measurements from the Figma design (node 4:2). Widened from the original 171px so "Results (unofficial):", the
+// longest Result heading, fits on one line with its two values, same as every other row — must match .cc-card's
+// width in app.css.
+const CARD_WIDTH = 195
+const LEADER_X = 96.5
 const MARKER_CENTER = 35.5
 /** Lifts the card, leader line and square together so they clear the prediction markers on the state's label point. */
 const LIFT = '0 -20px'
@@ -20,10 +23,15 @@ const EDGE = 4
 /** Below this share of the map's height there is no room above the point, so the card goes underneath. */
 const FLIP_BELOW_Y = 0.2
 
-function Square({ side }: { side: CalloutSide }) {
+function Square({ side, checked }: { side: CalloutSide; checked?: boolean }) {
   return (
-    <span className="cc-square" style={{ background: side.partyColor }} role="img" aria-label={`${side.partyLabel}, ${side.name}`}>
-      {side.chip}
+    <span
+      className="cc-square"
+      style={{ background: side.partyColor }}
+      role="img"
+      aria-label={`${side.partyLabel}, ${side.name}`}
+    >
+      {checked ? '✓' : side.chip}
     </span>
   )
 }
@@ -62,6 +70,52 @@ function Row({ label, sides, pick, flag, onInfo }: {
         </span>
       ))}
     </div>
+  )
+}
+
+/**
+ * The Result row (MVP.md "Final callout design" / "Results row"). Four stages, same layout and column order as
+ * the squares in every one. The checkmark appears only at certified; the dashed/solid box appears only on the
+ * leading side's square, at unofficial and certified. Never names a leader in text.
+ */
+function ResultRow({ sides, result }: { sides: CalloutSide[]; result: Callout['result'] }) {
+  const headingText =
+    result.stage === 'not-added'
+      ? 'Results (not added):'
+      : result.stage === 'counting'
+        ? 'Results (counting):'
+        : result.stage === 'unofficial'
+          ? 'Results (unofficial):'
+          : 'Results (certified):'
+  return (
+    <>
+      <div className="cc-row">
+        <span className="cc-label">{headingText}</span>
+        {sides.map((side) => (
+          <span key={side.candidateId} className="cc-value">
+            {result.stage === 'not-added' ? '--' : `${result.shares[side.candidateId] ?? '--'}%`}
+          </span>
+        ))}
+      </div>
+    </>
+  )
+}
+
+function ResultNote({ result }: { result: Callout['result'] }) {
+  if (result.stage === 'not-added' || !result.asOf) return null
+  return (
+    <p className="cc-note cc-result-note">
+      {result.stage === 'counting' && result.percentReporting !== null && `${result.percentReporting}% reporting · `}
+      {formatDateTime(result.asOf)}
+      {result.sourceUrl && (
+        <>
+          {' · '}
+          <a href={result.sourceUrl} target="_blank" rel="noopener noreferrer">
+            Source
+          </a>
+        </>
+      )}
+    </p>
   )
 }
 
@@ -140,34 +194,53 @@ export default function MapCallout({ callout, stateName, anchor, isDefault, deta
   }, [onClose])
 
   const notes = [callout.isSpecial ? 'Special election' : null, callout.incompleteNote].filter((n): n is string => n !== null)
+  // Figma (node 4:2) highlights the leading side's whole column — square plus every row below it — not just the
+  // square: a dashed box at unofficial, solid at certified. The box sits over the fixed-width value column, so one
+  // absolutely-positioned element lines up with every row without the rows needing to know about each other.
+  const leadingIndex = callout.sides.findIndex((s) => s.candidateId === callout.result.leadingCandidateId)
+  const leadingOutline = (callout.result.stage === 'unofficial' || callout.result.stage === 'certified') && leadingIndex !== -1 ? (callout.result.stage === 'unofficial' ? 'dashed' : 'solid') : null
   const card = (
     <div className="cc-card" role="group" aria-label={`${stateName} Senate race`}>
-      <div className="cc-head">
-        <h2 className="cc-title">{stateName}</h2>
-        {callout.sides.map((side) => (
-          <span key={side.candidateId} className="cc-head-cell">
-            <Square side={side} />
-          </span>
-        ))}
-        {sheet && (
-          <button type="button" className="cc-close" onClick={onClose} aria-label="Close">
-            ×
-          </button>
+      <div className="cc-body">
+        {leadingOutline && (
+          <span
+            className={`cc-lead-col cc-lead-col-${leadingIndex} cc-lead-col-${leadingOutline}`}
+            style={{ borderColor: callout.sides[leadingIndex].partyColor }}
+            aria-hidden="true"
+          />
         )}
+        <div className="cc-head">
+          <h2 className="cc-title">{stateName}</h2>
+          {callout.sides.map((side) => {
+            const isLeading = side.candidateId === callout.result.leadingCandidateId
+            return (
+              <span key={side.candidateId} className="cc-head-cell">
+                <Square side={side} checked={isLeading && callout.result.stage === 'certified'} />
+              </span>
+            )
+          })}
+          {sheet && (
+            <button type="button" className="cc-close" onClick={onClose} aria-label="Close">
+              ×
+            </button>
+          )}
+        </div>
+        {sharesVerified ? (
+          <Row label="Spent on ads:" sides={callout.sides} pick={(s) => s.adPct} flag={callout.adFlag} onInfo={onOpenHow} />
+        ) : (
+          <PendingRow onOpenHow={onOpenHow} />
+        )}
+        <Row label="Predicted to win:" sides={callout.sides} pick={(s) => s.winPct} flag={callout.winFlag} />
+        <ResultRow sides={callout.sides} result={callout.result} />
       </div>
-      {sharesVerified ? (
-        <Row label="Spent on ads:" sides={callout.sides} pick={(s) => s.adPct} flag={callout.adFlag} onInfo={onOpenHow} />
-      ) : (
-        <PendingRow onOpenHow={onOpenHow} />
-      )}
-      <Row label="Predicted to win:" sides={callout.sides} pick={(s) => s.winPct} flag={callout.winFlag} />
+      <ResultNote result={callout.result} />
       {notes.map((note) => (
         <p key={note} className="cc-note">
           {note}
         </p>
       ))}
       {sharesVerified && globalPartialNotice && <p className="cc-partial">{PARTIAL_CALLOUT_NOTICE}</p>}
-      {!sheet && <OtherForecasts state={callout.state} />}
+      {!sheet && callout.result.stage === 'not-added' && <OtherForecasts state={callout.state} />}
     </div>
   )
   const live = <p className="sr-only" aria-live="polite">{summary(stateName, callout, sharesVerified)}</p>
@@ -187,7 +260,7 @@ export default function MapCallout({ callout, stateName, anchor, isDefault, deta
                 ) : (
                   <span />
                 )}
-                <OtherForecasts state={callout.state} pill />
+                {callout.result.stage === 'not-added' && <OtherForecasts state={callout.state} pill />}
               </div>
               {expanded && detail && <div className="cc-detail">{detail}</div>}
             </div>

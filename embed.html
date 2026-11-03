@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Embed a race card | Money &amp; Margins</title>
+    <meta name="description" content="How to embed a Money and Margins race card, how to credit the data, and its license." />
+    <link rel="canonical" href="https://moneyandmargins.app/embed" />
+    <meta name="theme-color" content="#181714" />
+    <link rel="icon" type="image/png" href="/images/favicon.png" />
+    <link rel="preconnect" href="https://use.typekit.net" crossorigin />
+    <link rel="preconnect" href="https://p.typekit.net" crossorigin />
+    <link rel="stylesheet" href="https://use.typekit.net/wai6ebo.css" />
+    <style>
+      :root {
+        --ground: #181714;
+        --panel: #3a336a;
+        --rule: #5e5896;
+        --text: #eae8e2;
+        --muted: #b8b6c4;
+        --focus: #5ac5ff;
+      }
+      body {
+        margin: 0;
+        background: var(--ground);
+        color: var(--text);
+        font-family: 'halyard-micro', system-ui, sans-serif;
+        line-height: 1.55;
+      }
+      main {
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 40px 16px 64px;
+      }
+      h1 {
+        font-family: 'halyard-display', system-ui, sans-serif;
+        font-size: 30px;
+        margin: 0 0 16px;
+      }
+      h2 {
+        font-family: 'halyard-display', system-ui, sans-serif;
+        font-size: 20px;
+        margin: 32px 0 8px;
+      }
+      a {
+        color: var(--text);
+      }
+      a:focus-visible {
+        outline: 2px solid var(--focus);
+        outline-offset: 2px;
+      }
+      pre,
+      .credit {
+        background: var(--panel);
+        border: 1px solid var(--rule);
+        border-radius: 6px;
+        padding: 14px 16px;
+        overflow-x: auto;
+        font-size: 14px;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .muted {
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Embed a race card</h1>
+      <p>
+        Each race card on Money &amp; Margins can be placed on another site. Paste the embed code for a state's race from its
+        share and embed panel, and the card appears where you paste it.
+      </p>
+
+      <h2>What the embed loads</h2>
+      <p>
+        The code loads one script, <code>moneyandmargins.app/embed/mm-card.js</code>. That script places a card in a frame that
+        loads <code>moneyandmargins.app/embed-card.html</code>. The card is drawn from the same data as the map, and it is
+        refreshed each time the site is updated. Nothing else is loaded from your page.
+      </p>
+
+      <h2>Embed code</h2>
+      <pre><code>&lt;div data-mm-card="TX" data-mm-race="2026-SEN-TX"&gt;&lt;/div&gt;
+&lt;script async src="https://moneyandmargins.app/embed/mm-card.js"&gt;&lt;/script&gt;</code></pre>
+      <p class="muted">Change the state code to embed another race.</p>
+
+      <h2>License and credit</h2>
+      <p>
+        The spending data is compiled by Money &amp; Margins from FEC records and is licensed under
+        <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Use the credit line below wherever you use the data
+        or a card. The FEC is the original source. The logo and design are not included in this license.
+      </p>
+      <p class="credit">
+        Spending data compiled by Money &amp; Margins from FEC records, licensed CC BY 4.0. Credit: Lance Shields, Money &amp;
+        Margins, moneyandmargins.app. The FEC is the original source. The logo and design are not included in this license.
+      </p>
+
+      <h2>Report a problem</h2>
+      <p>
+        If a number on an embedded card looks wrong, email
+        <a href="mailto:lance@lanceshields.design?subject=Money%20%26%20Margins%20embed%20problem">lance@lanceshields.design</a>
+        and include the page the card is on and the race. Reports are reviewed, and corrections are made to the site's data.
+      </p>
+    </main>
+  </body>
+</html>

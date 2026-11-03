@@ -6,6 +6,15 @@ import react from '@vitejs/plugin-react'
 // Preview badge. Nothing at runtime can change any of them.
 export default defineConfig({
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      input: {
+        main: 'index.html',
+        embedCard: 'embed-card.html',
+        embed: 'embed.html',
+      },
+    },
+  },
   define: {
     __DATA_VERIFIED__: JSON.stringify(process.env.DATA_VERIFIED !== 'false'),
     __SHARES_VERIFIED__: JSON.stringify(process.env.SHARES_VERIFIED !== 'false'),

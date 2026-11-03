@@ -180,7 +180,7 @@ describe('dialog', () => {
 describe('partial-data hotfix text is identical for every race and party', () => {
   window.matchMedia = ((query: string) => ({ matches: false, media: query, addEventListener: () => {}, removeEventListener: () => {}, addListener: () => {}, removeListener: () => {}, onchange: null, dispatchEvent: () => false })) as typeof window.matchMedia
 
-  it('shows only the two rows in every race: no caveat sentence, and an info button next to "Spent on ads"', () => {
+  it('shows the two rows plus the Result row in every race: no caveat sentence, and an info button next to "Spent on ads"', () => {
     expect(GLOBAL_PARTIAL_NOTICE).toBe(false)
     expect(callouts.size).toBe(allRaces.races.length)
     for (const [state, callout] of callouts) {
@@ -189,7 +189,8 @@ describe('partial-data hotfix text is identical for every race and party', () =>
       expect(html).not.toContain('Contrast ads')
       expect(html).not.toContain(PARTIAL_CALLOUT_NOTICE)
       expect(html).not.toContain('class="cc-partial"')
-      expect(html.split('class="cc-row').length - 1).toBe(2)
+      // Spent on ads, Predicted to win, and the Result row's shares (the Result heading is its own, non-grid row)
+      expect(html.split('class="cc-row').length - 1).toBe(3)
       expect(html.match(/<button[^>]*class="cc-info"[^>]*aria-label="How this is counted"/g) ?? []).toHaveLength(1)
       expect(html.indexOf('Spent on ads')).toBeLessThan(html.indexOf('cc-info'))
     }

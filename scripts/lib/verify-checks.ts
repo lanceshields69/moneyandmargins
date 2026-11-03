@@ -1,5 +1,7 @@
 // The verification checks. Pure functions over plain data, party-blind: nothing here reads a party except through
 // the pair a caller passes in, so every check treats every race and party the same way.
+export { parseCsv } from '../../src/csv'
+import { parseCsv } from '../../src/csv'
 import { dedupeIeRows, noticeDate, type IeRow } from './dedup-ie'
 
 export interface CheckResult {
@@ -83,39 +85,6 @@ export interface ReconcileTarget {
   lines: { candidate_id: string; side: 'S' | 'O'; label: string }[]
 }
 
-/** Minimal CSV reader: quoted fields, doubled quotes, embedded commas and newlines. */
-export function parseCsv(text: string): Record<string, string>[] {
-  const rows: string[][] = []
-  let field = ''
-  let row: string[] = []
-  let quoted = false
-  for (let i = 0; i < text.length; i += 1) {
-    const ch = text[i]
-    if (quoted) {
-      if (ch === '"' && text[i + 1] === '"') {
-        field += '"'
-        i += 1
-      } else if (ch === '"') quoted = false
-      else field += ch
-    } else if (ch === '"') quoted = true
-    else if (ch === ',') {
-      row.push(field)
-      field = ''
-    } else if (ch === '\n' || ch === '\r') {
-      if (ch === '\r' && text[i + 1] === '\n') i += 1
-      row.push(field)
-      field = ''
-      if (row.length > 1 || row[0] !== '') rows.push(row)
-      row = []
-    } else field += ch
-  }
-  if (field !== '' || row.length > 0) {
-    row.push(field)
-    rows.push(row)
-  }
-  const [head, ...body] = rows
-  return body.map((r) => Object.fromEntries(head.map((h, i) => [h, r[i] ?? ''])))
-}
 
 const yes = (v: string) => v === 't' || v === 'true' || v === 'True'
 
