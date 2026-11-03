@@ -1,20 +1,19 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import rowsJson from '../__fixtures__/ie-rows.json'
-import reportsJson from '../__fixtures__/ie-reports.json'
-import { dedupeIeRows, periodicCutoffs, type IeRow, type ReportCoverage } from './dedup-ie'
+import type { IeRow } from './dedup-ie'
 import {
   appendRun,
+  checkDedupAudit,
   checkDoubleCount,
-  checkExportReconciliation,
+  checkFetchCompleteness,
   checkPrimaryShare,
   checkRaceDrops,
   checkTotalsIdentity,
-  exportDateOf,
   exportRowsFromCsv,
   parseCsv,
   sharesReady,
+  type AuditRow,
   type RaceRow,
   type ReconcileTarget,
   type RunRecord,
@@ -71,42 +70,117 @@ describe('1. race totals do not drop', () => {
   })
 })
 
-describe('2. reconciliation to the saved FEC exports', () => {
+describe('2a. fetch completeness against the saved FEC exports', () => {
   const read = (f: string) => readFileSync(join(process.cwd(), 'scripts/__fixtures__/exports', f), 'utf-8')
-  const texas = exportRowsFromCsv(read('schedule_e-2026-10-31T14_33_41.csv'))
-  const slf = exportRowsFromCsv(read('schedule_e-2026-10-31T14_36_56.csv'))
+  const current = exportRowsFromCsv(read('schedule_e-2026-11-03T07_56_13.csv'))
   const targets: ReconcileTarget[] = [
     { committee_id: 'C00960211', label: 'Texas PAC', lines: [{ candidate_id: 'S6TX00388', side: 'S', label: 'supporting Paxton' }, { candidate_id: 'S6TX00479', side: 'O', label: 'opposing Talarico' }] },
     { committee_id: 'C00571703', label: 'SLF PAC', lines: [{ candidate_id: 'S6OH00163', side: 'O', label: 'opposing Brown' }, { candidate_id: 'S6OH00304', side: 'S', label: 'supporting Husted' }] },
   ]
-  const pulled = rowsJson as unknown as IeRow[]
-  const ours = dedupeIeRows(pulled, periodicCutoffs(pulled, reportsJson as unknown as ReportCoverage[])).kept
+  const fetchedAt = '2026-11-03T07:56:13.000Z'
 
-  it('reads the exports: dates from the file names, and cycle rows only', () => {
-    expect(exportDateOf('schedule_e-2026-10-31T14_33_41.csv')).toBe('2026-10-31')
-    expect(texas).toHaveLength(56)
-    expect(slf.every((r) => (r.election_type ?? '').endsWith('2026'))).toBe(true)
+  // The export's own rows stand in for a raw pull that saw everything the export saw: an exact match.
+  const asRawPull = (): IeRow[] =>
+    current.filter((r) => (r.election_type ?? '').endsWith('2026')).map((r) => ({ ...r, is_notice: false, report_type: null, report_year: null, filing_form: null }))
+
+  it('reads the exports: cycle rows only', () => {
+    expect(current).toHaveLength(869)
+    expect(current.every((r) => (r.election_type ?? '').endsWith('2026'))).toBe(true)
   })
 
-  it('Texas PAC and SLF PAC match their exports for rows up to the export date', () => {
-    const a = checkExportReconciliation(texas, ours, targets.slice(0, 1), '2026-10-31')
-    const b = checkExportReconciliation(slf, ours, targets.slice(1), '2026-10-31')
-    expect(a.details.map((d) => d.difference_pct)).toEqual([0, 0])
-    expect(b.details.every((d) => Number(d.difference_pct) <= 1)).toBe(true)
-    expect(a.pass && b.pass).toBe(true)
+  it('passes with nothing missing when the raw pull has every reference row', () => {
+    const out = checkFetchCompleteness(current, asRawPull(), targets, fetchedAt)
+    expect(out.pass).toBe(true)
+    expect(out.details).toHaveLength(0)
   })
 
-  it('fails when our rows are missing a committee that the export has', () => {
-    const without = ours.filter((r) => r.committee_id !== 'C00960211')
-    const out = checkExportReconciliation(texas, without, targets.slice(0, 1), '2026-10-31')
+  it('fails when a reference row dated on or before fetchedAt is missing from the raw pull', () => {
+    const raw = asRawPull()
+    const dropped = raw.find((r) => r.committee_id === 'C00960211')
+    const without = raw.filter((r) => r !== dropped)
+    const out = checkFetchCompleteness(current, without, targets, fetchedAt)
     expect(out.pass).toBe(false)
-    expect(out.details.every((d) => d.pass === false)).toBe(true)
+    expect(out.details.filter((d) => d.kind === 'missing')).toHaveLength(1)
+    expect(out.details.find((d) => d.kind === 'missing')?.key).toBe(`${dropped?.transaction_id}|${dropped?.file_number}`)
   })
 
-  it('ignores rows after the export date on both sides', () => {
-    const later = ours.map((r) => (r.committee_id === 'C00960211' ? { ...r, dissemination_date: '2026-11-02', expenditure_date: '2026-11-02' } : r))
-    const out = checkExportReconciliation(texas, later, targets.slice(0, 1), '2026-10-31')
-    expect(out.details.map((d) => d.our_total)).toEqual([0, 0])
+  it('does not fail when a reference row is dated on or after fetchedAt, and reports it instead', () => {
+    const raw = asRawPull()
+    const base = raw.find((r) => targets.some((t) => t.committee_id === r.committee_id && t.lines.some((l) => l.candidate_id === r.candidate_id && l.side === r.support_oppose_indicator)))
+    // Move the one row the raw pull has for this key to after fetchedAt, and also leave the raw pull without
+    // it, so the only way the check could pass is by treating the later date as informational, not missing.
+    const movedExport = current.map((r) => (r.transaction_id === base?.transaction_id && r.file_number === base?.file_number ? { ...r, dissemination_date: '2026-11-05', expenditure_date: '2026-11-05' } : r))
+    const withoutBase = raw.filter((r) => r !== base)
+    const out = checkFetchCompleteness(movedExport, withoutBase, targets, fetchedAt)
+    const key = `${base?.transaction_id}|${base?.file_number}`
+    const detail = out.details.find((d) => d.key === key)
+    expect(detail?.kind).toBe('future')
+    expect(out.pass).toBe(true)
+  })
+
+  it('does not fail when a reference row is only late by its filing date, dissemination date unchanged', () => {
+    const raw = asRawPull()
+    const base = raw.find((r) => targets.some((t) => t.committee_id === r.committee_id && t.lines.some((l) => l.candidate_id === r.candidate_id && l.side === r.support_oppose_indicator)))
+    // Disseminated before fetchedAt's date, but not receipted by FEC (filing_date) until on or after it.
+    const movedExport = current.map((r) => (r.transaction_id === base?.transaction_id && r.file_number === base?.file_number ? { ...r, filing_date: '2026-11-03' } : r))
+    const withoutBase = raw.filter((r) => r !== base)
+    const out = checkFetchCompleteness(movedExport, withoutBase, targets, fetchedAt)
+    const key = `${base?.transaction_id}|${base?.file_number}`
+    expect(out.details.find((d) => d.key === key)?.kind).toBe('future')
+    expect(out.pass).toBe(true)
+  })
+})
+
+describe('2b. dedup audit (advisory): a window where notices exceed the periodic evidence for it', () => {
+  const periodic = (over: Partial<IeRow> = {}): IeRow => ({ ...row({ is_notice: false, ...over }) })
+  const covered = (over: Partial<IeRow & { race: string; party: string }> = {}): AuditRow => ({ ...row({ is_notice: true, ...over }), race: 'XX', party: 'R', ...over })
+
+  it('passes, and is advisory, when a window\'s notices and periodic evidence agree', () => {
+    const notice = covered({ committee_id: 'C1', candidate_id: 'A', support_oppose_indicator: 'S', expenditure_amount: 500, expenditure_date: '2026-06-01' })
+    const match = periodic({ committee_id: 'C1', candidate_id: 'A', support_oppose_indicator: 'S', expenditure_amount: 500, expenditure_date: '2026-06-01' })
+    const out = checkDedupAudit([notice], [match], [], {}, 0)
+    expect(out.pass).toBe(true)
+    expect(out.blocking).toBe(false)
+    expect(out.details.filter((d) => d.kind === 'window')).toHaveLength(0)
+  })
+
+  it('flags a window as a shortfall, but stays advisory, when notices exceed periodic evidence by more than 1% and $100', () => {
+    const notice = covered({ committee_id: 'C1', candidate_id: 'A', support_oppose_indicator: 'S', expenditure_amount: 1000, expenditure_date: '2026-06-01' })
+    const out = checkDedupAudit([notice], [], [], {}, 100_000)
+    expect(out.pass).toBe(false)
+    expect(out.blocking).toBe(false)
+    expect(out.summary).toContain('1 shortfall window(s)')
+    expect(out.summary).toContain('1% of all-races spending')
+  })
+
+  it('tolerates a restatement under a different date, unlike a per-row exact match', () => {
+    const notice = covered({ committee_id: 'C1', candidate_id: 'A', support_oppose_indicator: 'S', expenditure_amount: 500, expenditure_date: '2026-06-01' })
+    // Same committee/candidate/side/amount, restated on a different date: a per-row match would miss it,
+    // but the window's sums (500 vs 500) agree.
+    const match = periodic({ committee_id: 'C1', candidate_id: 'A', support_oppose_indicator: 'S', expenditure_amount: 500, expenditure_date: '2026-07-15' })
+    expect(checkDedupAudit([notice], [match], [], {}, 0).pass).toBe(true)
+  })
+
+  it('counts a memo-subtotal periodic row as evidence when it matches a notice by transaction_id and amount', () => {
+    const notice = covered({ committee_id: 'C1', candidate_id: 'A', support_oppose_indicator: 'S', expenditure_amount: 500, transaction_id: 'E-1', expenditure_date: '2026-06-01' })
+    // The restatement carries the same transaction_id and amount, filed later with a different date.
+    const memo = periodic({ committee_id: 'C1', candidate_id: 'A', support_oppose_indicator: 'S', expenditure_amount: 500, transaction_id: 'E-1', expenditure_date: '2026-09-30', memo_code: 'X' })
+    expect(checkDedupAudit([notice], [], [memo], {}, 0).pass).toBe(true)
+  })
+
+  it('reports shortfall dollars by committee (top 10), by race as a percent of the race total, and by party + side', () => {
+    const a = covered({ committee_id: 'C1', candidate_id: 'A', support_oppose_indicator: 'S', expenditure_amount: 300, race: 'TX', party: 'R' })
+    const b = covered({ committee_id: 'C2', candidate_id: 'B', support_oppose_indicator: 'O', expenditure_amount: 700, race: 'TX', party: 'D' })
+    const out = checkDedupAudit([a, b], [], [], { TX: 10_000 }, 10_000)
+    expect(out.details).toEqual(
+      expect.arrayContaining([
+        { kind: 'committee', committee_id: 'C2', amount: 700 },
+        { kind: 'committee', committee_id: 'C1', amount: 300 },
+        { kind: 'race', race: 'TX', amount: 1000, race_total: 10_000, pct: 10 },
+        { kind: 'side', label: 'R nominee, support', amount: 300 },
+        { kind: 'side', label: 'D nominee, oppose', amount: 700 },
+      ]),
+    )
   })
 })
 
