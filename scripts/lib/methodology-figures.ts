@@ -1,7 +1,6 @@
 // The figures the methodology page states as sentences. Pure: built from the same dedup and race rows that
 // build spending.json, so the page and the data cannot disagree. A figure that cannot be computed throws.
 import { doubleCountByRace, type RaceRow } from './verify-checks'
-import type { IeRow } from './dedup-ie'
 
 export interface MethodologyFigures {
   /** The fetch these figures came from. Matches spending.json's fetchedAt. */
@@ -23,13 +22,12 @@ export interface MethodologyFigures {
 export interface MethodologyFigureInputs {
   fetchedAt: string
   approximateCommittees: string[]
-  approximateRows: IeRow[]
+  approximateTotal: number
   raceRows: RaceRow[]
   unattributedTotal: number
   incompleteRaces: string[]
 }
 
-const sum = (rows: IeRow[]) => rows.reduce((s, r) => s + r.expenditure_amount, 0)
 const round = (n: number) => Math.round(n * 100) / 100
 
 export function methodologyFigures(input: MethodologyFigureInputs): MethodologyFigures {
@@ -40,7 +38,7 @@ export function methodologyFigures(input: MethodologyFigureInputs): MethodologyF
   const figures: MethodologyFigures = {
     fetchedAt: input.fetchedAt,
     approxCommitteeCount: input.approximateCommittees.length,
-    approxTotal: round(sum(input.approximateRows)),
+    approxTotal: round(input.approximateTotal),
     doubleCountTotal: round(doubleCountTotal),
     doubleCountPct: round(raceTotal > 0 ? (100 * doubleCountTotal) / raceTotal : 0),
     unattributedTotal: round(input.unattributedTotal),

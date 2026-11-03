@@ -35,7 +35,7 @@ function row(over: Partial<RaceRow> = {}): RaceRow {
 const base: MethodologyFigureInputs = {
   fetchedAt: '2026-10-31T20:40:30.953Z',
   approximateCommittees: ['C2', 'C3'],
-  approximateRows: [row({ committee_id: 'C2', is_notice: true, expenditure_amount: 400 }), row({ committee_id: 'C3', is_notice: true, expenditure_amount: 600 })],
+  approximateTotal: 1000,
   // Two candidates on the same committee, date and amount in AL: 100 counted twice.
   raceRows: [
     row({ committee_id: 'C9', candidate_id: 'S1', expenditure_amount: 100, expenditure_date: '2026-10-05' }),

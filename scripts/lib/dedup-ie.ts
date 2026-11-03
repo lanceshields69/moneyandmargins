@@ -41,6 +41,13 @@ export interface DedupResult {
   approximateCommittees: string[]
   /** Dollars in the notice rows that went through the approximate key match, whether matched away or kept. */
   approximateTotal: number
+  /** Notices dropped as covered by a periodic report: what an audit checks against the periodic evidence. */
+  coveredByPeriodicRows: IeRow[]
+  /** The periodic (non-notice) rows that survived memo and amendment dedup: what a covered notice is checked against. */
+  periodicRows: IeRow[]
+  /** Memo-subtotal periodic rows, kept apart from periodicRows: a restatement of a transaction by its own
+   * transaction_id, matched to a covered notice by transaction_id and amount rather than by date. */
+  memoPeriodicRows: IeRow[]
   /** Latest processed periodic coverage end per committee. null: no periodic rows are processed yet. */
   cutoffs: Record<string, string | null>
 }
@@ -113,9 +120,11 @@ export function dedupeIeRows(rows: IeRow[], cutoffs: Map<string, string | null |
   }
 
   // 1. Memo subtotals restate lines that are already itemized.
+  const memoRows: IeRow[] = []
   let live = rows.filter((r) => {
     if (r.memo_code === 'X') {
       dropped.memo_subtotal += 1
+      memoRows.push(r)
       return false
     }
     return true
@@ -140,6 +149,12 @@ export function dedupeIeRows(rows: IeRow[], cutoffs: Map<string, string | null |
     return true
   })
 
+  const memoPeriodicRows = memoRows.filter((r) => {
+    if (r.is_notice) return false
+    const gone = r.most_recent === false || (r.file_number !== null && !!r.transaction_id && replaced.has(`${r.committee_id}|${r.transaction_id}|${r.file_number}`))
+    return !gone
+  })
+
   // 3. Periodic rows stand up to the committee's latest processed periodic coverage end; notices count only after it.
   const periodicByCommittee = new Map<string, Map<string, number>>()
   for (const r of live) {
@@ -151,6 +166,8 @@ export function dedupeIeRows(rows: IeRow[], cutoffs: Map<string, string | null |
 
   const approximate = new Set<string>()
   let approximateTotal = 0
+  const coveredByPeriodicRows: IeRow[] = []
+  const periodicRows = live.filter((r) => !r.is_notice)
   const kept: IeRow[] = []
   for (const r of live) {
     if (!r.is_notice) {
@@ -162,6 +179,7 @@ export function dedupeIeRows(rows: IeRow[], cutoffs: Map<string, string | null |
       const date = noticeDate(r)
       if (date !== null && date <= cutoff) {
         dropped.covered_by_periodic += 1
+        coveredByPeriodicRows.push(r)
         continue
       }
       kept.push(r)
@@ -185,7 +203,7 @@ export function dedupeIeRows(rows: IeRow[], cutoffs: Map<string, string | null |
 
   const cutoffsOut: Record<string, string | null> = {}
   for (const [committee, cutoff] of cutoffs) if (cutoff !== undefined) cutoffsOut[committee] = cutoff
-  return { kept, dropped, approximateCommittees: [...approximate].sort(), approximateTotal, cutoffs: cutoffsOut }
+  return { kept, dropped, approximateCommittees: [...approximate].sort(), approximateTotal, coveredByPeriodicRows, periodicRows, memoPeriodicRows, cutoffs: cutoffsOut }
 }
 
 export interface SideTotals {
