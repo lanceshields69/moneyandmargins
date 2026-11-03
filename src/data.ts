@@ -8,8 +8,20 @@ import { buildAllRaces } from './computeSpending'
 import { buildAllCallouts, latestSnapshot } from './computeCallout'
 import { buildResultsByRace, type ResultsRaceRow, type ResultsVoteRow } from './results'
 import type { NomineesFile, SpendingFile } from './types'
+import type { SeatForecastEntry } from './seatForecastSources'
 
 const snapshotFiles = import.meta.glob('../data/frozen/*/snapshot.json', { eager: true })
+const seatForecastFiles = import.meta.glob('../data/frozen-seats/*/snapshot.json', { eager: true })
+
+/** The newest seat-forecast snapshot, by folder name (a sortable timestamp). Parallel to latestSnapshot, for the
+ * chamber-wide "Forecast to win the Senate" carousel rather than the per-race map callout. Browsers never fetch
+ * these sources directly; see scripts/freeze-seat-forecasts.ts. */
+function latestSeatForecastSnapshot(files: Record<string, unknown>): readonly SeatForecastEntry[] {
+  const names = Object.keys(files).sort()
+  if (names.length === 0) return []
+  const mod = files[names[names.length - 1]] as { default?: { sources: SeatForecastEntry[] } } & { sources?: SeatForecastEntry[] }
+  return (mod.default ?? mod).sources ?? []
+}
 
 export const allRaces = buildAllRaces(
   nomineesJson as unknown as NomineesFile,
@@ -17,6 +29,7 @@ export const allRaces = buildAllRaces(
 )
 
 export const forecastSnapshot = latestSnapshot(snapshotFiles)
+export const seatForecastSources = latestSeatForecastSnapshot(seatForecastFiles)
 
 export const resultsByRace = buildResultsByRace(
   parseCsv(resultsRacesRaw) as unknown as ResultsRaceRow[],

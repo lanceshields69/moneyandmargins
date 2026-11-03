@@ -525,6 +525,57 @@ strong {
   border-radius: 6px;
   padding: 12px 14px;
 }
+.map-top:has(.seat-forecast) .national {
+  margin-left: 0;
+}
+
+/* "Forecast to win the Senate" carousel (Figma node 77:1812). Crossfades every 3s between sources; see
+   src/components/SeatForecastCarousel.tsx and scripts/freeze-seat-forecasts.ts. */
+.seat-forecast {
+  position: relative;
+  flex: 1 1 320px;
+  max-width: 440px;
+  aspect-ratio: 664 / 511;
+}
+.seat-forecast-card {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.seat-forecast-card a {
+  pointer-events: auto;
+}
+.seat-forecast-card-active {
+  opacity: 1;
+  pointer-events: auto;
+  animation: seat-forecast-fade 600ms ease-in both;
+}
+@keyframes seat-forecast-fade {
+  from {
+    opacity: 0;
+  }
+}
+.seat-forecast-dots {
+  position: absolute;
+  left: 50%;
+  top: 93.9%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  pointer-events: none;
+}
+.seat-forecast-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #d9d9d9;
+  transition: width 200ms ease;
+}
+.seat-forecast-dot-active {
+  width: 19px;
+}
 .national-head {
   display: flex;
   flex-wrap: wrap;

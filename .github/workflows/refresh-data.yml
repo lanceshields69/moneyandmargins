@@ -86,6 +86,14 @@ jobs:
         continue-on-error: true
         run: npx tsx scripts/check-forecast.ts --freeze-if-changed | tee -a "$GITHUB_STEP_SUMMARY"
 
+      # Chamber-wide "Forecast to win the Senate" carousel: 4 independent sources, frozen every scheduled run (no
+      # change-detection, unlike the per-race check above). A source that fails is held, not faked; see
+      # scripts/freeze-seat-forecasts.ts.
+      - name: Freeze seat forecasts
+        if: steps.gate.outputs.run == 'true'
+        continue-on-error: true
+        run: npx tsx scripts/freeze-seat-forecasts.ts | tee -a "$GITHUB_STEP_SUMMARY"
+
       - name: Run tests and data checks
         if: steps.verify.outcome == 'success'
         run: |
@@ -97,7 +105,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/verification.json data/frozen
+          git add data/verification.json data/frozen data/frozen-seats
           if [ "${{ steps.verify.outcome }}" = "success" ]; then git add data/spending.json; fi
           git diff --cached --quiet || git commit -m "Refresh FEC spending data"
           git pull --rebase origin "$GITHUB_REF_NAME"
