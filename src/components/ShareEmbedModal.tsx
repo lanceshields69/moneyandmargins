@@ -87,7 +87,7 @@ export default function ShareEmbedModal({ stateCode, stateName, shapePath, viewB
               <path ref={shapeRef} d={shapePath} fill="#544a99" stroke="#eae8e2" strokeOpacity="0.3" />
             </svg>
           </div>
-          <button type="button" className="embed-button" disabled>
+          <button type="button" className="embed-button" aria-disabled="true">
             Download PNG
             <img src={downloadIcon} alt="" width={18} height={18} />
           </button>

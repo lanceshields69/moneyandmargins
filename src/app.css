@@ -1782,8 +1782,7 @@ details h4 {
   font-size: 15px;
   cursor: pointer;
 }
-.embed-button:disabled {
-  opacity: 0.5;
+.embed-button[aria-disabled="true"] {
   cursor: not-allowed;
 }
 .embed-button:focus-visible,
