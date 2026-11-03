@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import ErrorBoundary from './components/ErrorBoundary'
 import MapCallout from './components/MapCallout'
 import MethodologyModal from './components/MethodologyModal'
@@ -40,6 +40,12 @@ export default function App() {
   // An embedded card's "Use this on your site?" link sends visitors here with ?share=1, asking the race's own
   // share and embed panel to open right away instead of making them find it themselves.
   const [shareRequested] = useState(() => new URLSearchParams(window.location.search).get('share') === '1')
+  // Sizes the forecast carousel to match the race panel's own height; the panel's content (and so its height)
+  // changes with the selected race, and the panel only exists on desktop (phones use the bottom sheet instead).
+  const panelColumnRef = useRef<HTMLElement>(null)
+  const [panelHeight, setPanelHeight] = useState<number | null>(null)
+  const mapTopRef = useRef<HTMLDivElement>(null)
+  const [carouselAvailableWidth, setCarouselAvailableWidth] = useState<number | null>(null)
   useEffect(() => {
     if (!shareRequested) return
     const url = new URL(window.location.href)
@@ -83,6 +89,39 @@ export default function App() {
   const phone = usePhone()
 
   useEffect(() => {
+    const el = panelColumnRef.current
+    if (!el || typeof ResizeObserver === 'undefined') {
+      setPanelHeight(null)
+      return
+    }
+    const observer = new ResizeObserver((entries) => setPanelHeight(entries[0].contentRect.height))
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [phone])
+
+  // The carousel's own CSS can't be told "as tall as the panel, but never wider than the row has room for": a
+  // non-replaced box with an explicit height and a max-width either overflows or lets a mismatched max-height
+  // sit unused, since nothing shrinks the explicit height back down when width is the binding constraint. So the
+  // available width (the row's width, minus the dropdown) is measured here and the final box is sized in JS.
+  useEffect(() => {
+    const row = mapTopRef.current
+    if (!row || typeof ResizeObserver === 'undefined') {
+      setCarouselAvailableWidth(null)
+      return
+    }
+    const measure = () => {
+      const jump = row.querySelector<HTMLElement>('.jump')
+      const gap = parseFloat(getComputedStyle(row).columnGap || '0') || 0
+      const jumpWidth = jump?.getBoundingClientRect().width ?? 0
+      setCarouselAvailableWidth(Math.max(0, row.clientWidth - jumpWidth - gap))
+    }
+    const observer = new ResizeObserver(measure)
+    observer.observe(row)
+    measure()
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
     const onHashChange = () => {
       if (isHowHash(window.location.hash)) setHowOpen(true)
       if (isCorrectionsHash(window.location.hash)) setCorrOpen(true)
@@ -103,6 +142,13 @@ export default function App() {
   const callout = active ? callouts.get(active) : undefined
   const race = active ? (raceByState.get(active) ?? null) : null
   const national = useMemo(() => buildNationalCard(allRaces.races, active), [active])
+  // Figma node 77:1812's card is 664x511; keep this ratio in sync with SeatForecastCarousel's own SVG viewBox.
+  const carouselSize = useMemo(() => {
+    if (!panelHeight) return null
+    const ratio = 664 / 511
+    const width = carouselAvailableWidth ? Math.min(panelHeight * ratio, carouselAvailableWidth) : panelHeight * ratio
+    return { width, height: width / ratio }
+  }, [panelHeight, carouselAvailableWidth])
   const point = active ? labelPoints.get(active) : undefined
   const [vx, vy, vw, vh] = mapViewBox
   const anchor = point ? { x: (point[0] - vx) / vw, y: (point[1] - vy) / vh } : null
@@ -155,7 +201,7 @@ export default function App() {
 
       <main className="layout">
         <div className="map-column">
-          <div className="map-top">
+          <div className="map-top" ref={mapTopRef}>
           <label className="jump">
             <span>Jump to a race</span>
             <select value={active ?? ''} onChange={(e) => choose(e.target.value || null)}>
@@ -169,7 +215,7 @@ export default function App() {
               ))}
             </select>
           </label>
-            {seatForecastSources.length > 0 && <SeatForecastCarousel sources={seatForecastSources} />}
+            {seatForecastSources.length > 0 && <SeatForecastCarousel sources={seatForecastSources} sizePx={carouselSize} />}
             {SHARES_VERIFIED && <NationalCard card={national} stateName={active ? (stateNames.get(active) ?? active) : null} />}
           </div>
 
@@ -253,7 +299,7 @@ export default function App() {
         </div>
 
         {!phone && (
-          <aside className="panel-column">
+          <aside className="panel-column" ref={panelColumnRef}>
             <RacePanel race={race} fetchedAt={allRaces.fetchedAt} dataThrough={dataThrough} dataVerified={DATA_VERIFIED} onOpenHow={openHow} autoOpenShare={shareRequested} />
           </aside>
         )}

@@ -31,25 +31,28 @@ function Card({ entry }: { entry: SeatForecastEntry }) {
         <rect x={boundaryX} y={0} width={DOME_WIDTH - boundaryX} height={DOME_HEIGHT} fill={PARTY_DISPLAY.R.color} />
       </g>
 
-      <text x={17} y={110} fontFamily="var(--font-display)" fontWeight={600} fontSize={44} fill="var(--color-text)">
+      <text x={17} y={123} fontFamily="var(--font-display)" fontWeight={600} fontSize={44} fill="var(--color-text)">
         <tspan x={17} dy={0}>
           Forecast
         </tspan>
-        <tspan x={17} dy={48} textLength={231} lengthAdjust="spacingAndGlyphs">
-          to win the Senate.
+        <tspan x={17} dy={42}>
+          to win the
+        </tspan>
+        <tspan x={17} dy={42}>
+          Senate.
         </tspan>
       </text>
 
       <a href={entry.sourceUrl} target="_blank" rel="noreferrer">
-        <text x={DOME_WIDTH} y={113} textAnchor="end" fontFamily="var(--font-display)" fontWeight={600} fontSize={42} fill="var(--color-text)">
+        <text x={DOME_WIDTH} y={121} textAnchor="end" fontFamily="var(--font-display)" fontWeight={600} fontSize={42} fill="var(--color-text)">
           {entry.sourceName}
         </text>
       </a>
-      <text x={DOME_WIDTH} y={151} textAnchor="end" fontFamily="var(--font-sans)" fontSize={14} fill="var(--color-text)">
+      <text x={DOME_WIDTH} y={147} textAnchor="end" fontFamily="var(--font-sans)" fontSize={14} fill="var(--color-text)">
         {`Forecast updated ${ordinalMonthDay(entry.asOf)}`}
       </text>
       <a href={entry.homeUrl} target="_blank" rel="noreferrer">
-        <text x={DOME_WIDTH} y={171} textAnchor="end" fontFamily="var(--font-sans)" fontSize={13} fill="var(--color-text)" textDecoration="underline">
+        <text x={DOME_WIDTH} y={168} textAnchor="end" fontFamily="var(--font-sans)" fontSize={13} fill="var(--color-text)" textDecoration="underline">
           {entry.sourceName}
         </text>
       </a>
@@ -72,12 +75,15 @@ function Card({ entry }: { entry: SeatForecastEntry }) {
 
 export interface SeatForecastCarouselProps {
   sources: readonly SeatForecastEntry[]
+  /** The exact box size, computed by the caller from the race panel's own height and the row's available width
+   * (desktop only; the panel doesn't exist on phones, and this falls back to the CSS-driven default size). */
+  sizePx?: { width: number; height: number } | null
 }
 
 /** Crossfades every 3s through the chamber-wide seat forecast from each of several forecasters. Never fetches: the
  * data comes from a frozen snapshot (scripts/freeze-seat-forecasts.ts), the same philosophy as the race forecasts
  * powering the map callout. Pauses on a single card for a visitor who has asked for reduced motion. */
-export default function SeatForecastCarousel({ sources }: SeatForecastCarouselProps) {
+export default function SeatForecastCarousel({ sources, sizePx }: SeatForecastCarouselProps) {
   const [index, setIndex] = useState(0)
   const reducedMotion = useRef(typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
 
@@ -91,7 +97,12 @@ export default function SeatForecastCarousel({ sources }: SeatForecastCarouselPr
   const current = sources[Math.min(index, sources.length - 1)]
 
   return (
-    <div className="seat-forecast" role="group" aria-label="Forecast to win the Senate">
+    <div
+      className="seat-forecast"
+      role="group"
+      aria-label="Forecast to win the Senate"
+      style={sizePx ? { width: sizePx.width, height: sizePx.height, maxWidth: 'none', flex: 'none' } : undefined}
+    >
       {sources.map((entry, i) => (
         <div key={entry.key} className={i === index ? 'seat-forecast-card seat-forecast-card-active' : 'seat-forecast-card'} aria-hidden={i === index ? undefined : true}>
           <Card entry={entry} />
