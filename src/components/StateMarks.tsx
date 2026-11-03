@@ -94,22 +94,18 @@ export function buildStateMarks(
   })
 }
 
-/** Keyboard-focusable marks on the map, with a visible focus ring and an aria-label. They do not react to clicks;
- * the state shape underneath still handles selection. */
+/** A plain 15px chip per state in its party color, like the swatches in the race panel. Decorative: the state
+ * shape underneath handles selection, so the chip is hidden from assistive tech and carries no focus of its own. */
 export default function StateMarks({ marks }: { marks: StateMark[] }) {
   return (
     <>
       {marks.map((m) => (
         <span
           key={m.state}
-          className={`state-mark state-mark-${m.kind}${m.outline ? ` state-mark-${m.outline}` : ''}`}
-          style={{ left: `${m.x * 100}%`, top: `calc(${m.y * 100}% + ${m.nudgePx}px)`, ...(m.color ? { background: m.kind === 'ring' ? 'transparent' : m.color, borderColor: m.color } : {}) }}
-          role="img"
-          aria-label={m.ariaLabel}
-          tabIndex={0}
-        >
-          {m.letter}
-        </span>
+          className="state-chip"
+          style={{ left: `${m.x * 100}%`, top: `calc(${m.y * 100}% + ${m.nudgePx}px)`, background: m.color ?? 'var(--color-muted)' }}
+          aria-hidden="true"
+        />
       ))}
     </>
   )

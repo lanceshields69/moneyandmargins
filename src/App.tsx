@@ -2,8 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import ErrorBoundary from './components/ErrorBoundary'
 import MapCallout from './components/MapCallout'
 import MethodologyModal from './components/MethodologyModal'
-import MarkLegend from './components/MarkLegend'
-import StateMarks, { buildStateMarks, marksFromCallouts } from './components/StateMarks'
 import NationalCard from './components/NationalCard'
 import RacePanel from './components/RacePanel'
 import ContactFooter from './components/ContactFooter'
@@ -12,6 +10,7 @@ import infoIcon from './assets/info.svg'
 import Vote411Banner from './components/Vote411Banner'
 import ShareMenu from './components/ShareMenu'
 import UsStatesMap, { rampColor } from './components/UsStatesMap'
+import StateMarks, { buildStateMarks, marksFromCallouts } from './components/StateMarks'
 import { buildNationalCard } from './computeNational'
 import { allRaces, callouts, forecastSnapshot, labelPoints, mapViewBox, seatForecastSources, stateNames } from './data'
 import SeatForecastCarousel from './components/SeatForecastCarousel'
@@ -114,13 +113,13 @@ export default function App() {
     return () => window.removeEventListener('hashchange', onHashChange)
   }, [validStates])
 
+  const callout = active ? callouts.get(active) : undefined
+  const race = active ? (raceByState.get(active) ?? null) : null
+  const national = useMemo(() => buildNationalCard(allRaces.races, active), [active])
   const stateMarks = useMemo(
     () => buildStateMarks(marksFromCallouts(callouts, (st) => stateNames.get(st) ?? st), (st) => labelPoints.get(st), mapViewBox),
     [],
   )
-  const callout = active ? callouts.get(active) : undefined
-  const race = active ? (raceByState.get(active) ?? null) : null
-  const national = useMemo(() => buildNationalCard(allRaces.races, active), [active])
   // Figma node 74:1669's card is 664x511; keep this ratio in sync with SeatForecastCarousel's own SVG viewBox.
   const carouselSize = useMemo(() => (carouselHeight ? { width: carouselHeight * (664 / 511), height: carouselHeight } : null), [carouselHeight])
   const point = active ? labelPoints.get(active) : undefined
@@ -241,7 +240,6 @@ export default function App() {
               </button>
             </p>
           </div>
-          <MarkLegend />
         </div>
 
         {!active && <p className="map-hint muted">Tap a highlighted state to see its race.</p>}
