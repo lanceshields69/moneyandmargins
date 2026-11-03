@@ -532,6 +532,7 @@ strong {
   flex: 0 0 auto;
   width: 664px;
   max-width: 100%;
+  margin-inline: auto;
   aspect-ratio: 664 / 511;
 }
 .seat-forecast-card {
