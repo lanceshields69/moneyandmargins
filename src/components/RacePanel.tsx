@@ -11,6 +11,7 @@ import { buildMailto } from '../corrections'
 import { allRaces, callouts, forecastSnapshot, stateBoxes, statePaths, stateNames } from '../data'
 import { buildNationalCard } from '../computeNational'
 import ShareEmbedModal from './ShareEmbedModal'
+import exportIcon from '../assets/share/export.svg'
 
 const FEC_SOURCE_URL = 'https://www.fec.gov/data/independent-expenditures/'
 
@@ -103,6 +104,8 @@ interface RacePanelProps {
   dataVerified?: boolean
   /** Opens the methodology modal from the "how this is counted" link. */
   onOpenHow?: () => void
+  /** Opens the share and embed modal on mount, e.g. when a link asks for it directly. */
+  autoOpenShare?: boolean
 }
 
 /**
@@ -116,15 +119,21 @@ export function splitRows(race: RaceView, collapse: boolean): { listed: RowView[
   return { listed: race.rows.filter((r) => !quiet.includes(r)), quiet }
 }
 
-export default function RacePanel({ race, fetchedAt, dataThrough, dataVerified = DATA_VERIFIED, onOpenHow }: RacePanelProps) {
+export default function RacePanel({ race, fetchedAt, dataThrough, dataVerified = DATA_VERIFIED, onOpenHow, autoOpenShare }: RacePanelProps) {
   const { listed, quiet } = race ? splitRows(race, dataVerified) : { listed: [], quiet: [] }
-  const [shareOpen, setShareOpen] = useState(false)
+  const [shareOpen, setShareOpen] = useState(autoOpenShare ?? false)
   return (
     <section id="race-details" className="panel" aria-label="Race details" tabIndex={-1}>
       {!race ? (
         <p className="muted prompt">Select a highlighted state to see its 2026 Senate race.</p>
       ) : (
         <>
+          <p className="embed-entry">
+            <button type="button" className="embed-button" aria-haspopup="dialog" onClick={() => setShareOpen(true)}>
+              Share or embed
+              <img src={exportIcon} alt="" width={18} height={18} />
+            </button>
+          </p>
           <h2>
             {race.raceName}
             {race.isSpecial && <span className="tag">Special election</span>}
@@ -156,11 +165,6 @@ export default function RacePanel({ race, fetchedAt, dataThrough, dataVerified =
           </ul>
           {quiet.length > 0 && <p className="muted quiet">{`Also on the ballot, no reported spending: ${quiet.map((r) => r.name).join(', ')}`}</p>}
           <p className="muted scale-note">Bars share one scale within this race. Supporting and opposing amounts are not netted.</p>
-          <p className="embed-entry">
-            <button type="button" className="link-button" aria-haspopup="dialog" onClick={() => setShareOpen(true)}>
-              Share or embed this race
-            </button>
-          </p>
           {shareOpen &&
             callouts.get(race.state) &&
             createPortal(

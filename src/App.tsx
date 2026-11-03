@@ -36,6 +36,15 @@ export default function App() {
   const [isDefault, setIsDefault] = useState(initial.isDefault)
   const [howOpen, setHowOpen] = useState(() => isHowHash(window.location.hash))
   const [corrOpen, setCorrOpen] = useState(() => isCorrectionsHash(window.location.hash))
+  // An embedded card's "Use this on your site?" link sends visitors here with ?share=1, asking the race's own
+  // share and embed panel to open right away instead of making them find it themselves.
+  const [shareRequested] = useState(() => new URLSearchParams(window.location.search).get('share') === '1')
+  useEffect(() => {
+    if (!shareRequested) return
+    const url = new URL(window.location.href)
+    url.searchParams.delete('share')
+    window.history.replaceState(null, '', url.hash ? url : url.pathname + url.search)
+  }, [shareRequested])
   const openCorr = useCallback(() => {
     setCorrOpen(true)
     const url = new URL(window.location.href)
@@ -175,7 +184,8 @@ export default function App() {
           {callout && anchor && active && (
             <ErrorBoundary key={active}>
               <MapCallout sharesVerified={SHARES_VERIFIED} onOpenHow={openHow} callout={callout} stateName={stateNames.get(active) ?? active} anchor={anchor} isDefault={isDefault}
-                detail={phone ? <RacePanel race={race} fetchedAt={allRaces.fetchedAt} dataThrough={dataThrough} dataVerified={DATA_VERIFIED} onOpenHow={openHow} /> : undefined}
+                initialExpanded={shareRequested}
+                detail={phone ? <RacePanel race={race} fetchedAt={allRaces.fetchedAt} dataThrough={dataThrough} dataVerified={DATA_VERIFIED} onOpenHow={openHow} autoOpenShare={shareRequested} /> : undefined}
                 onClose={close}
               />
             </ErrorBoundary>
@@ -242,7 +252,7 @@ export default function App() {
 
         {!phone && (
           <aside className="panel-column">
-            <RacePanel race={race} fetchedAt={allRaces.fetchedAt} dataThrough={dataThrough} dataVerified={DATA_VERIFIED} onOpenHow={openHow} />
+            <RacePanel race={race} fetchedAt={allRaces.fetchedAt} dataThrough={dataThrough} dataVerified={DATA_VERIFIED} onOpenHow={openHow} autoOpenShare={shareRequested} />
           </aside>
         )}
       </main>
