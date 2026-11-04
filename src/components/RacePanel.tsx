@@ -4,7 +4,7 @@ import type { Committee } from '../types'
 import { pickPair } from '../computeCallout'
 import { PARTY_DISPLAY, type RaceView, type RowView, type SideView } from '../computeSpending'
 import { DATA_VERIFIED } from '../config'
-import { AMOUNTS_PENDING_LEAD, SHARES_PENDING_LINK } from '../copy'
+import { AMOUNTS_PENDING_LEAD, FEC_SOURCE_URL, SHARES_PENDING_LINK } from '../copy'
 import { formatMoney, formatMoneyFull } from '../format'
 import { CONTACT_EMAIL } from '../config'
 import { buildMailto } from '../corrections'
@@ -13,7 +13,6 @@ import { buildNationalCard } from '../computeNational'
 import ShareEmbedModal from './ShareEmbedModal'
 import exportIcon from '../assets/share/export.svg'
 
-const FEC_SOURCE_URL = 'https://www.fec.gov/data/independent-expenditures/'
 
 function Bar({ label, side, color, striped }: { label: string; side: SideView; color: string; striped: boolean }) {
   const width = side.value > 0 ? Math.max(side.widthPct, 1) : 0

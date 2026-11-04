@@ -8,3 +8,6 @@ export const AMOUNTS_PENDING_LEAD = 'Dollar amounts are being verified. Partial 
 /** "frozen [date]" only for the snapshot tagged final-pre-election; any earlier snapshot is "latest as of [date]". */
 export const FINAL_FORECAST_TAG = 'final-pre-election'
 export const forecastPhrase = (tag: string | null): string => (tag === FINAL_FORECAST_TAG ? 'frozen' : 'latest as of')
+
+/** The FEC's independent expenditures page, linked from the race panel and the footer. */
+export const FEC_SOURCE_URL = 'https://www.fec.gov/data/independent-expenditures/'

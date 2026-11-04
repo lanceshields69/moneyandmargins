@@ -1509,6 +1509,20 @@ details h4 {
   color: #fff;
 }
 
+/* Footer section headers (Big spending gaps, What's counted, Updates and sources): bold and white. */
+.footer-head {
+  margin-bottom: 2px;
+  color: #fff;
+  font-weight: 700;
+  font-variant-numeric: normal; /* tabular figures widen the spaces in the display font */
+}
+.footer-block {
+  margin-bottom: 14px;
+}
+.footer-block p {
+  margin-top: 0;
+}
+
 /* Hero image on the Claude article: a thin border. */
 .article .hero img {
   border: 1px solid #393834;

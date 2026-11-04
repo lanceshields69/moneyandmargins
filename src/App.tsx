@@ -17,10 +17,11 @@ import { SENATE_BASELINE } from '../scripts/data/senate-baseline-source'
 import { buildSenateTally } from './senateResults'
 import logo from '../images/logo.png'
 import { DATA_VERIFIED, SHARES_VERIFIED } from './config'
-import { DATA_CHECK_NOTICE, FINAL_FORECAST_TAG, forecastPhrase } from './copy'
+import { incompleteRacesClause, outspentWins, spendingGapCopy } from './spendingGaps'
+import { DATA_CHECK_NOTICE, FEC_SOURCE_URL, FINAL_FORECAST_TAG, forecastPhrase } from './copy'
 import corrections from '../data/corrections.json'
 import { correctionsBlocks, isCorrectionsHash, type CorrectionEntry } from './corrections'
-import { formatDate, formatDateOnly, formatDateTime, formatMoney, formatMonthDay } from './format'
+import { formatDateOnly, formatDateTime, formatMoney, formatMonthDay } from './format'
 import { CIVICAPI_URL } from './civicapi'
 import { initialSelection, parseHashState } from './defaultState'
 import verification from '../data/verification.json'
@@ -134,7 +135,9 @@ export default function App() {
   const point = active ? labelPoints.get(active) : undefined
   const [vx, vy, vw, vh] = mapViewBox
   const anchor = point ? { x: (point[0] - vx) / vw, y: (point[1] - vy) / vh } : null
-  const snapshotHost = new URL(forecastSnapshot.sourceUrl).host
+  // The footer's "Big spending gaps" note and the incomplete-races clause, both from the data.
+  const gapCopy = useMemo(() => spendingGapCopy(outspentWins(allRaces.races, callouts), (st) => stateNames.get(st) ?? st), [])
+  const incompleteClause = useMemo(() => incompleteRacesClause(allRaces.races.filter((r) => r.incompleteCount > 0).length), [])
   const dataThrough = allRaces.latestDissemination ? formatDateOnly(`${allRaces.latestDissemination}T00:00:00Z`) : undefined
   const correctionBlocks = useMemo(() => correctionsBlocks(corrections as CorrectionEntry[]), [])
   const methodologyBlocks = useMemo(
@@ -315,44 +318,47 @@ export default function App() {
       <footer className="footer muted">
         <div className="footer-grid">
           <div className="footer-notes">
-            <p>
-              <strong className="footer-lead">Early version.</strong> This map shows outside groups’ independent spending reported to the FEC for
-              2026 Senate races, placed in the candidate’s state.{' '}
-              <button type="button" className="link-button" onClick={openHow}>
-                How this works
-              </button>{' '}
-              explains what’s left out.
-            </p>
-            <p>
-              <strong className="footer-lead">Supporting and opposing.</strong> Groups label each filing as supporting or opposing a candidate, and
-              they choose the label. We show both and never subtract one from the other.
-            </p>
-            <p>
-              <strong className="footer-lead">Predicted to win:</strong> {forecastSnapshot.sourceName} forecast (
-              <a href={forecastSnapshot.sourceUrl} target="_blank" rel="noreferrer">
-                {snapshotHost}
-              </a>
-              ), {forecastPhrase(forecastSnapshot.tag)} {formatDate(forecastSnapshot.fetchedAt)}. <strong>Spent on ads:</strong> each
-              party&apos;s share of reported spending for its nominee or against the other.{' '}
-              <button type="button" className="link-button" onClick={openHow}>
-                How this is counted
-              </button>
-            </p>
+            {gapCopy && (
+              <div className="footer-block">
+                <p className="footer-head">{gapCopy.heading}</p>
+                <p>{gapCopy.body}</p>
+              </div>
+            )}
+            <div className="footer-block">
+              <p className="footer-head">What’s counted</p>
+              <p>
+                This map shows independent expenditures reported to the FEC that support a nominee or oppose an opponent. Supporting and opposing
+                amounts are shown separately; they are never subtracted from each other. These figures do not include every form of campaign
+                spending{incompleteClause ? `, and ${incompleteClause}` : ''}.
+              </p>
+            </div>
+            <div className="footer-block">
+              <p className="footer-head">Updates and sources</p>
+              <p>
+                Election calls and FEC spending reports update on different schedules. Each race shows its latest available spending date.{' '}
+                <button type="button" className="link-button" onClick={openHow}>
+                  How this map works
+                </button>
+                {' · '}
+                <a href={FEC_SOURCE_URL} target="_blank" rel="noreferrer">
+                  FEC source
+                </a>
+                {' · '}
+                <button type="button" className="link-button" onClick={openCorr}>
+                  Corrections
+                </button>
+              </p>
+              <p>
+                <a href="/claude-on-building-an-election-map">Claude on building this map</a>
+                {' · '}
+                <a href="/how-to-write-an-mvp-md">How to write an MVP.md</a>
+              </p>
+            </div>
             <p>
               Official voting information:{' '}
               <a href="https://vote.gov" target="_blank" rel="noreferrer">
                 vote.gov
               </a>
-            </p>
-            <p>
-              <a href="/claude-on-building-an-election-map">Claude on building this map</a>
-              {' · '}
-              <a href="/how-to-write-an-mvp-md">How to write an MVP.md</a>
-            </p>
-            <p>
-              <button type="button" className="link-button" onClick={openHow}>
-                How this map works
-              </button>
             </p>
           </div>
           <section className="faq" aria-labelledby="faq-heading">
@@ -382,7 +388,7 @@ export default function App() {
             </p>
           </section>
           <div className="footer-meta">
-            <ContactFooter onOpenCorrections={openCorr} />
+            <ContactFooter />
             <p>
               © 2026{' '}
               <a href="https://www.lanceshields.design/" target="_blank" rel="noreferrer">
