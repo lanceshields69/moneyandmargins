@@ -12,7 +12,7 @@ import { forecastPhrase } from './copy'
 import { formatMoney } from './format'
 import { fillMethodology } from './methodology'
 import { AMOUNTS_PENDING_LEAD, PARTIAL_CALLOUT_NOTICE, SHARES_PENDING_LEAD, SHARES_PENDING_LINK } from './copy'
-import { allRaces, callouts } from './data'
+import { allRaces, callouts, stateNames } from './data'
 import verifiedMd from '../docs/methodology.md?raw'
 
 ;(globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true
@@ -165,7 +165,12 @@ describe('each flag combination on the whole page', () => {
     }
     expect(body).toContain("Totals and shares include primary-season spending as labeled by the filer, which can count toward the other side's share. I'm moving the shares to general-election spending only.")
     expect(body).toContain('Nationally this is at most about 3.4%.')
-    expect(body).toContain('Races with incomplete data (Colorado, Michigan, Nebraska, Oklahoma, South Carolina) are left out of the national card.')
+    // The names come from the data the page renders from (races with incomplete nominees or a held-out total), never a fixed list.
+    const incompleteNames = allRaces.races.filter((r) => r.incompleteCount > 0).map((r) => stateNames.get(r.state) ?? r.state)
+    const listed = /Races with incomplete data \(([^)]*)\) are left out of the national card\./.exec(body)?.[1]
+    expect(listed, 'the incomplete-races sentence').toBeDefined()
+    for (const name of incompleteNames) expect(listed).toContain(name)
+    expect(listed?.split(', ')).toHaveLength(incompleteNames.length)
     expect(body).toContain("A contrast ad can be reported on two lines, so a state's total can count some spending twice.")
     expect(body).not.toContain('not tied to a candidate total') // no figure, so the sentence is dropped
     expect(body).not.toMatch(/\{\{|\}\}/)
