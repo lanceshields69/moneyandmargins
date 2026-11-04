@@ -93,9 +93,12 @@ function forecastNamesMatch(forecast: RaceForecast, byParty: Map<Party, RowView>
   })
 }
 
-export function buildCallout(race: RaceView, forecast: RaceForecast | undefined, raceResult?: RaceResultData): Callout {
+/** Fixed left-to-right order of a callout: Democrats, then Republicans, then independents. Never follows the results. */
+const CALLOUT_ORDER: readonly Party[] = ['D', 'R', 'I']
+
+export function buildCallout(race: RaceView, forecast: RaceForecast | undefined, raceResult?: RaceResultData, seatHolder: Party | null = null): Callout {
   const pair = pickPair(race.rows)
-  const sorted = [...pair].sort((a, b) => a.partyLabel.localeCompare(b.partyLabel) || a.candidateId.localeCompare(b.candidateId))
+  const sorted = [...pair].sort((a, b) => CALLOUT_ORDER.indexOf(a.party) - CALLOUT_ORDER.indexOf(b.party) || a.candidateId.localeCompare(b.candidateId))
   const sides: CalloutSide[] = sorted.map((row) => ({
     candidateId: row.candidateId,
     name: row.name,
@@ -117,7 +120,7 @@ export function buildCallout(race: RaceView, forecast: RaceForecast | undefined,
     incompleteNote: null,
     excluded: race.rows.filter((r) => !pair.includes(r)).map((r) => r.name),
     discrepancies: [],
-    result: buildResultCallout(sorted.map((r) => r.candidateId), raceResult),
+    result: buildResultCallout(sorted.map((r) => r.candidateId), raceResult, new Map(race.rows.map((r) => [r.candidateId, r.party])), seatHolder),
   }
 
   if (race.incompleteCount > 0) {
@@ -205,7 +208,7 @@ export function latestSnapshot(files: Record<string, unknown>): ForecastSnapshot
   return normalizeSnapshot(mod.default ?? mod)
 }
 
-export function buildAllCallouts(races: RaceView[], snapshot: ForecastSnapshot, resultsByRace?: Map<string, RaceResultData>): Map<string, Callout> {
+export function buildAllCallouts(races: RaceView[], snapshot: ForecastSnapshot, resultsByRace?: Map<string, RaceResultData>, seatHolders: Readonly<Record<string, Party>> = {}): Map<string, Callout> {
   const forecastByState = new Map(snapshot.races.map((r) => [r.state, r]))
-  return new Map(races.map((race) => [race.state, buildCallout(race, forecastByState.get(race.state), resultsByRace?.get(race.raceId))]))
+  return new Map(races.map((race) => [race.state, buildCallout(race, forecastByState.get(race.state), resultsByRace?.get(race.raceId), seatHolders[race.raceId] ?? null)]))
 }

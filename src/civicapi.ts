@@ -6,6 +6,8 @@ import type { ResultsRaceRow, ResultsVoteRow, ResultStatus } from './results'
 export interface CivicCandidate {
   name: string
   votes: number
+  /** civicAPI's own flag that this candidate won. */
+  winner?: boolean
 }
 
 export interface CivicRace {
@@ -22,11 +24,17 @@ export interface RaceRows {
 
 export type FeedResult = { ok: true; rows: RaceRows } | { ok: false; reason: string }
 
-/** Counting until every precinct reports; Unofficial at 100. Certified is never set from the feed. */
+/**
+ * civicAPI's own call and nothing else: Called when it flags exactly one candidate as winner, Reporting when votes
+ * are in and no one is flagged. Never inferred from the counts or the percent reporting. Two winner flags
+ * disagree with themselves, so that race is held (null) rather than guessed.
+ */
 export function feedStatus(race: CivicRace): ResultStatus | null {
   if (race.test_data) return null
   if (race.candidates.every((c) => c.votes === 0)) return null
-  return race.percent_reporting >= 100 ? 'Unofficial' : 'Counting'
+  const winners = race.candidates.filter((c) => c.winner === true).length
+  if (winners > 1) return null
+  return winners === 1 ? 'Called' : 'Reporting'
 }
 
 function nameTokens(name: string): string[] {
@@ -50,14 +58,17 @@ export function matchesNominee(civicName: string, nomineeName: string): boolean 
 
 export function feedRows(raceId: string, civic: CivicRace, nominees: NomineesFile, officialUrl: string | null, asOf: string): FeedResult {
   const status = feedStatus(civic)
-  if (status === null) return { ok: false, reason: civic.test_data ? 'civicAPI marks this race as test data' : 'no votes reported yet' }
+  if (status === null) return { ok: false, reason: civic.test_data ? 'civicAPI marks this race as test data' : civic.candidates.filter((c) => c.winner === true).length > 1 ? 'civicAPI flags more than one winner' : 'no votes reported yet' }
   const nomineeList = nominees.candidates.filter((c) => c.raceId === raceId)
   const votes: ResultsVoteRow[] = []
+  let winner = ''
   for (const nominee of nomineeList) {
     const match = civic.candidates.find((c) => matchesNominee(c.name, nominee.name))
     if (!match) return { ok: false, reason: `no civicAPI candidate matches ${nominee.name}` }
     votes.push({ race_id: raceId, candidate: nominee.name, party: nominee.party, votes: String(match.votes) })
+    if (match.winner === true) winner = nominee.name
   }
+  if (status === 'Called' && !winner) return { ok: false, reason: 'civicAPI flags a winner who is not one of our nominees' }
   return {
     ok: true,
     rows: {
@@ -68,6 +79,7 @@ export function feedRows(raceId: string, civic: CivicRace, nominees: NomineesFil
         note: '',
         source_url: officialUrl ?? 'https://civicapi.org/decision-2026',
         as_of: asOf,
+        winner,
       },
       votes,
     },

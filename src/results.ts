@@ -1,9 +1,12 @@
 // Results, hand-entered in two CSV files (see docs/results-entry.md). Pure and party-blind: nothing here reads a
 // party except to carry it through from nominees.json. No automatic publishing, admin page, or outside feed here.
-import type { NomineesFile } from './types'
+import type { NomineesFile, Party } from './types'
 
-export type ResultStatus = 'Counting' | 'Unofficial' | 'Certified'
-const VALID_STATUSES: readonly ResultStatus[] = ['Counting', 'Unofficial', 'Certified']
+// civicAPI's own status for a race. Reporting: votes are in and no candidate is flagged winner. Called: civicAPI
+// flags exactly one candidate as winner. A status is never inferred from vote counts. Win vs Flip is then decided
+// by comparing the winner's party with the party that held the seat before the election (data/seat-holders.json).
+export type ResultStatus = 'Reporting' | 'Called'
+const VALID_STATUSES: readonly ResultStatus[] = ['Reporting', 'Called']
 
 export interface ResultsRaceRow {
   race_id: string
@@ -12,6 +15,8 @@ export interface ResultsRaceRow {
   note: string
   source_url: string
   as_of: string
+  /** The candidate civicAPI flags as winner, exactly as named in nominees.json. Blank unless status is Called. */
+  winner?: string
 }
 
 export interface ResultsVoteRow {
@@ -44,7 +49,11 @@ export function validateResults(raceRows: ResultsRaceRow[], voteRows: ResultsVot
       continue
     }
     raceRowIds.add(row.race_id)
-    if (!VALID_STATUSES.includes(row.status as ResultStatus)) errors.push(`${label}: invalid status "${row.status}" (must be Counting, Unofficial, or Certified)`)
+    if (!VALID_STATUSES.includes(row.status as ResultStatus)) errors.push(`${label}: invalid status "${row.status}" (must be Reporting or Called)`)
+    const winner = (row.winner ?? '').trim()
+    if (row.status === 'Called' && !winner) errors.push(`${label}: status Called needs a winner`)
+    if (row.status === 'Reporting' && winner) errors.push(`${label}: status Reporting must not name a winner`)
+    if (winner && !candidateNamesByRace.get(row.race_id)?.has(winner)) errors.push(`${label}: winner "${winner}" is not in nominees.json for this race`)
     const pct = Number(row.percent_reporting)
     if (row.percent_reporting.trim() === '' || !Number.isFinite(pct) || pct < 0 || pct > 100) errors.push(`${label}: percent_reporting must be 0 to 100, got "${row.percent_reporting}"`)
     if (!row.source_url.trim()) errors.push(`${label}: missing source_url`)
@@ -85,6 +94,8 @@ export interface RaceResultData {
   note: string | null
   sourceUrl: string
   asOf: string
+  /** The candidate id civicAPI flags as winner. Null while reporting. */
+  winnerCandidateId: string | null
   /** Votes by candidate id, for every candidate with a vote row in this race, not only the callout's pair. */
   votesByCandidate: Map<string, number>
 }
@@ -102,6 +113,7 @@ export function buildResultsByRace(raceRows: ResultsRaceRow[], voteRows: Results
       note: row.note.trim() || null,
       sourceUrl: row.source_url,
       asOf: row.as_of,
+      winnerCandidateId: row.winner?.trim() ? (candidateIdByRaceAndName.get(`${row.race_id}|${row.winner.trim()}`) ?? null) : null,
       votesByCandidate: new Map(),
     })
   }
@@ -113,49 +125,76 @@ export function buildResultsByRace(raceRows: ResultsRaceRow[], voteRows: Results
   return out
 }
 
-export type ResultStage = 'not-added' | 'counting' | 'unofficial' | 'certified'
-
-const STAGE_BY_STATUS: Record<ResultStatus, ResultStage> = { Counting: 'counting', Unofficial: 'unofficial', Certified: 'certified' }
+/** One status per race: none (civicAPI has nothing), reporting, win (the seat's party held it), or flip (it did not). */
+export type ResultStage = 'none' | 'reporting' | 'win' | 'flip'
 
 export interface ResultCallout {
   stage: ResultStage
   percentReporting: number | null
-  /** Whole-percent shares for the callout's two sides, keyed by candidate id. Null in every stage but counting, unofficial and certified. */
+  /**
+   * Whole-percent shares for the callout's sides, keyed by candidate id, from civicAPI's vote counts. Largest
+   * remainder rounding (wholePercentsN): each share is floored, then the points left over go to the largest
+   * fractional parts, a tie going to the lower candidate id. So every race's shares total exactly 100.
+   * Null in every stage but reporting, win and flip.
+   */
   shares: Record<string, number | null>
-  /** The candidate with the most votes, once a stage shows a leader (unofficial or certified); otherwise null. */
-  leadingCandidateId: string | null
+  /** The candidate civicAPI flags as winner, in the win and flip stages only; otherwise null. */
+  winnerCandidateId: string | null
+  winnerParty: Party | null
   asOf: string | null
   sourceUrl: string | null
   note: string | null
 }
 
 /**
- * Builds the Result row for one race's two displayed candidates. The pair and its order come from the caller
- * (the same pair and order as the callout's squares), so results never pick their own candidates.
+ * Builds the Result row for one race's displayed candidates. The pair and its order come from the caller (the same
+ * as the callout's squares). `seatHolder` is the party that held the seat before the election; with it unknown, a
+ * called race cannot be told Win from Flip, so it is held as reporting rather than guessed.
  */
-export function buildResultCallout(pairCandidateIds: readonly string[], raceResult: RaceResultData | undefined): ResultCallout {
+export function buildResultCallout(
+  pairCandidateIds: readonly string[],
+  raceResult: RaceResultData | undefined,
+  partyOfCandidate: ReadonlyMap<string, Party> = new Map(),
+  seatHolder: Party | null = null,
+): ResultCallout {
   if (!raceResult) {
     return {
-      stage: 'not-added',
+      stage: 'none',
       percentReporting: null,
       shares: Object.fromEntries(pairCandidateIds.map((id) => [id, null])),
-      leadingCandidateId: null,
+      winnerCandidateId: null,
+      winnerParty: null,
       asOf: null,
       sourceUrl: null,
       note: null,
     }
   }
 
-  const stage = STAGE_BY_STATUS[raceResult.status]
   const totalVotes = [...raceResult.votesByCandidate.values()].reduce((sum, v) => sum + v, 0)
   const pct = totalVotes > 0 ? wholePercentsN([...raceResult.votesByCandidate.entries()].map(([id, votes]) => ({ id, value: votes / totalVotes }))) : new Map<string, number>()
   const shares = Object.fromEntries(pairCandidateIds.map((id) => [id, pct.get(id) ?? null]))
 
-  let leadingCandidateId: string | null = null
-  if (stage !== 'counting' && raceResult.votesByCandidate.size > 0) {
-    const byVotes = [...raceResult.votesByCandidate.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-    leadingCandidateId = byVotes[0][0]
-  }
+  const winnerId = raceResult.status === 'Called' ? raceResult.winnerCandidateId : null
+  const winnerParty = winnerId ? (partyOfCandidate.get(winnerId) ?? null) : null
+  const decided = winnerId !== null && winnerParty !== null && seatHolder !== null
+  const stage: ResultStage = decided ? (winnerParty === seatHolder ? 'win' : 'flip') : 'reporting'
 
-  return { stage, percentReporting: raceResult.percentReporting, shares, leadingCandidateId, asOf: raceResult.asOf, sourceUrl: raceResult.sourceUrl, note: raceResult.note }
+  return {
+    stage,
+    percentReporting: raceResult.percentReporting,
+    shares,
+    winnerCandidateId: decided ? winnerId : null,
+    winnerParty: decided ? winnerParty : null,
+    asOf: raceResult.asOf,
+    sourceUrl: raceResult.sourceUrl,
+    note: raceResult.note,
+  }
+}
+
+/** The Result row's heading, from the one status. Reporting never appears for a race with a Win or Flip status. */
+export const RESULT_HEADING: Record<ResultStage, string> = {
+  none: 'Results (not added):',
+  reporting: 'Reporting:',
+  win: 'Results (win):',
+  flip: 'Results (flip):',
 }

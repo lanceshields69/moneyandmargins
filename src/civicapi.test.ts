@@ -32,12 +32,11 @@ describe('feedStatus', () => {
   it('returns null when no votes are in yet', () => {
     expect(feedStatus(race({ percent_reporting: 0, candidates: [{ name: 'Andy Barr', votes: 0 }] }))).toBeNull()
   })
-  it('is Counting below 100 percent reporting, and Unofficial at 100', () => {
-    expect(feedStatus(race({ percent_reporting: 99.9 }))).toBe('Counting')
-    expect(feedStatus(race({ percent_reporting: 100 }))).toBe('Unofficial')
+  it('is Reporting while no candidate is flagged winner, at any percent reporting', () => {
+    for (const pct of [10, 99.9, 100]) expect(feedStatus(race({ percent_reporting: pct }))).toBe('Reporting')
   })
-  it('never returns Certified', () => {
-    for (const pct of [0, 50, 100]) expect(feedStatus(race({ percent_reporting: pct }))).not.toBe('Certified')
+  it('is Called once exactly one candidate is flagged winner, even before every precinct reports', () => {
+    expect(feedStatus(race({ percent_reporting: 76.8, candidates: [{ name: 'Andy Barr', votes: 600, winner: true }, { name: 'Charles Booker', votes: 400 }] }))).toBe('Called')
   })
 })
 
@@ -60,11 +59,11 @@ describe('matchesNominee', () => {
 describe('feedRows', () => {
   const asOf = '2026-11-03T21:00:00Z'
 
-  it('maps a counting race to a Counting row with party from nominees.json, not civicAPI', () => {
+  it('maps a race with no winner flag to a Reporting row with party from nominees.json, not civicAPI', () => {
     const result = feedRows('XX-2026', race(), nominees, null, asOf)
     expect(result.ok).toBe(true)
     if (!result.ok) return
-    expect(result.rows.race).toMatchObject({ race_id: 'XX-2026', status: 'Counting', percent_reporting: '40', as_of: asOf })
+    expect(result.rows.race).toMatchObject({ race_id: 'XX-2026', status: 'Reporting', percent_reporting: '40', as_of: asOf, winner: '' })
     expect(result.rows.votes.map((v) => [v.candidate, v.party, v.votes])).toEqual([
       ['Andy Barr', 'R', '600'],
       ['Charles Booker', 'D', '400'],
@@ -77,6 +76,25 @@ describe('feedRows', () => {
     const fallback = feedRows('XX-2026', race(), nominees, null, asOf)
     expect(official.ok && official.rows.race.source_url).toBe('https://state.test/results')
     expect(fallback.ok && fallback.rows.race.source_url).toBe('https://civicapi.org/decision-2026')
+  })
+
+  it('sets Called and names the winner only when civicAPI flags exactly one candidate as winner', () => {
+    const called = race({ percent_reporting: 76, candidates: [{ name: 'Andy Barr', votes: 600, winner: true }, { name: 'Charles Booker', votes: 400 }, { name: 'Christopher Campbell', votes: 20 }] })
+    const result = feedRows('XX-2026', called, nominees, null, asOf)
+    if (!result.ok) throw new Error('expected a row')
+    expect(result.rows.race).toMatchObject({ status: 'Called', winner: 'Andy Barr', percent_reporting: '76' })
+  })
+
+  it('never infers a winner from the counts or from 100 percent reporting', () => {
+    const full = race({ percent_reporting: 100 })
+    expect(feedStatus(full)).toBe('Reporting')
+    const lopsided = race({ candidates: [{ name: 'Andy Barr', votes: 999999 }, { name: 'Charles Booker', votes: 1 }, { name: 'Christopher Campbell', votes: 0 }] })
+    expect(feedStatus(lopsided)).toBe('Reporting')
+  })
+
+  it('holds a race where civicAPI flags more than one winner', () => {
+    const two = race({ candidates: [{ name: 'Andy Barr', votes: 600, winner: true }, { name: 'Charles Booker', votes: 400, winner: true }, { name: 'Christopher Campbell', votes: 20 }] })
+    expect(feedRows('XX-2026', two, nominees, null, asOf)).toEqual({ ok: false, reason: 'civicAPI flags more than one winner' })
   })
 
   it('holds a race that civicAPI marks as test data', () => {
@@ -102,7 +120,7 @@ describe('feedRows', () => {
 
 describe('sanityViolations', () => {
   const rows = (pct: number, barr: number, booker: number): RaceRows => ({
-    race: { race_id: 'XX-2026', status: 'Counting', percent_reporting: String(pct), note: '', source_url: 'https://x.test', as_of: '2026-11-03T20:00:00Z' },
+    race: { race_id: 'XX-2026', status: 'Reporting', percent_reporting: String(pct), note: '', source_url: 'https://x.test', as_of: '2026-11-03T20:00:00Z', winner: '' },
     votes: [
       { race_id: 'XX-2026', candidate: 'Andy Barr', party: 'R', votes: String(barr) },
       { race_id: 'XX-2026', candidate: 'Charles Booker', party: 'D', votes: String(booker) },
