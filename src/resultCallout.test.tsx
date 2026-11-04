@@ -53,7 +53,6 @@ describe('the four statuses in the callout', () => {
     const html = render(withResult(reporting))
     expect(html).toContain('Reporting:')
     expect(html).not.toContain('Results (win)')
-    expect(html).not.toContain('Results (flip)')
     expect(html).toContain('58%')
     expect(html).toContain('42%')
     expect(html).toContain('41% reporting')
@@ -71,9 +70,10 @@ describe('the four statuses in the callout', () => {
     expect(html).toContain('55%')
   })
 
-  it('flip: "Results (flip)" and the checkmark on the winner\'s square, as in the design capture', () => {
+  it('flip: the plain "Results" heading (no "(flip)") and the checkmark on the winner\'s square, as in the design capture', () => {
     const html = render(withResult(flip(demId, 'D')))
-    expect(html).toContain('Results (flip):')
+    expect(html).toContain('Results:')
+    expect(html).not.toContain('(flip)')
     expect(html).not.toContain('Reporting:')
     expect(checks(html)).toBe(1)
   })
@@ -148,7 +148,7 @@ describe('the map chip for each status', () => {
       none: { kind: 'circle', heading: 'Results:' },
       reporting: { kind: 'reporting', heading: 'Reporting:' },
       win: { kind: 'win', heading: 'Results:' },
-      flip: { kind: 'flip', heading: 'Results (flip):' },
+      flip: { kind: 'flip', heading: 'Results:' },
     }
     for (const [stage, result] of STAGES) {
       const callout = withResult(result)

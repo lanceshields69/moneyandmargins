@@ -202,5 +202,5 @@ export const RESULT_HEADING: Record<ResultStage, string> = {
   none: 'Results:',
   reporting: 'Reporting:',
   win: 'Results:',
-  flip: 'Results (flip):',
+  flip: 'Results:',
 }
