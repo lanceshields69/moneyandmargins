@@ -203,7 +203,7 @@ strong {
 }
 .cc-card {
   position: relative;
-  /* Widened from the original 171px (Figma node 4:2) so "Results (win):", the longest Result heading, fits
+  /* Widened from the original 171px (Figma node 4:2) so "Results (flip):", the longest Result heading, fits
      on one line with its two values, matching src/components/MapCallout.tsx's CARD_WIDTH. */
   width: 195px;
   background: var(--color-callout);

@@ -61,9 +61,10 @@ describe('the four statuses in the callout', () => {
     expect(html).not.toContain('Other forecasts')
   })
 
-  it('win: "Results (win)" and the black checkmark on the winner\'s square', () => {
+  it('win: the plain "Results" heading (no "(win)") and the black checkmark on the winner\'s square', () => {
     const html = render(withResult(win(demId, 'D')))
-    expect(html).toContain('Results (win):')
+    expect(html).toContain('Results:')
+    expect(html).not.toContain('(win)')
     expect(html).not.toContain('Reporting:')
     expect(checks(html)).toBe(1)
     expect(html).toContain('stroke="#000"') // black, not a party color
@@ -146,7 +147,7 @@ describe('the map chip for each status', () => {
     const expected: Record<ResultStage, { kind: string; heading: string }> = {
       none: { kind: 'circle', heading: 'Results:' },
       reporting: { kind: 'reporting', heading: 'Reporting:' },
-      win: { kind: 'win', heading: 'Results (win):' },
+      win: { kind: 'win', heading: 'Results:' },
       flip: { kind: 'flip', heading: 'Results (flip):' },
     }
     for (const [stage, result] of STAGES) {
@@ -154,7 +155,8 @@ describe('the map chip for each status', () => {
       const html = render(callout)
       expect(marksFor(callout).kind).toBe(expected[stage].kind)
       expect(RESULT_HEADING[stage]).toBe(expected[stage].heading)
-      const headings = Object.values(RESULT_HEADING).filter((h) => html.includes(h))
+      // none and win share the plain "Results:" heading, so compare the distinct headings the card shows
+      const headings = [...new Set(Object.values(RESULT_HEADING).filter((h) => html.includes(h)))]
       expect(headings).toEqual([expected[stage].heading])
     }
   })

@@ -201,6 +201,6 @@ export function latestResultsAsOf(results: ReadonlyMap<string, RaceResultData>):
 export const RESULT_HEADING: Record<ResultStage, string> = {
   none: 'Results:',
   reporting: 'Reporting:',
-  win: 'Results (win):',
+  win: 'Results:',
   flip: 'Results (flip):',
 }
