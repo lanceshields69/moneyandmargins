@@ -388,7 +388,7 @@ export default function App() {
             </p>
           </section>
           <div className="footer-meta">
-            <ContactFooter onOpenCorrections={openCorr} />
+            <ContactFooter />
             <p>
               © 2026{' '}
               <a href="https://www.lanceshields.design/" target="_blank" rel="noreferrer">
