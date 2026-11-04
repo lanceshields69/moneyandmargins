@@ -1,6 +1,6 @@
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
-import MapCallout from './components/MapCallout'
+import MapCallout, { wholePercentReporting } from './components/MapCallout'
 import StateMarks, { buildStateMarks, marksFromCallouts } from './components/StateMarks'
 import { buildCallout, type Callout } from './computeCallout'
 import { allRaces, callouts, labelPoints, mapViewBox, stateNames } from './data'
@@ -229,5 +229,21 @@ describe('swapping party labels mirrors every chip and value, except the fixed o
     expect(b.shares).toEqual(a.shares)
     expect(b.winnerParty).toBe('R')
     expect(a.winnerParty).toBe('D')
+  })
+})
+
+describe('percent reporting has no decimals', () => {
+  it('rounds to a whole number, and never reads 100% before the count is complete', () => {
+    expect(wholePercentReporting(73.7)).toBe(74)
+    expect(wholePercentReporting(97.3)).toBe(97)
+    expect(wholePercentReporting(99.6)).toBe(99)
+    expect(wholePercentReporting(100)).toBe(100)
+    expect(wholePercentReporting(0.2)).toBe(0)
+  })
+
+  it('shows "74% reporting" for a race that is 73.7 percent in', () => {
+    const html = render(withResult({ ...reporting, percentReporting: 73.7 }))
+    expect(html).toContain('74% reporting')
+    expect(html).not.toContain('73.7')
   })
 })

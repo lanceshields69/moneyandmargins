@@ -94,12 +94,15 @@ function ResultRow({ sides, result }: { sides: CalloutSide[]; result: Callout['r
   )
 }
 
+/** Percent reporting to a whole number. A count short of 100 never reads as 100: 99.6 shows as 99%. */
+export const wholePercentReporting = (pct: number): number => (pct >= 100 ? 100 : Math.min(99, Math.round(pct)))
+
 /** "Source: civicAPI, [as-of time]." with the percent reporting while a race is still being counted. */
 function ResultNote({ result }: { result: Callout['result'] }) {
   if (result.stage === 'none' || !result.asOf) return null
   return (
     <p className="cc-note cc-result-note">
-      {result.stage === 'reporting' && result.percentReporting !== null && `${result.percentReporting}% reporting. `}
+      {result.stage === 'reporting' && result.percentReporting !== null && `${wholePercentReporting(result.percentReporting)}% reporting. `}
       {'Source: '}
       {result.sourceUrl ? (
         <a href={result.sourceUrl} target="_blank" rel="noopener noreferrer">
