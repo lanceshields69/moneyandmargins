@@ -322,9 +322,14 @@ describe('panel, labels and header fixes', () => {
     expect([...actions.children].map((c) => c.className.split(' ')[0])).toEqual(['header-link', 'how-button', 'share'])
     expect(actions.querySelector('.header-link')?.textContent).toBe('Claude on building this map')
     expect(actions.querySelector('.how-button')?.textContent).toBe('How this map works')
-    const footerLine = [...host.querySelectorAll('.footer-notes p')].find((p) => p.textContent?.startsWith('Predicted to win'))!
-    expect((footerLine.textContent ?? '').length).toBeLessThan(230)
-    expect(footerLine.textContent).toContain('latest as of')
+    // the footer's three sections: bold white headers, then the sources line with the three links
+    const heads = [...host.querySelectorAll('.footer-notes .footer-head')].map((h) => h.textContent)
+    expect(heads).toEqual(['Big spending gaps, Democratic wins', 'What’s counted', 'Updates and sources'])
+    const footerLine = [...host.querySelectorAll('.footer-notes p')].find((p) => p.textContent?.startsWith('Election calls and FEC spending reports'))!
+    expect(footerLine.textContent).toContain('Each race shows its latest available spending date.')
+    expect([...footerLine.querySelectorAll('a, button')].map((l) => l.textContent)).toEqual(['How this map works', 'FEC source', 'Corrections'])
+    const afterSources = footerLine.nextElementSibling
+    expect([...(afterSources?.querySelectorAll('a') ?? [])].map((a) => a.textContent)).toEqual(['Claude on building this map', 'How to write an MVP.md'])
     act(() => footerLine.querySelector<HTMLButtonElement>('button')!.click())
     expect(host.querySelector('[role="dialog"]')).not.toBeNull()
     // the map legend note, and the fetch time nowhere on the page outside the modal
