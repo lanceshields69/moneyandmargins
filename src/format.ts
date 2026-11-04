@@ -8,6 +8,11 @@ export function formatMoney(value: number): string {
   return value < 1000 ? full.format(value) : compactK.format(value)
 }
 
+/** The Senate image's "Spent:" figures: $686M, $1.04B. Whole millions below a billion, two decimals above. */
+export function formatSpentCompact(value: number): string {
+  return value >= 1e9 ? `$${(value / 1e9).toFixed(2)}B` : `$${Math.round(value / 1e6)}M`
+}
+
 export function formatMoneyFull(value: number): string {
   return full.format(value)
 }
