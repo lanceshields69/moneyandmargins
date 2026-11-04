@@ -37,14 +37,21 @@ export function feedStatus(race: CivicRace): ResultStatus | null {
   return winners === 1 ? 'Win' : 'Reporting'
 }
 
+const SUFFIXES = new Set(['jr', 'sr', 'ii', 'iii', 'iv'])
+/** Common short forms of a first name, so "Ed Markey" matches "Edward J. Markey". Name equivalences only; nothing here reads a party. */
+const FIRST_NAME_FORMS: Record<string, string> = { ed: 'edward', eddie: 'edward', bill: 'william', billy: 'william', jack: 'john', jon: 'john', bob: 'robert', bobby: 'robert', jim: 'james', tom: 'thomas', mike: 'michael', dave: 'david', chris: 'christopher', pete: 'peter', ben: 'benjamin', tim: 'timothy', steve: 'stephen' }
+
 function nameTokens(name: string): string[] {
-  return name
+  const tokens = name
     .normalize('NFD')
     .replace(/[̀-ͯ]/g, '')
     .toLowerCase()
     .replace(/[^a-z ]/g, ' ')
     .split(/\s+/)
     .filter(Boolean)
+    .filter((t, i, all) => !(SUFFIXES.has(t) && i > 0 && i === all.length - 1))
+  if (tokens.length > 0) tokens[0] = FIRST_NAME_FORMS[tokens[0]] ?? tokens[0]
+  return tokens
 }
 
 /** Exact match, or the same first and last name with a middle name on one side only (e.g. "Christopher Campbell"). */

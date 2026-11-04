@@ -56,6 +56,19 @@ describe('matchesNominee', () => {
   })
 })
 
+describe('matchesNominee, live name differences', () => {
+  it('matches nicknames and a Jr. suffix, the way civicAPI and the ballot differ', () => {
+    expect(matchesNominee('Edward J. Markey', 'Ed Markey')).toBe(true)
+    expect(matchesNominee('William B. Redpath', 'Bill Redpath')).toBe(true)
+    expect(matchesNominee('John F. Reed', 'Jack Reed')).toBe(true)
+    expect(matchesNominee('Edmond Laplante', 'Edmond J. LaPlante Jr.')).toBe(true)
+  })
+  it('does not match different people who share a surname', () => {
+    expect(matchesNominee('Edward Markey', 'Mark Markey')).toBe(false)
+    expect(matchesNominee('Jack Reed', 'Jim Reed')).toBe(false)
+  })
+})
+
 describe('feedRows', () => {
   const asOf = '2026-11-03T21:00:00Z'
 
