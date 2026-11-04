@@ -330,6 +330,13 @@ describe('panel, labels and header fixes', () => {
     // the map legend note, and the fetch time nowhere on the page outside the modal
     const notes = host.querySelector('.map-notes p')?.textContent
     expect(notes).toBe('Support plus oppose, all candidates in the race. Dark states have no 2026 Senate race.')
+    // the chips share one wrapper with the map and nothing else, so their percent positions are the map's own;
+    // the legend sits outside it (on a phone it is in the flow below the map and would stretch the wrapper)
+    const stage = host.querySelector('.map-stage')!
+    expect(stage.querySelector('svg.map')).not.toBeNull()
+    expect(stage.querySelectorAll('.state-chip').length).toBeGreaterThan(0)
+    expect(stage.querySelector('.legend, .status-legend, .cc-layer, .cc-card')).toBeNull()
+    expect(host.querySelector('.map-wrap > .legend')).not.toBeNull()
     // the civicAPI source line sits right under the VotePredictor line, in the same wording the cards used
     const mapNotes = [...host.querySelectorAll('.map-notes p')]
     const forecastIndex = mapNotes.findIndex((p) => p.textContent?.startsWith('Predicted to win'))

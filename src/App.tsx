@@ -204,15 +204,19 @@ export default function App() {
           </div>
 
         <div className="map-wrap" id="map">
-          <StateMarks marks={stateMarks} />
-          <UsStatesMap
-            raceByState={raceByState}
-            maxTotal={allRaces.maxTotal}
-            selected={active}
-            onSelect={choose}
-            onFocusState={choose}
-            fillVerified={DATA_VERIFIED}
-          />
+          {/* The chips are placed as fractions of the map's own box. On a phone the legend sits in the flow below
+              the map, inside .map-wrap, so the chips share a wrapper that is exactly the map's size. */}
+          <div className="map-stage">
+            <StateMarks marks={stateMarks} />
+            <UsStatesMap
+              raceByState={raceByState}
+              maxTotal={allRaces.maxTotal}
+              selected={active}
+              onSelect={choose}
+              onFocusState={choose}
+              fillVerified={DATA_VERIFIED}
+            />
+          </div>
           {callout && anchor && active && (
             <ErrorBoundary key={active}>
               <MapCallout sharesVerified={SHARES_VERIFIED} onOpenHow={openHow} callout={callout} stateName={stateNames.get(active) ?? active} anchor={anchor} isDefault={isDefault}

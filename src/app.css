@@ -97,6 +97,10 @@ strong {
   width: 100%;
   margin: 0 auto;
 }
+.map-stage {
+  position: relative;
+  width: 100%;
+}
 .map {
   display: block;
   width: 100%;
@@ -1551,6 +1555,23 @@ details h4 {
 }
 .chip-check {
   flex: none;
+}
+
+/* On a phone the map is about 330px wide, so the chips shrink with it and keep clear of their neighbors. */
+@media (max-width: 600px) {
+  .state-chip-result {
+    min-width: 16px;
+    height: 16px;
+    padding: 1px;
+    gap: 1px;
+    border-radius: 3px;
+    font-size: 8px;
+    line-height: 10px;
+    letter-spacing: -0.04em;
+  }
+  .state-chip-flip {
+    border-width: 1.5px;
+  }
 }
 
 /* Legend under the map: Flip, Win, Reporting (Figma 88:50). */
