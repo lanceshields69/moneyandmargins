@@ -1,4 +1,5 @@
 import { countFecIdClaims, incompleteCodes, reasonFor, type IncompleteReason } from './incomplete'
+import { raceFlagReason, type RaceFlagsFile } from './raceFlags'
 import type { Candidate, Committee, ExpenditureTotals, NomineesFile, Party, Race, SpendingFile } from './types'
 
 // The only place party identity maps to presentation. Everything else takes
@@ -24,7 +25,7 @@ export interface RowView {
   partyLabel: string
   partyColor: string
   incomplete: boolean
-  reason: IncompleteReason | null
+  reason: IncompleteReason | string | null
   support: SideView | null
   oppose: SideView | null
   topSupportCommittees: Committee[]
@@ -92,12 +93,14 @@ export function buildRaceView(
   candidates: Candidate[],
   totalsById: Map<string, ExpenditureTotals>,
   claims: Map<string, number>,
+  /** Set when the race's total dropped sharply since the last update: every nominee shows this reason instead of numbers. */
+  flagReason: string | null = null,
 ): RaceView {
   const entries = candidates
     .filter((c) => c.raceId === race.id)
     .map((candidate) => {
       const totals = totalsById.get(candidate.id)
-      const reason = reasonFor(incompleteCodes(candidate, claims, totals !== undefined))
+      const reason = flagReason ?? reasonFor(incompleteCodes(candidate, claims, totals !== undefined))
       return { candidate, totals, reason }
     })
 
@@ -149,10 +152,12 @@ export function buildRaceView(
   }
 }
 
-export function buildAllRaces(nominees: NomineesFile, spending: SpendingFile): AllRaces {
+export function buildAllRaces(nominees: NomineesFile, spending: SpendingFile, raceFlags: RaceFlagsFile | null = null): AllRaces {
   const totalsById = new Map(spending.totals.map((t) => [t.candidateId, t]))
   const claims = countFecIdClaims(nominees.candidates)
-  const races = nominees.races.map((race) => buildRaceView(race, nominees.candidates, totalsById, claims))
+  // Flags made for other spending data are ignored, so a stale file can never hide a race.
+  const flagged = new Map((raceFlags && raceFlags.fetchedAt === spending.fetchedAt ? raceFlags.flags : []).map((f) => [f.raceId, raceFlagReason(f)]))
+  const races = nominees.races.map((race) => buildRaceView(race, nominees.candidates, totalsById, claims, flagged.get(race.id) ?? null))
   const maxTotal = Math.max(0, ...races.map((r) => r.total ?? 0))
   return {
     races,

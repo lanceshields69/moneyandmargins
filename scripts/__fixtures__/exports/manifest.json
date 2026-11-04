@@ -1,0 +1,11 @@
+{
+  "current": {
+    "file": "schedule_e-2026-11-03T07_56_13.csv",
+    "pulled_at": "2026-11-03T07:56:13Z",
+    "committees": ["C00960211", "C00571703"]
+  },
+  "history": [
+    { "file": "schedule_e-2026-10-31T14_33_41.csv", "pulled_at": "2026-10-31T14:33:41Z", "committees": ["C00960211"] },
+    { "file": "schedule_e-2026-10-31T14_36_56.csv", "pulled_at": "2026-10-31T14:36:56Z", "committees": ["C00571703"] }
+  ]
+}

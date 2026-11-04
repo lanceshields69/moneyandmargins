@@ -179,3 +179,25 @@ describe('saved Texas and Ohio pull', () => {
     expect(f.dropped).toEqual(base.dropped)
   })
 })
+
+describe('audit evidence fields', () => {
+  it('reports a surviving memo subtotal in memoPeriodicRows, apart from periodicRows', () => {
+    const memo = periodic({ memo_code: 'X', transaction_id: 'E-1', expenditure_amount: 500 })
+    const out = dedupeIeRows([memo], cutoffs({ C1: null }))
+    expect(out.periodicRows).toHaveLength(0)
+    expect(out.memoPeriodicRows).toEqual([memo])
+  })
+
+  it('drops a memo subtotal superseded by an amendment', () => {
+    const original = periodic({ memo_code: 'X', transaction_id: 'E-1', file_number: 1 })
+    const amended = periodic({ amendment_indicator: 'A', previous_file_number: 1, file_number: 2, transaction_id: 'E-1' })
+    expect(dedupeIeRows([original, amended], cutoffs({ C1: null })).memoPeriodicRows).toEqual([])
+  })
+
+  it('lists covered notices and the periodic rows they are checked against', () => {
+    const rows = [periodic({ expenditure_amount: 10, expenditure_date: '2026-09-15' }), row({ expenditure_amount: 10, dissemination_date: '2026-09-15', expenditure_date: '2026-09-15' })]
+    const out = dedupeIeRows(rows, cutoffs({ C1: '2026-09-30' }))
+    expect(out.coveredByPeriodicRows).toHaveLength(1)
+    expect(out.periodicRows).toHaveLength(1)
+  })
+})

@@ -10,9 +10,10 @@ import PreviewBadge from './components/PreviewBadge'
 import RacePanel from './components/RacePanel'
 import { forecastPhrase } from './copy'
 import { formatMoney } from './format'
-import { fillMethodology } from './methodology'
+import verification from '../data/verification.json'
+import { doubleCountSentence, fillMethodology } from './methodology'
 import { AMOUNTS_PENDING_LEAD, PARTIAL_CALLOUT_NOTICE, SHARES_PENDING_LEAD, SHARES_PENDING_LINK } from './copy'
-import { allRaces, callouts } from './data'
+import { allRaces, callouts, stateNames } from './data'
 import verifiedMd from '../docs/methodology.md?raw'
 
 ;(globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true
@@ -153,11 +154,27 @@ describe('each flag combination on the whole page', () => {
   it('fills the methodology placeholders from the pipeline metadata when data is verified', async () => {
     const { page, unmount } = await renderPage({ data: true, shares: false }, '#how-it-works')
     const body = page.querySelector('[role="dialog"]')?.textContent ?? ''
-    expect(body).toContain('For 6 committees')
-    expect(body).toMatch(/Those rows total \$[\d,]+\./)
+    // The count moves with every refresh (and may be zero), so the rule is checked against the data the page reads.
+    const n = allRaces.approxCommitteeCount ?? 0
+    if (n === 0) {
+      expect(body).not.toContain('Duplicate removal is imperfect')
+      expect(body).not.toMatch(/For 0 committees|\{\{/)
+    } else {
+      expect(body).toContain('Duplicate removal is imperfect')
+      expect(body).toContain(`For ${n} committees`)
+      expect(body).toContain(`Those rows total ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(allRaces.approxTotal as number)}.`)
+    }
     expect(body).toContain("Totals and shares include primary-season spending as labeled by the filer, which can count toward the other side's share. I'm moving the shares to general-election spending only.")
-    expect(body).toContain('Nationally this is at most about 3.4%.')
-    expect(body).toContain('Races with incomplete data (Colorado, Michigan, Nebraska, Oklahoma, South Carolina) are left out of the national card.')
+    // The figure is whatever the latest verification run recorded, read the way the page reads it.
+    const doubleCount = doubleCountSentence(verification)
+    expect(doubleCount, 'a double-count figure in data/verification.json').not.toBeNull()
+    expect(body).toContain(doubleCount as string)
+    // The names come from the data the page renders from (races with incomplete nominees or a held-out total), never a fixed list.
+    const incompleteNames = allRaces.races.filter((r) => r.incompleteCount > 0).map((r) => stateNames.get(r.state) ?? r.state)
+    const listed = /Races with incomplete data \(([^)]*)\) are left out of the national card\./.exec(body)?.[1]
+    expect(listed, 'the incomplete-races sentence').toBeDefined()
+    for (const name of incompleteNames) expect(listed).toContain(name)
+    expect(listed?.split(', ')).toHaveLength(incompleteNames.length)
     expect(body).toContain("A contrast ad can be reported on two lines, so a state's total can count some spending twice.")
     expect(body).not.toContain('not tied to a candidate total') // no figure, so the sentence is dropped
     expect(body).not.toMatch(/\{\{|\}\}/)

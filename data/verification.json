@@ -3036,6 +3036,964 @@
       ]
     },
     {
+      "ran_at": "2026-11-03T21:06:13.605Z",
+      "fetched_at": "2026-11-03T21:06:10.901Z",
+      "raw_sha256": "bab7ceac61b7743b75f0bfba8ad1140f3ca9339147907b1ecbf48966c36f455e",
+      "passed": false,
+      "blocked": false,
+      "checks": [
+        {
+          "id": "race_drops",
+          "blocking": true,
+          "name": "No race total dropped more than 2% and $100K since the previous run",
+          "pass": true,
+          "summary": "0 race(s) dropped",
+          "details": []
+        },
+        {
+          "id": "fetch_completeness",
+          "blocking": true,
+          "name": "Every reference row filed and disseminated before fetchedAt's date exists in the raw pull, before dedup",
+          "pass": true,
+          "summary": "schedule_e-2026-11-03T07_56_13.csv: 0 missing; 0 row(s) filed or disseminated on or after fetchedAt's date, totaling 0 (informational)",
+          "details": []
+        },
+        {
+          "id": "dedup_audit",
+          "blocking": false,
+          "name": "Advisory: a window (committee, candidate, side) where notices dropped as covered exceed the periodic evidence for it",
+          "pass": false,
+          "summary": "13 shortfall window(s), totaling 1345406.86 (0.06% of all-races spending; advisory, does not block)",
+          "details": [
+            {
+              "kind": "window",
+              "key": "C90023581|S4AK00214|O",
+              "notice_total": 548756.13,
+              "periodic_total": 89660.42,
+              "shortfall": 459095.71
+            },
+            {
+              "kind": "window",
+              "key": "C00888065|S4AK00214|O",
+              "notice_total": 103765,
+              "periodic_total": 71400,
+              "shortfall": 32365
+            },
+            {
+              "kind": "window",
+              "key": "C00571703|S4MI00595|S",
+              "notice_total": 1078706.04,
+              "periodic_total": 747656.06,
+              "shortfall": 331049.98
+            },
+            {
+              "kind": "window",
+              "key": "C00580068|S6IA00298|S",
+              "notice_total": 68586.26,
+              "periodic_total": 43722.38,
+              "shortfall": 24863.88
+            },
+            {
+              "kind": "window",
+              "key": "C00909994|S6MI00418|S",
+              "notice_total": 43985.19,
+              "periodic_total": 36624.31,
+              "shortfall": 7360.88
+            },
+            {
+              "kind": "window",
+              "key": "C00881011|S6MI00418|S",
+              "notice_total": 44017.84,
+              "periodic_total": 39226.13,
+              "shortfall": 4791.71
+            },
+            {
+              "kind": "window",
+              "key": "C00606962|S6MI00418|S",
+              "notice_total": 227224.55,
+              "periodic_total": 169950.18,
+              "shortfall": 57274.37
+            },
+            {
+              "kind": "window",
+              "key": "C00935973|S6MN00440|O",
+              "notice_total": 6228910.17,
+              "periodic_total": 6028910.17,
+              "shortfall": 200000
+            },
+            {
+              "kind": "window",
+              "key": "C00941021|S6MS00133|S",
+              "notice_total": 420000,
+              "periodic_total": 322350,
+              "shortfall": 97650
+            },
+            {
+              "kind": "window",
+              "key": "C00571703|S6OH00163|O",
+              "notice_total": 527322.69,
+              "periodic_total": 416239.01,
+              "shortfall": 111083.68
+            },
+            {
+              "kind": "window",
+              "key": "C00909994|S6TX00479|S",
+              "notice_total": 119948.14,
+              "periodic_total": 102470.35,
+              "shortfall": 17477.79
+            },
+            {
+              "kind": "window",
+              "key": "C00909994|S6SC04239|S",
+              "notice_total": 20346.18,
+              "periodic_total": 19347.78,
+              "shortfall": 998.4
+            },
+            {
+              "kind": "window",
+              "key": "C00909994|S8GA00180|S",
+              "notice_total": 22950.98,
+              "periodic_total": 21555.52,
+              "shortfall": 1395.46
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C90023581",
+              "amount": 459095.71
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00571703",
+              "amount": 442133.66
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00935973",
+              "amount": 200000
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00941021",
+              "amount": 97650
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00606962",
+              "amount": 57274.37
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00888065",
+              "amount": 32365
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00909994",
+              "amount": 27232.53
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00580068",
+              "amount": 24863.88
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00881011",
+              "amount": 4791.71
+            },
+            {
+              "kind": "race",
+              "race": "MN",
+              "amount": 200000,
+              "race_total": 14530706.59,
+              "pct": 1.38
+            },
+            {
+              "kind": "race",
+              "race": "MS",
+              "amount": 97650,
+              "race_total": 19043459.64,
+              "pct": 0.51
+            },
+            {
+              "kind": "race",
+              "race": "AK",
+              "amount": 491460.71,
+              "race_total": 107621518.75,
+              "pct": 0.46
+            },
+            {
+              "kind": "race",
+              "race": "MI",
+              "amount": 400476.94,
+              "race_total": 300973690.58,
+              "pct": 0.13
+            },
+            {
+              "kind": "race",
+              "race": "OH",
+              "amount": 111083.68,
+              "race_total": 419832527.45,
+              "pct": 0.03
+            },
+            {
+              "kind": "race",
+              "race": "IA",
+              "amount": 24863.88,
+              "race_total": 212635793.54,
+              "pct": 0.01
+            },
+            {
+              "kind": "race",
+              "race": "TX",
+              "amount": 17477.79,
+              "race_total": 457173449.99,
+              "pct": 0
+            },
+            {
+              "kind": "race",
+              "race": "SC",
+              "amount": 998.4,
+              "race_total": 53274433.6,
+              "pct": 0
+            },
+            {
+              "kind": "race",
+              "race": "GA",
+              "amount": 1395.46,
+              "race_total": 36982277.05,
+              "pct": 0
+            },
+            {
+              "kind": "side",
+              "label": "R nominee, oppose",
+              "amount": 491460.71
+            },
+            {
+              "kind": "side",
+              "label": "R nominee, support",
+              "amount": 331049.98
+            },
+            {
+              "kind": "side",
+              "label": "D nominee, oppose",
+              "amount": 311083.68
+            },
+            {
+              "kind": "side",
+              "label": "D nominee, support",
+              "amount": 211812.49
+            }
+          ]
+        },
+        {
+          "id": "double_count",
+          "blocking": false,
+          "name": "Possible double count (same committee, date and amount on two candidates) under 2% in every race",
+          "pass": false,
+          "summary": "10 race(s) over 2%; overall 3.39%",
+          "details": [
+            {
+              "race": "MA",
+              "overcount": 61500,
+              "race_total": 724007,
+              "share_pct": 8.49
+            },
+            {
+              "race": "AK",
+              "overcount": 7848515.72,
+              "race_total": 107621518.75,
+              "share_pct": 7.29
+            },
+            {
+              "race": "NH",
+              "overcount": 4931729.1,
+              "race_total": 68700079.8,
+              "share_pct": 7.18
+            },
+            {
+              "race": "SD",
+              "overcount": 226127.95,
+              "race_total": 3848156.99,
+              "share_pct": 5.88
+            },
+            {
+              "race": "MI",
+              "overcount": 12707015.03,
+              "race_total": 300973690.58,
+              "share_pct": 4.22
+            },
+            {
+              "race": "NE",
+              "overcount": 2858545.21,
+              "race_total": 71321271.74,
+              "share_pct": 4.01
+            },
+            {
+              "race": "OH",
+              "overcount": 16167534.7,
+              "race_total": 419832527.45,
+              "share_pct": 3.85
+            },
+            {
+              "race": "TX",
+              "overcount": 16231956.98,
+              "race_total": 457173449.99,
+              "share_pct": 3.55
+            },
+            {
+              "race": "IA",
+              "overcount": 6891008.64,
+              "race_total": 212635793.54,
+              "share_pct": 3.24
+            },
+            {
+              "race": "GA",
+              "overcount": 934101.46,
+              "race_total": 36982277.05,
+              "share_pct": 2.53
+            }
+          ]
+        },
+        {
+          "id": "primary_share",
+          "blocking": false,
+          "name": "Primary-labeled spending under 10% in every race",
+          "pass": false,
+          "summary": "18 race(s) over 10%",
+          "details": [
+            {
+              "race": "IL",
+              "primary": 19571689.09,
+              "race_total": 19571689.09,
+              "share_pct": 100
+            },
+            {
+              "race": "OR",
+              "primary": 25120,
+              "race_total": 25120,
+              "share_pct": 100
+            },
+            {
+              "race": "RI",
+              "primary": 10,
+              "race_total": 10,
+              "share_pct": 100
+            },
+            {
+              "race": "CO",
+              "primary": 510198.01,
+              "race_total": 512080.51,
+              "share_pct": 99.63
+            },
+            {
+              "race": "WY",
+              "primary": 1034645.03,
+              "race_total": 1115875.3,
+              "share_pct": 92.72
+            },
+            {
+              "race": "KY",
+              "primary": 16510652.77,
+              "race_total": 18477295.82,
+              "share_pct": 89.36
+            },
+            {
+              "race": "VA",
+              "primary": 150080,
+              "race_total": 187490,
+              "share_pct": 80.05
+            },
+            {
+              "race": "OK",
+              "primary": 2120079.34,
+              "race_total": 2659690.97,
+              "share_pct": 79.71
+            },
+            {
+              "race": "TN",
+              "primary": 780511.44,
+              "race_total": 1058631.64,
+              "share_pct": 73.73
+            },
+            {
+              "race": "LA",
+              "primary": 16696642.01,
+              "race_total": 24766738.79,
+              "share_pct": 67.42
+            },
+            {
+              "race": "AL",
+              "primary": 10851552.64,
+              "race_total": 17015828.9,
+              "share_pct": 63.77
+            },
+            {
+              "race": "MN",
+              "primary": 8968388.98,
+              "race_total": 14530706.59,
+              "share_pct": 61.72
+            },
+            {
+              "race": "WV",
+              "primary": 337584.92,
+              "race_total": 646893.69,
+              "share_pct": 52.19
+            },
+            {
+              "race": "MT",
+              "primary": 4293077.18,
+              "race_total": 21809182.23,
+              "share_pct": 19.68
+            },
+            {
+              "race": "SD",
+              "primary": 565848.47,
+              "race_total": 3848156.99,
+              "share_pct": 14.7
+            },
+            {
+              "race": "AR",
+              "primary": 740900,
+              "race_total": 5399665.03,
+              "share_pct": 13.72
+            },
+            {
+              "race": "MI",
+              "primary": 39078790.51,
+              "race_total": 300973690.58,
+              "share_pct": 12.98
+            },
+            {
+              "race": "AK",
+              "primary": 11384733.79,
+              "race_total": 107621518.75,
+              "share_pct": 10.58
+            }
+          ]
+        },
+        {
+          "id": "totals_identity",
+          "blocking": false,
+          "name": "All-races total equals aligned plus unattributed plus excluded within 0.5%",
+          "pass": true,
+          "summary": "gap 0 (0%)",
+          "details": [
+            {
+              "all_races": 2205401134.11,
+              "aligned": 1754975966.19,
+              "unattributed": 21688998.11,
+              "excluded": 428736169.81,
+              "gap": 0,
+              "gap_pct": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ran_at": "2026-11-03T22:44:29.150Z",
+      "fetched_at": "2026-11-03T22:44:25.774Z",
+      "raw_sha256": "bab7ceac61b7743b75f0bfba8ad1140f3ca9339147907b1ecbf48966c36f455e",
+      "passed": false,
+      "blocked": true,
+      "checks": [
+        {
+          "id": "race_drops",
+          "blocking": true,
+          "name": "No race total dropped more than 2% and $100K since the previous run",
+          "pass": false,
+          "summary": "1 race(s) dropped",
+          "details": [
+            {
+              "race": "MS",
+              "before": 19043459.64,
+              "now": 17793908.68,
+              "drop": 1249550.96,
+              "drop_pct": 6.56
+            }
+          ]
+        },
+        {
+          "id": "fetch_completeness",
+          "blocking": true,
+          "name": "Every reference row filed and disseminated before fetchedAt's date exists in the raw pull, before dedup",
+          "pass": true,
+          "summary": "schedule_e-2026-11-03T07_56_13.csv: 0 missing; 0 row(s) filed or disseminated on or after fetchedAt's date, totaling 0 (informational)",
+          "details": []
+        },
+        {
+          "id": "dedup_audit",
+          "blocking": false,
+          "name": "Advisory: a window (committee, candidate, side) where notices dropped as covered exceed the periodic evidence for it",
+          "pass": false,
+          "summary": "15 shortfall window(s), totaling 1421927.15 (0.06% of all-races spending; advisory, does not block)",
+          "details": [
+            {
+              "kind": "window",
+              "key": "C90023581|S4AK00214|O",
+              "notice_total": 548756.13,
+              "periodic_total": 89660.42,
+              "shortfall": 459095.71
+            },
+            {
+              "kind": "window",
+              "key": "C00888065|S4AK00214|O",
+              "notice_total": 103765,
+              "periodic_total": 71400,
+              "shortfall": 32365
+            },
+            {
+              "kind": "window",
+              "key": "C00571703|S4MI00595|S",
+              "notice_total": 1078706.04,
+              "periodic_total": 747656.06,
+              "shortfall": 331049.98
+            },
+            {
+              "kind": "window",
+              "key": "C00448696|S6AL00476|S",
+              "notice_total": 461499.08,
+              "periodic_total": 386208.96,
+              "shortfall": 75290.12
+            },
+            {
+              "kind": "window",
+              "key": "C00580068|S6IA00298|S",
+              "notice_total": 68586.26,
+              "periodic_total": 43722.38,
+              "shortfall": 24863.88
+            },
+            {
+              "kind": "window",
+              "key": "C00909994|S6MI00418|S",
+              "notice_total": 43985.19,
+              "periodic_total": 36624.31,
+              "shortfall": 7360.88
+            },
+            {
+              "kind": "window",
+              "key": "C00881011|S6MI00418|S",
+              "notice_total": 44017.84,
+              "periodic_total": 39226.13,
+              "shortfall": 4791.71
+            },
+            {
+              "kind": "window",
+              "key": "C00606962|S6MI00418|S",
+              "notice_total": 227224.55,
+              "periodic_total": 169950.18,
+              "shortfall": 57274.37
+            },
+            {
+              "kind": "window",
+              "key": "C00935973|S6MN00440|O",
+              "notice_total": 6228910.17,
+              "periodic_total": 6028910.17,
+              "shortfall": 200000
+            },
+            {
+              "kind": "window",
+              "key": "C00941021|S6MS00133|S",
+              "notice_total": 420000,
+              "periodic_total": 322350,
+              "shortfall": 97650
+            },
+            {
+              "kind": "window",
+              "key": "C00868604|S6MT00287|S",
+              "notice_total": 7300,
+              "periodic_total": 6069.83,
+              "shortfall": 1230.17
+            },
+            {
+              "kind": "window",
+              "key": "C00571703|S6OH00163|O",
+              "notice_total": 527322.69,
+              "periodic_total": 416239.01,
+              "shortfall": 111083.68
+            },
+            {
+              "kind": "window",
+              "key": "C00909994|S6TX00479|S",
+              "notice_total": 119948.14,
+              "periodic_total": 102470.35,
+              "shortfall": 17477.79
+            },
+            {
+              "kind": "window",
+              "key": "C00909994|S6SC04239|S",
+              "notice_total": 20346.18,
+              "periodic_total": 19347.78,
+              "shortfall": 998.4
+            },
+            {
+              "kind": "window",
+              "key": "C00909994|S8GA00180|S",
+              "notice_total": 22950.98,
+              "periodic_total": 21555.52,
+              "shortfall": 1395.46
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C90023581",
+              "amount": 459095.71
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00571703",
+              "amount": 442133.66
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00935973",
+              "amount": 200000
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00941021",
+              "amount": 97650
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00448696",
+              "amount": 75290.12
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00606962",
+              "amount": 57274.37
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00888065",
+              "amount": 32365
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00909994",
+              "amount": 27232.53
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00580068",
+              "amount": 24863.88
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00881011",
+              "amount": 4791.71
+            },
+            {
+              "kind": "race",
+              "race": "MN",
+              "amount": 200000,
+              "race_total": 14530706.59,
+              "pct": 1.38
+            },
+            {
+              "kind": "race",
+              "race": "MS",
+              "amount": 97650,
+              "race_total": 17793908.68,
+              "pct": 0.55
+            },
+            {
+              "kind": "race",
+              "race": "AK",
+              "amount": 491460.71,
+              "race_total": 106969098.95,
+              "pct": 0.46
+            },
+            {
+              "kind": "race",
+              "race": "AL",
+              "amount": 75290.12,
+              "race_total": 16801034.63,
+              "pct": 0.45
+            },
+            {
+              "kind": "race",
+              "race": "MI",
+              "amount": 400476.94,
+              "race_total": 300973690.58,
+              "pct": 0.13
+            },
+            {
+              "kind": "race",
+              "race": "OH",
+              "amount": 111083.68,
+              "race_total": 419789972.32,
+              "pct": 0.03
+            },
+            {
+              "kind": "race",
+              "race": "IA",
+              "amount": 24863.88,
+              "race_total": 210950114.23,
+              "pct": 0.01
+            },
+            {
+              "kind": "race",
+              "race": "MT",
+              "amount": 1230.17,
+              "race_total": 21754955.63,
+              "pct": 0.01
+            },
+            {
+              "kind": "race",
+              "race": "TX",
+              "amount": 17477.79,
+              "race_total": 457163898.2,
+              "pct": 0
+            },
+            {
+              "kind": "race",
+              "race": "SC",
+              "amount": 998.4,
+              "race_total": 53274433.6,
+              "pct": 0
+            },
+            {
+              "kind": "race",
+              "race": "GA",
+              "amount": 1395.46,
+              "race_total": 36963535,
+              "pct": 0
+            },
+            {
+              "kind": "side",
+              "label": "R nominee, oppose",
+              "amount": 491460.71
+            },
+            {
+              "kind": "side",
+              "label": "R nominee, support",
+              "amount": 406340.1
+            },
+            {
+              "kind": "side",
+              "label": "D nominee, oppose",
+              "amount": 311083.68
+            },
+            {
+              "kind": "side",
+              "label": "D nominee, support",
+              "amount": 211812.49
+            },
+            {
+              "kind": "side",
+              "label": "I nominee, support",
+              "amount": 1230.17
+            }
+          ]
+        },
+        {
+          "id": "double_count",
+          "blocking": false,
+          "name": "Possible double count (same committee, date and amount on two candidates) under 2% in every race",
+          "pass": false,
+          "summary": "10 race(s) over 2%; overall 3.39%",
+          "details": [
+            {
+              "race": "MA",
+              "overcount": 61500,
+              "race_total": 724007,
+              "share_pct": 8.49
+            },
+            {
+              "race": "AK",
+              "overcount": 7848515.72,
+              "race_total": 106969098.95,
+              "share_pct": 7.34
+            },
+            {
+              "race": "NH",
+              "overcount": 4931729.1,
+              "race_total": 68700079.8,
+              "share_pct": 7.18
+            },
+            {
+              "race": "SD",
+              "overcount": 226127.95,
+              "race_total": 3848156.99,
+              "share_pct": 5.88
+            },
+            {
+              "race": "MI",
+              "overcount": 12707015.03,
+              "race_total": 300973690.58,
+              "share_pct": 4.22
+            },
+            {
+              "race": "NE",
+              "overcount": 2858545.21,
+              "race_total": 71321271.74,
+              "share_pct": 4.01
+            },
+            {
+              "race": "OH",
+              "overcount": 16167534.7,
+              "race_total": 419789972.32,
+              "share_pct": 3.85
+            },
+            {
+              "race": "TX",
+              "overcount": 16231956.98,
+              "race_total": 457163898.2,
+              "share_pct": 3.55
+            },
+            {
+              "race": "IA",
+              "overcount": 6891008.64,
+              "race_total": 210950114.23,
+              "share_pct": 3.27
+            },
+            {
+              "race": "GA",
+              "overcount": 934101.46,
+              "race_total": 36963535,
+              "share_pct": 2.53
+            }
+          ]
+        },
+        {
+          "id": "primary_share",
+          "blocking": false,
+          "name": "Primary-labeled spending under 10% in every race",
+          "pass": false,
+          "summary": "18 race(s) over 10%",
+          "details": [
+            {
+              "race": "IL",
+              "primary": 19571689.09,
+              "race_total": 19571689.09,
+              "share_pct": 100
+            },
+            {
+              "race": "OR",
+              "primary": 25120,
+              "race_total": 25120,
+              "share_pct": 100
+            },
+            {
+              "race": "RI",
+              "primary": 10,
+              "race_total": 10,
+              "share_pct": 100
+            },
+            {
+              "race": "CO",
+              "primary": 510198.01,
+              "race_total": 512080.51,
+              "share_pct": 99.63
+            },
+            {
+              "race": "WY",
+              "primary": 1015902.98,
+              "race_total": 1097133.25,
+              "share_pct": 92.6
+            },
+            {
+              "race": "KY",
+              "primary": 16510652.77,
+              "race_total": 18477295.82,
+              "share_pct": 89.36
+            },
+            {
+              "race": "VA",
+              "primary": 150080,
+              "race_total": 187490,
+              "share_pct": 80.05
+            },
+            {
+              "race": "OK",
+              "primary": 2110889.07,
+              "race_total": 2640948.91,
+              "share_pct": 79.93
+            },
+            {
+              "race": "TN",
+              "primary": 760475.64,
+              "race_total": 1038595.84,
+              "share_pct": 73.22
+            },
+            {
+              "race": "LA",
+              "primary": 16696642.01,
+              "race_total": 24766738.79,
+              "share_pct": 67.42
+            },
+            {
+              "race": "AL",
+              "primary": 10655500.43,
+              "race_total": 16801034.63,
+              "share_pct": 63.42
+            },
+            {
+              "race": "MN",
+              "primary": 8968388.98,
+              "race_total": 14530706.59,
+              "share_pct": 61.72
+            },
+            {
+              "race": "WV",
+              "primary": 337584.92,
+              "race_total": 646893.69,
+              "share_pct": 52.19
+            },
+            {
+              "race": "MT",
+              "primary": 4285777.18,
+              "race_total": 21754955.63,
+              "share_pct": 19.7
+            },
+            {
+              "race": "SD",
+              "primary": 565848.47,
+              "race_total": 3848156.99,
+              "share_pct": 14.7
+            },
+            {
+              "race": "AR",
+              "primary": 740900,
+              "race_total": 5399665.03,
+              "share_pct": 13.72
+            },
+            {
+              "race": "MI",
+              "primary": 39078790.51,
+              "race_total": 300973690.58,
+              "share_pct": 12.98
+            },
+            {
+              "race": "AK",
+              "primary": 10913335.99,
+              "race_total": 106969098.95,
+              "share_pct": 10.2
+            }
+          ]
+        },
+        {
+          "id": "totals_identity",
+          "blocking": false,
+          "name": "All-races total equals aligned plus unattributed plus excluded within 0.5%",
+          "pass": true,
+          "summary": "gap 0 (0%)",
+          "details": [
+            {
+              "all_races": 2201372491.31,
+              "aligned": 1750973365.45,
+              "unattributed": 21681698.11,
+              "excluded": 428717427.75,
+              "gap": 0,
+              "gap_pct": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
       "ran_at": "2026-11-03T23:22:35.348Z",
       "fetched_at": "2026-11-03T23:22:32.757Z",
       "raw_sha256": "bab7ceac61b7743b75f0bfba8ad1140f3ca9339147907b1ecbf48966c36f455e",
@@ -3301,6 +4259,1002 @@
               "aligned": 1754975966.19,
               "unattributed": 21688998.11,
               "excluded": 428736169.81,
+              "gap": 0,
+              "gap_pct": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ran_at": "2026-11-03T23:38:05.184Z",
+      "fetched_at": "2026-11-03T23:38:01.926Z",
+      "raw_sha256": "bab7ceac61b7743b75f0bfba8ad1140f3ca9339147907b1ecbf48966c36f455e",
+      "passed": false,
+      "blocked": false,
+      "checks": [
+        {
+          "id": "race_drops",
+          "blocking": false,
+          "name": "Flag: a race whose total dropped more than 2% and $100K since the previous run is held out as incomplete data, not blocked",
+          "pass": false,
+          "summary": "1 race(s) dropped",
+          "details": [
+            {
+              "race": "MS-2026",
+              "before": 19043459.64,
+              "now": 17793908.68,
+              "drop": 1249550.96,
+              "drop_pct": 6.56
+            }
+          ]
+        },
+        {
+          "id": "fetch_completeness",
+          "blocking": true,
+          "name": "Every reference row filed and disseminated before fetchedAt's date exists in the raw pull, before dedup",
+          "pass": true,
+          "summary": "schedule_e-2026-11-03T07_56_13.csv: 0 missing; 0 row(s) filed or disseminated on or after fetchedAt's date, totaling 0 (informational)",
+          "details": []
+        },
+        {
+          "id": "dedup_audit",
+          "blocking": false,
+          "name": "Advisory: a window (committee, candidate, side) where notices dropped as covered exceed the periodic evidence for it",
+          "pass": false,
+          "summary": "15 shortfall window(s), totaling 1421927.15 (0.06% of all-races spending; advisory, does not block)",
+          "details": [
+            {
+              "kind": "window",
+              "key": "C90023581|S4AK00214|O",
+              "notice_total": 548756.13,
+              "periodic_total": 89660.42,
+              "shortfall": 459095.71
+            },
+            {
+              "kind": "window",
+              "key": "C00888065|S4AK00214|O",
+              "notice_total": 103765,
+              "periodic_total": 71400,
+              "shortfall": 32365
+            },
+            {
+              "kind": "window",
+              "key": "C00571703|S4MI00595|S",
+              "notice_total": 1078706.04,
+              "periodic_total": 747656.06,
+              "shortfall": 331049.98
+            },
+            {
+              "kind": "window",
+              "key": "C00448696|S6AL00476|S",
+              "notice_total": 461499.08,
+              "periodic_total": 386208.96,
+              "shortfall": 75290.12
+            },
+            {
+              "kind": "window",
+              "key": "C00580068|S6IA00298|S",
+              "notice_total": 68586.26,
+              "periodic_total": 43722.38,
+              "shortfall": 24863.88
+            },
+            {
+              "kind": "window",
+              "key": "C00909994|S6MI00418|S",
+              "notice_total": 43985.19,
+              "periodic_total": 36624.31,
+              "shortfall": 7360.88
+            },
+            {
+              "kind": "window",
+              "key": "C00881011|S6MI00418|S",
+              "notice_total": 44017.84,
+              "periodic_total": 39226.13,
+              "shortfall": 4791.71
+            },
+            {
+              "kind": "window",
+              "key": "C00606962|S6MI00418|S",
+              "notice_total": 227224.55,
+              "periodic_total": 169950.18,
+              "shortfall": 57274.37
+            },
+            {
+              "kind": "window",
+              "key": "C00935973|S6MN00440|O",
+              "notice_total": 6228910.17,
+              "periodic_total": 6028910.17,
+              "shortfall": 200000
+            },
+            {
+              "kind": "window",
+              "key": "C00941021|S6MS00133|S",
+              "notice_total": 420000,
+              "periodic_total": 322350,
+              "shortfall": 97650
+            },
+            {
+              "kind": "window",
+              "key": "C00868604|S6MT00287|S",
+              "notice_total": 7300,
+              "periodic_total": 6069.83,
+              "shortfall": 1230.17
+            },
+            {
+              "kind": "window",
+              "key": "C00571703|S6OH00163|O",
+              "notice_total": 527322.69,
+              "periodic_total": 416239.01,
+              "shortfall": 111083.68
+            },
+            {
+              "kind": "window",
+              "key": "C00909994|S6TX00479|S",
+              "notice_total": 119948.14,
+              "periodic_total": 102470.35,
+              "shortfall": 17477.79
+            },
+            {
+              "kind": "window",
+              "key": "C00909994|S6SC04239|S",
+              "notice_total": 20346.18,
+              "periodic_total": 19347.78,
+              "shortfall": 998.4
+            },
+            {
+              "kind": "window",
+              "key": "C00909994|S8GA00180|S",
+              "notice_total": 22950.98,
+              "periodic_total": 21555.52,
+              "shortfall": 1395.46
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C90023581",
+              "amount": 459095.71
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00571703",
+              "amount": 442133.66
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00935973",
+              "amount": 200000
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00941021",
+              "amount": 97650
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00448696",
+              "amount": 75290.12
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00606962",
+              "amount": 57274.37
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00888065",
+              "amount": 32365
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00909994",
+              "amount": 27232.53
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00580068",
+              "amount": 24863.88
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00881011",
+              "amount": 4791.71
+            },
+            {
+              "kind": "race",
+              "race": "MN",
+              "amount": 200000,
+              "race_total": 14530706.59,
+              "pct": 1.38
+            },
+            {
+              "kind": "race",
+              "race": "MS",
+              "amount": 97650,
+              "race_total": 17793908.68,
+              "pct": 0.55
+            },
+            {
+              "kind": "race",
+              "race": "AK",
+              "amount": 491460.71,
+              "race_total": 106969098.95,
+              "pct": 0.46
+            },
+            {
+              "kind": "race",
+              "race": "AL",
+              "amount": 75290.12,
+              "race_total": 16801034.63,
+              "pct": 0.45
+            },
+            {
+              "kind": "race",
+              "race": "MI",
+              "amount": 400476.94,
+              "race_total": 300973690.58,
+              "pct": 0.13
+            },
+            {
+              "kind": "race",
+              "race": "OH",
+              "amount": 111083.68,
+              "race_total": 419789972.32,
+              "pct": 0.03
+            },
+            {
+              "kind": "race",
+              "race": "IA",
+              "amount": 24863.88,
+              "race_total": 210950114.23,
+              "pct": 0.01
+            },
+            {
+              "kind": "race",
+              "race": "MT",
+              "amount": 1230.17,
+              "race_total": 21754955.63,
+              "pct": 0.01
+            },
+            {
+              "kind": "race",
+              "race": "TX",
+              "amount": 17477.79,
+              "race_total": 457163898.2,
+              "pct": 0
+            },
+            {
+              "kind": "race",
+              "race": "SC",
+              "amount": 998.4,
+              "race_total": 53274433.6,
+              "pct": 0
+            },
+            {
+              "kind": "race",
+              "race": "GA",
+              "amount": 1395.46,
+              "race_total": 36963535,
+              "pct": 0
+            },
+            {
+              "kind": "side",
+              "label": "R nominee, oppose",
+              "amount": 491460.71
+            },
+            {
+              "kind": "side",
+              "label": "R nominee, support",
+              "amount": 406340.1
+            },
+            {
+              "kind": "side",
+              "label": "D nominee, oppose",
+              "amount": 311083.68
+            },
+            {
+              "kind": "side",
+              "label": "D nominee, support",
+              "amount": 211812.49
+            },
+            {
+              "kind": "side",
+              "label": "I nominee, support",
+              "amount": 1230.17
+            }
+          ]
+        },
+        {
+          "id": "double_count",
+          "blocking": false,
+          "name": "Possible double count (same committee, date and amount on two candidates) under 2% in every race",
+          "pass": false,
+          "summary": "10 race(s) over 2%; overall 3.39%",
+          "details": [
+            {
+              "race": "MA",
+              "overcount": 61500,
+              "race_total": 724007,
+              "share_pct": 8.49
+            },
+            {
+              "race": "AK",
+              "overcount": 7848515.72,
+              "race_total": 106969098.95,
+              "share_pct": 7.34
+            },
+            {
+              "race": "NH",
+              "overcount": 4931729.1,
+              "race_total": 68700079.8,
+              "share_pct": 7.18
+            },
+            {
+              "race": "SD",
+              "overcount": 226127.95,
+              "race_total": 3848156.99,
+              "share_pct": 5.88
+            },
+            {
+              "race": "MI",
+              "overcount": 12707015.03,
+              "race_total": 300973690.58,
+              "share_pct": 4.22
+            },
+            {
+              "race": "NE",
+              "overcount": 2858545.21,
+              "race_total": 71321271.74,
+              "share_pct": 4.01
+            },
+            {
+              "race": "OH",
+              "overcount": 16167534.7,
+              "race_total": 419789972.32,
+              "share_pct": 3.85
+            },
+            {
+              "race": "TX",
+              "overcount": 16231956.98,
+              "race_total": 457163898.2,
+              "share_pct": 3.55
+            },
+            {
+              "race": "IA",
+              "overcount": 6891008.64,
+              "race_total": 210950114.23,
+              "share_pct": 3.27
+            },
+            {
+              "race": "GA",
+              "overcount": 934101.46,
+              "race_total": 36963535,
+              "share_pct": 2.53
+            }
+          ]
+        },
+        {
+          "id": "primary_share",
+          "blocking": false,
+          "name": "Primary-labeled spending under 10% in every race",
+          "pass": false,
+          "summary": "18 race(s) over 10%",
+          "details": [
+            {
+              "race": "IL",
+              "primary": 19571689.09,
+              "race_total": 19571689.09,
+              "share_pct": 100
+            },
+            {
+              "race": "OR",
+              "primary": 25120,
+              "race_total": 25120,
+              "share_pct": 100
+            },
+            {
+              "race": "RI",
+              "primary": 10,
+              "race_total": 10,
+              "share_pct": 100
+            },
+            {
+              "race": "CO",
+              "primary": 510198.01,
+              "race_total": 512080.51,
+              "share_pct": 99.63
+            },
+            {
+              "race": "WY",
+              "primary": 1015902.98,
+              "race_total": 1097133.25,
+              "share_pct": 92.6
+            },
+            {
+              "race": "KY",
+              "primary": 16510652.77,
+              "race_total": 18477295.82,
+              "share_pct": 89.36
+            },
+            {
+              "race": "VA",
+              "primary": 150080,
+              "race_total": 187490,
+              "share_pct": 80.05
+            },
+            {
+              "race": "OK",
+              "primary": 2110889.07,
+              "race_total": 2640948.91,
+              "share_pct": 79.93
+            },
+            {
+              "race": "TN",
+              "primary": 760475.64,
+              "race_total": 1038595.84,
+              "share_pct": 73.22
+            },
+            {
+              "race": "LA",
+              "primary": 16696642.01,
+              "race_total": 24766738.79,
+              "share_pct": 67.42
+            },
+            {
+              "race": "AL",
+              "primary": 10655500.43,
+              "race_total": 16801034.63,
+              "share_pct": 63.42
+            },
+            {
+              "race": "MN",
+              "primary": 8968388.98,
+              "race_total": 14530706.59,
+              "share_pct": 61.72
+            },
+            {
+              "race": "WV",
+              "primary": 337584.92,
+              "race_total": 646893.69,
+              "share_pct": 52.19
+            },
+            {
+              "race": "MT",
+              "primary": 4285777.18,
+              "race_total": 21754955.63,
+              "share_pct": 19.7
+            },
+            {
+              "race": "SD",
+              "primary": 565848.47,
+              "race_total": 3848156.99,
+              "share_pct": 14.7
+            },
+            {
+              "race": "AR",
+              "primary": 740900,
+              "race_total": 5399665.03,
+              "share_pct": 13.72
+            },
+            {
+              "race": "MI",
+              "primary": 39078790.51,
+              "race_total": 300973690.58,
+              "share_pct": 12.98
+            },
+            {
+              "race": "AK",
+              "primary": 10913335.99,
+              "race_total": 106969098.95,
+              "share_pct": 10.2
+            }
+          ]
+        },
+        {
+          "id": "totals_identity",
+          "blocking": true,
+          "name": "All-races total equals aligned plus unattributed plus excluded within 0.5%",
+          "pass": true,
+          "summary": "gap 0 (0%)",
+          "details": [
+            {
+              "all_races": 2201372491.31,
+              "aligned": 1750973365.45,
+              "unattributed": 21681698.11,
+              "excluded": 428717427.75,
+              "gap": 0,
+              "gap_pct": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ran_at": "2026-11-04T01:22:36.571Z",
+      "fetched_at": "2026-11-04T01:22:33.045Z",
+      "raw_sha256": "bab7ceac61b7743b75f0bfba8ad1140f3ca9339147907b1ecbf48966c36f455e",
+      "passed": false,
+      "blocked": false,
+      "checks": [
+        {
+          "id": "race_drops",
+          "blocking": false,
+          "name": "Flag: a race whose total dropped more than 2% and $100K since the previous run is held out as incomplete data, not blocked",
+          "pass": true,
+          "summary": "0 race(s) dropped",
+          "details": []
+        },
+        {
+          "id": "fetch_completeness",
+          "blocking": true,
+          "name": "Every reference row filed and disseminated before fetchedAt's date exists in the raw pull, before dedup",
+          "pass": true,
+          "summary": "schedule_e-2026-11-03T07_56_13.csv: 0 missing; 0 row(s) filed or disseminated on or after fetchedAt's date, totaling 0 (informational)",
+          "details": []
+        },
+        {
+          "id": "dedup_audit",
+          "blocking": false,
+          "name": "Advisory: a window (committee, candidate, side) where notices dropped as covered exceed the periodic evidence for it",
+          "pass": false,
+          "summary": "15 shortfall window(s), totaling 1421927.15 (0.06% of all-races spending; advisory, does not block)",
+          "details": [
+            {
+              "kind": "window",
+              "key": "C90023581|S4AK00214|O",
+              "notice_total": 548756.13,
+              "periodic_total": 89660.42,
+              "shortfall": 459095.71
+            },
+            {
+              "kind": "window",
+              "key": "C00888065|S4AK00214|O",
+              "notice_total": 103765,
+              "periodic_total": 71400,
+              "shortfall": 32365
+            },
+            {
+              "kind": "window",
+              "key": "C00571703|S4MI00595|S",
+              "notice_total": 1078706.04,
+              "periodic_total": 747656.06,
+              "shortfall": 331049.98
+            },
+            {
+              "kind": "window",
+              "key": "C00448696|S6AL00476|S",
+              "notice_total": 461499.08,
+              "periodic_total": 386208.96,
+              "shortfall": 75290.12
+            },
+            {
+              "kind": "window",
+              "key": "C00580068|S6IA00298|S",
+              "notice_total": 68586.26,
+              "periodic_total": 43722.38,
+              "shortfall": 24863.88
+            },
+            {
+              "kind": "window",
+              "key": "C00909994|S6MI00418|S",
+              "notice_total": 43985.19,
+              "periodic_total": 36624.31,
+              "shortfall": 7360.88
+            },
+            {
+              "kind": "window",
+              "key": "C00881011|S6MI00418|S",
+              "notice_total": 44017.84,
+              "periodic_total": 39226.13,
+              "shortfall": 4791.71
+            },
+            {
+              "kind": "window",
+              "key": "C00606962|S6MI00418|S",
+              "notice_total": 227224.55,
+              "periodic_total": 169950.18,
+              "shortfall": 57274.37
+            },
+            {
+              "kind": "window",
+              "key": "C00935973|S6MN00440|O",
+              "notice_total": 6228910.17,
+              "periodic_total": 6028910.17,
+              "shortfall": 200000
+            },
+            {
+              "kind": "window",
+              "key": "C00941021|S6MS00133|S",
+              "notice_total": 420000,
+              "periodic_total": 322350,
+              "shortfall": 97650
+            },
+            {
+              "kind": "window",
+              "key": "C00868604|S6MT00287|S",
+              "notice_total": 7300,
+              "periodic_total": 6069.83,
+              "shortfall": 1230.17
+            },
+            {
+              "kind": "window",
+              "key": "C00571703|S6OH00163|O",
+              "notice_total": 527322.69,
+              "periodic_total": 416239.01,
+              "shortfall": 111083.68
+            },
+            {
+              "kind": "window",
+              "key": "C00909994|S6TX00479|S",
+              "notice_total": 119948.14,
+              "periodic_total": 102470.35,
+              "shortfall": 17477.79
+            },
+            {
+              "kind": "window",
+              "key": "C00909994|S6SC04239|S",
+              "notice_total": 20346.18,
+              "periodic_total": 19347.78,
+              "shortfall": 998.4
+            },
+            {
+              "kind": "window",
+              "key": "C00909994|S8GA00180|S",
+              "notice_total": 22950.98,
+              "periodic_total": 21555.52,
+              "shortfall": 1395.46
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C90023581",
+              "amount": 459095.71
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00571703",
+              "amount": 442133.66
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00935973",
+              "amount": 200000
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00941021",
+              "amount": 97650
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00448696",
+              "amount": 75290.12
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00606962",
+              "amount": 57274.37
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00888065",
+              "amount": 32365
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00909994",
+              "amount": 27232.53
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00580068",
+              "amount": 24863.88
+            },
+            {
+              "kind": "committee",
+              "committee_id": "C00881011",
+              "amount": 4791.71
+            },
+            {
+              "kind": "race",
+              "race": "MN",
+              "amount": 200000,
+              "race_total": 14530706.59,
+              "pct": 1.38
+            },
+            {
+              "kind": "race",
+              "race": "MS",
+              "amount": 97650,
+              "race_total": 17793908.68,
+              "pct": 0.55
+            },
+            {
+              "kind": "race",
+              "race": "AK",
+              "amount": 491460.71,
+              "race_total": 106969098.95,
+              "pct": 0.46
+            },
+            {
+              "kind": "race",
+              "race": "AL",
+              "amount": 75290.12,
+              "race_total": 16801034.63,
+              "pct": 0.45
+            },
+            {
+              "kind": "race",
+              "race": "MI",
+              "amount": 400476.94,
+              "race_total": 300973690.58,
+              "pct": 0.13
+            },
+            {
+              "kind": "race",
+              "race": "OH",
+              "amount": 111083.68,
+              "race_total": 419789972.32,
+              "pct": 0.03
+            },
+            {
+              "kind": "race",
+              "race": "IA",
+              "amount": 24863.88,
+              "race_total": 210950114.23,
+              "pct": 0.01
+            },
+            {
+              "kind": "race",
+              "race": "MT",
+              "amount": 1230.17,
+              "race_total": 21754955.63,
+              "pct": 0.01
+            },
+            {
+              "kind": "race",
+              "race": "TX",
+              "amount": 17477.79,
+              "race_total": 457163898.2,
+              "pct": 0
+            },
+            {
+              "kind": "race",
+              "race": "SC",
+              "amount": 998.4,
+              "race_total": 53274433.6,
+              "pct": 0
+            },
+            {
+              "kind": "race",
+              "race": "GA",
+              "amount": 1395.46,
+              "race_total": 36963535,
+              "pct": 0
+            },
+            {
+              "kind": "side",
+              "label": "R nominee, oppose",
+              "amount": 491460.71
+            },
+            {
+              "kind": "side",
+              "label": "R nominee, support",
+              "amount": 406340.1
+            },
+            {
+              "kind": "side",
+              "label": "D nominee, oppose",
+              "amount": 311083.68
+            },
+            {
+              "kind": "side",
+              "label": "D nominee, support",
+              "amount": 211812.49
+            },
+            {
+              "kind": "side",
+              "label": "I nominee, support",
+              "amount": 1230.17
+            }
+          ]
+        },
+        {
+          "id": "double_count",
+          "blocking": false,
+          "name": "Possible double count (same committee, date and amount on two candidates) under 2% in every race",
+          "pass": false,
+          "summary": "10 race(s) over 2%; overall 3.39%",
+          "details": [
+            {
+              "race": "MA",
+              "overcount": 61500,
+              "race_total": 724007,
+              "share_pct": 8.49
+            },
+            {
+              "race": "AK",
+              "overcount": 7848515.72,
+              "race_total": 106969098.95,
+              "share_pct": 7.34
+            },
+            {
+              "race": "NH",
+              "overcount": 4931729.1,
+              "race_total": 68700079.8,
+              "share_pct": 7.18
+            },
+            {
+              "race": "SD",
+              "overcount": 226127.95,
+              "race_total": 3848156.99,
+              "share_pct": 5.88
+            },
+            {
+              "race": "MI",
+              "overcount": 12707015.03,
+              "race_total": 300973690.58,
+              "share_pct": 4.22
+            },
+            {
+              "race": "NE",
+              "overcount": 2858545.21,
+              "race_total": 71321271.74,
+              "share_pct": 4.01
+            },
+            {
+              "race": "OH",
+              "overcount": 16167534.7,
+              "race_total": 419789972.32,
+              "share_pct": 3.85
+            },
+            {
+              "race": "TX",
+              "overcount": 16231956.98,
+              "race_total": 457163898.2,
+              "share_pct": 3.55
+            },
+            {
+              "race": "IA",
+              "overcount": 6891008.64,
+              "race_total": 210950114.23,
+              "share_pct": 3.27
+            },
+            {
+              "race": "GA",
+              "overcount": 934101.46,
+              "race_total": 36963535,
+              "share_pct": 2.53
+            }
+          ]
+        },
+        {
+          "id": "primary_share",
+          "blocking": false,
+          "name": "Primary-labeled spending under 10% in every race",
+          "pass": false,
+          "summary": "18 race(s) over 10%",
+          "details": [
+            {
+              "race": "IL",
+              "primary": 19571689.09,
+              "race_total": 19571689.09,
+              "share_pct": 100
+            },
+            {
+              "race": "OR",
+              "primary": 25120,
+              "race_total": 25120,
+              "share_pct": 100
+            },
+            {
+              "race": "RI",
+              "primary": 10,
+              "race_total": 10,
+              "share_pct": 100
+            },
+            {
+              "race": "CO",
+              "primary": 510198.01,
+              "race_total": 512080.51,
+              "share_pct": 99.63
+            },
+            {
+              "race": "WY",
+              "primary": 1015902.98,
+              "race_total": 1097133.25,
+              "share_pct": 92.6
+            },
+            {
+              "race": "KY",
+              "primary": 16510652.77,
+              "race_total": 18477295.82,
+              "share_pct": 89.36
+            },
+            {
+              "race": "VA",
+              "primary": 150080,
+              "race_total": 187490,
+              "share_pct": 80.05
+            },
+            {
+              "race": "OK",
+              "primary": 2110889.07,
+              "race_total": 2640948.91,
+              "share_pct": 79.93
+            },
+            {
+              "race": "TN",
+              "primary": 760475.64,
+              "race_total": 1038595.84,
+              "share_pct": 73.22
+            },
+            {
+              "race": "LA",
+              "primary": 16696642.01,
+              "race_total": 24766738.79,
+              "share_pct": 67.42
+            },
+            {
+              "race": "AL",
+              "primary": 10655500.43,
+              "race_total": 16801034.63,
+              "share_pct": 63.42
+            },
+            {
+              "race": "MN",
+              "primary": 8968388.98,
+              "race_total": 14530706.59,
+              "share_pct": 61.72
+            },
+            {
+              "race": "WV",
+              "primary": 337584.92,
+              "race_total": 646893.69,
+              "share_pct": 52.19
+            },
+            {
+              "race": "MT",
+              "primary": 4285777.18,
+              "race_total": 21754955.63,
+              "share_pct": 19.7
+            },
+            {
+              "race": "SD",
+              "primary": 565848.47,
+              "race_total": 3848156.99,
+              "share_pct": 14.7
+            },
+            {
+              "race": "AR",
+              "primary": 740900,
+              "race_total": 5399665.03,
+              "share_pct": 13.72
+            },
+            {
+              "race": "MI",
+              "primary": 39078790.51,
+              "race_total": 300973690.58,
+              "share_pct": 12.98
+            },
+            {
+              "race": "AK",
+              "primary": 10913335.99,
+              "race_total": 106969098.95,
+              "share_pct": 10.2
+            }
+          ]
+        },
+        {
+          "id": "totals_identity",
+          "blocking": true,
+          "name": "All-races total equals aligned plus unattributed plus excluded within 0.5%",
+          "pass": true,
+          "summary": "gap 0 (0%)",
+          "details": [
+            {
+              "all_races": 2201372491.31,
+              "aligned": 1750973365.45,
+              "unattributed": 21681698.11,
+              "excluded": 428717427.75,
               "gap": 0,
               "gap_pct": 0
             }

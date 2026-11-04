@@ -7,10 +7,15 @@ import { parseCsv } from './csv'
 import { buildAllRaces } from './computeSpending'
 import { buildAllCallouts, latestSnapshot } from './computeCallout'
 import { buildResultsByRace, type ResultsRaceRow, type ResultsVoteRow } from './results'
+import type { RaceFlagsFile } from './raceFlags'
 import type { NomineesFile, SpendingFile } from './types'
 import type { SeatForecastEntry } from './seatForecastSources'
 
 const snapshotFiles = import.meta.glob('../data/frozen/*/snapshot.json', { eager: true })
+// Optional: written by scripts/verify.ts, so it does not exist until the first run that passes. A glob, not an
+// import, so a missing file is an empty object rather than a build error.
+const methodologyFiguresFiles = import.meta.glob('../data/methodology-figures.json', { eager: true, import: 'default' })
+export const methodologyFigures = (Object.values(methodologyFiguresFiles)[0] ?? null) as { fetchedAt?: string; dedupShortfallPct?: number } | null
 const seatForecastFiles = import.meta.glob('../data/frozen-seats/*/snapshot.json', { eager: true })
 
 /** The newest seat-forecast snapshot, by folder name (a sortable timestamp). Parallel to latestSnapshot, for the
@@ -23,9 +28,14 @@ function latestSeatForecastSnapshot(files: Record<string, unknown>): readonly Se
   return (mod.default ?? mod).sources ?? []
 }
 
+// Optional: written by scripts/verify.ts. A glob so a missing file is no flags rather than a build error.
+const raceFlagFiles = import.meta.glob('../data/race-flags.json', { eager: true, import: 'default' })
+const raceFlags = (Object.values(raceFlagFiles)[0] ?? null) as RaceFlagsFile | null
+
 export const allRaces = buildAllRaces(
   nomineesJson as unknown as NomineesFile,
   spendingJson as unknown as SpendingFile,
+  raceFlags,
 )
 
 export const forecastSnapshot = latestSnapshot(snapshotFiles)

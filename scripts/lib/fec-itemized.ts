@@ -3,7 +3,6 @@ import type { IeRow, ReportCoverage } from './dedup-ie'
 
 export const CYCLE = 2026
 const CANDIDATE_BATCH = 10
-const COMMITTEE_BATCH = 30
 
 /** A /v1/schedules/schedule_e/ row as FEC returns it. Only the fields we read are typed. */
 export interface RawScheduleERow {
@@ -87,38 +86,50 @@ const toCoverage = (r: RawReport): ReportCoverage | null =>
     ? { committee_id: r.committee_id, report_type: r.report_type, report_year: r.report_year, coverage_end_date: r.coverage_end_date.slice(0, 10) }
     : null
 
-/** Periodic report coverage for each committee: batched, then one by one for any the batch missed. */
-export async function fetchReports(client: FecClient, committeeIds: string[]): Promise<ReportCoverage[]> {
-  const out: ReportCoverage[] = []
-  const found = new Set<string>()
-  const add = (r: RawReport) => {
-    const c = toCoverage(r)
-    if (c) {
-      out.push(c)
-      found.add(c.committee_id)
-    }
-  }
-  for (const batch of chunk([...new Set(committeeIds)].sort(), COMMITTEE_BATCH)) {
+interface RawReportsPage {
+  results: (RawReport & { file_number?: number | null })[]
+  pagination: { pages: number; count: number }
+}
+
+const REPORT_ATTEMPTS = 3
+
+/**
+ * Every report for one committee in the cycle, from its own endpoint. One committee has well under one page
+ * of reports, so there is no offset paging over a sort that other committees tie on (the batched query dropped
+ * and duplicated rows that way, which left committees looking like they had no coverage date). The list is
+ * complete only when the unique reports collected equal the count FEC reports; otherwise it is refetched and
+ * the discrepancy logged, and after the last attempt the run fails rather than guess.
+ */
+export async function fetchCommitteeReports(client: FecClient, committeeId: string, log: (msg: string) => void = console.warn): Promise<ReportCoverage[]> {
+  for (let attempt = 1; attempt <= REPORT_ATTEMPTS; attempt += 1) {
+    const byReport = new Map<string, RawReport>()
+    let expected = 0
     for (let page = 1; ; page += 1) {
-      const body: { results: RawReport[]; pagination: { pages: number } } = await client.get('/reports/pac-party/', [
-        ...batch.map((id): [string, string] => ['committee_id', id]),
+      const body: RawReportsPage = await client.get(`/committee/${committeeId}/reports/`, [
         ['cycle', String(CYCLE)],
         ['per_page', '100'],
         ['page', String(page)],
-        ['sort', '-coverage_end_date'],
+        ['sort', 'coverage_start_date'],
       ])
-      body.results.forEach(add)
+      expected = body.pagination.count
+      for (const r of body.results) byReport.set(`${r.report_type}|${r.report_year}|${r.file_number ?? ''}|${r.most_recent}`, r)
       if (page >= body.pagination.pages) break
     }
+    if (byReport.size === expected) {
+      return [...byReport.values()].flatMap((r) => {
+        const c = toCoverage(r)
+        return c ? [c] : []
+      })
+    }
+    log(`Report list for ${committeeId} incomplete: FEC reports ${expected}, got ${byReport.size} unique (attempt ${attempt} of ${REPORT_ATTEMPTS}).`)
   }
-  for (const id of [...new Set(committeeIds)].sort().filter((c) => !found.has(c))) {
-    const body: { results: RawReport[] } = await client.get(`/committee/${id}/reports/`, [
-      ['cycle', String(CYCLE)],
-      ['per_page', '100'],
-      ['sort', '-coverage_end_date'],
-    ])
-    body.results.forEach(add)
-  }
+  throw new Error(`Report list for ${committeeId} stayed incomplete after ${REPORT_ATTEMPTS} attempts; refusing to classify it from a partial list.`)
+}
+
+/** Periodic report coverage for each committee, one committee at a time. */
+export async function fetchReports(client: FecClient, committeeIds: string[], log?: (msg: string) => void): Promise<ReportCoverage[]> {
+  const out: ReportCoverage[] = []
+  for (const id of [...new Set(committeeIds)].sort()) out.push(...(await fetchCommitteeReports(client, id, log)))
   return out
 }
 

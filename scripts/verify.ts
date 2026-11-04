@@ -2,22 +2,26 @@
 //   tsx scripts/verify.ts --candidate=data/spending.candidate.json --previous=data/spending.json
 // Appends this run to data/verification.json and exits 1 if any check failed. It never changes a flag:
 // shares_ready is reported, and a person decides.
-import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { gunzipSync } from 'node:zlib'
 import { pickPair } from '../src/computeCallout'
 import { buildAllRaces } from '../src/computeSpending'
 import type { NomineesFile, SpendingFile } from '../src/types'
 import { dedupeIeRows, periodicCutoffs, type ReportCoverage } from './lib/dedup-ie'
+import { methodologyFigures, type MethodologyFigures } from './lib/methodology-figures'
+import { computeRaceFlags, validateRaceIds, validateReviews } from './lib/race-flags'
+import type { RaceFlag, RaceFlagsFile, RaceReview } from '../src/raceFlags'
 import { toIeRow, type RawScheduleERow } from './lib/fec-itemized'
 import {
   appendRun,
+  checkDedupAudit,
   checkDoubleCount,
-  checkExportReconciliation,
+  checkFetchCompleteness,
   checkPrimaryShare,
   checkRaceDrops,
   checkTotalsIdentity,
-  exportDateOf,
   exportRowsFromCsv,
+  type AuditRow,
   type CheckResult,
   type RaceRow,
   type ReconcileTarget,
@@ -61,18 +65,31 @@ if (!rawDir) throw new Error(`${candidatePath} has no metadata.raw_path: it was 
 const readGz = <T>(name: string): T => JSON.parse(gunzipSync(readFileSync(new URL(`${rawDir}${name}`, root))).toString('utf-8')) as T
 const rows = readGz<RawScheduleERow[]>('itemized.json.gz').map(toIeRow)
 const reports = readGz<ReportCoverage[]>('reports.json.gz')
-const kept = dedupeIeRows(rows, periodicCutoffs(rows, reports)).kept
+const dedup = dedupeIeRows(rows, periodicCutoffs(rows, reports))
+const kept = dedup.kept
 
-// Each FEC candidate ID belongs to one nominee, and each nominee to one race.
+// Each FEC candidate ID belongs to one nominee, and each nominee to one race and one party.
 const raceOfFecId = new Map<string, string>()
+const partyOfFecId = new Map<string, string>()
 for (const t of candidate.totals) {
   const nominee = nominees.candidates.find((c) => c.id === t.candidateId)
-  if (nominee) for (const id of t.fecIds) raceOfFecId.set(id, nominee.raceId.slice(0, 2))
+  if (nominee) for (const id of t.fecIds) {
+    raceOfFecId.set(id, nominee.raceId.slice(0, 2))
+    partyOfFecId.set(id, nominee.party)
+  }
 }
 const raceRows: RaceRow[] = kept.flatMap((r) => (raceOfFecId.has(r.candidate_id) ? [{ ...r, race: raceOfFecId.get(r.candidate_id) as string }] : []))
+const auditRows: AuditRow[] = dedup.coveredByPeriodicRows.flatMap((r) =>
+  raceOfFecId.has(r.candidate_id) ? [{ ...r, race: raceOfFecId.get(r.candidate_id) as string, party: partyOfFecId.get(r.candidate_id) as string }] : [],
+)
 
 const raceTotals = (file: SpendingFile): Record<string, number> =>
   Object.fromEntries(buildAllRaces(nominees, file).races.map((r) => [r.state, r.total ?? 0]))
+
+// Race totals by race ID, for the drop flag. Built without any flags, so a flag never feeds back into the totals.
+const raceTotalsById = (file: SpendingFile): Record<string, { state: string; total: number }> =>
+  Object.fromEntries(buildAllRaces(nominees, file).races.map((r) => [r.raceId, { state: r.state, total: r.total ?? 0 }]))
+const totalsOnly = (m: Record<string, { total: number }>) => Object.fromEntries(Object.entries(m).map(([k, v]) => [k, v.total]))
 
 // 5. Where every dollar of the all-races total goes.
 function breakdown(): TotalsBreakdown {
@@ -99,34 +116,62 @@ function breakdown(): TotalsBreakdown {
   return out
 }
 
-function reconciliation(): CheckResult {
-  const files = readdirSync(new URL(EXPORT_DIR, root)).filter((f) => f.endsWith('.csv')).sort()
-  const parts = files.map((file) => {
-    const upTo = exportDateOf(file)
-    if (!upTo) throw new Error(`Cannot read an export date from ${file}`)
-    const exportRows = exportRowsFromCsv(readFileSync(new URL(`${EXPORT_DIR}${file}`, root), 'utf-8'))
-    const present = TARGETS.filter((t) => exportRows.some((r) => r.committee_id === t.committee_id))
-    return { file, result: checkExportReconciliation(exportRows, kept, present, upTo) }
-  })
-  const details = parts.flatMap((p) => p.result.details.map((d) => ({ file: p.file, ...d })))
-  const failed = parts.filter((p) => !p.result.pass).length
-  return {
-    id: 'export_reconciliation',
-    blocking: true,
-    name: parts[0]?.result.name ?? 'Named committees match the saved FEC exports',
-    pass: failed === 0 && parts.length > 0,
-    summary: parts.map((p) => `${p.file}: ${p.result.summary}`).join('; '),
-    details,
-  }
+interface ExportManifest {
+  current: { file: string; pulled_at: string; committees: string[] }
+  history: { file: string; pulled_at: string; committees: string[] }[]
 }
 
+// Only the manifest's current file is checked. History files stay in the repo as a record of earlier
+// pulls, not as live input: once superseded, a history file would only report the rows its own pull
+// didn't yet have as "future" rows.
+function fetchCompleteness(): CheckResult {
+  const manifest = readJson<ExportManifest>(`${EXPORT_DIR}manifest.json`)
+  const { file } = manifest.current
+  const exportRows = exportRowsFromCsv(readFileSync(new URL(`${EXPORT_DIR}${file}`, root), 'utf-8'))
+  const present = TARGETS.filter((t) => exportRows.some((r) => r.committee_id === t.committee_id))
+  const result = checkFetchCompleteness(exportRows, rows, present, candidate.fetchedAt)
+  return { ...result, summary: `${file}: ${result.summary}`, details: result.details.map((d) => ({ file, pulled_at: manifest.current.pulled_at, ...d })) }
+}
+
+const totals = breakdown()
 const checks: CheckResult[] = [
-  checkRaceDrops(previous ? raceTotals(previous) : null, raceTotals(candidate)),
-  reconciliation(),
+  checkRaceDrops(previous ? totalsOnly(raceTotalsById(previous)) : null, totalsOnly(raceTotalsById(candidate))),
+  fetchCompleteness(),
+  checkDedupAudit(auditRows, dedup.periodicRows, dedup.memoPeriodicRows, raceTotals(candidate), totals.allRaces),
   checkDoubleCount(raceRows),
   checkPrimaryShare(raceRows),
-  checkTotalsIdentity(breakdown()),
+  checkTotalsIdentity(totals),
 ]
+
+// The methodology page's figures, from the same dedup and race rows as spending.json. Written only when nothing blocked.
+const figures: MethodologyFigures = methodologyFigures({
+  fetchedAt: candidate.fetchedAt,
+  approximateCommittees: dedup.approximateCommittees,
+  approximateTotal: dedup.approximateTotal,
+  raceRows,
+  unattributedTotal: totals.unattributed,
+  incompleteRaces: buildAllRaces(nominees, candidate).races.filter((r) => r.incompleteCount > 0).map((r) => r.state),
+  auditRows,
+  periodicRows: dedup.periodicRows,
+  memoPeriodicRows: dedup.memoPeriodicRows,
+  allRacesTotal: totals.allRaces,
+})
+
+// Races held out as incomplete data because their total dropped. Written, with the carried-over flags and the
+// human reviews applied, only when nothing blocked; the page ignores a file made for other spending data.
+const reviews = existsSync(new URL('data/race-review.json', root)) ? readJson<RaceReview[]>('data/race-review.json') : []
+validateReviews(reviews)
+const knownRaceIds = new Set(nominees.races.map((r) => r.id))
+validateRaceIds('data/race-review.json', reviews.map((r) => r.raceId), knownRaceIds)
+const carried = existsSync(new URL('data/race-flags.json', root)) ? readJson<RaceFlagsFile>('data/race-flags.json').flags : []
+validateRaceIds('data/race-flags.json', carried.map((f) => f.raceId), knownRaceIds)
+const raceFlags: RaceFlag[] = computeRaceFlags({
+  previous: previous ? totalsOnly(raceTotalsById(previous)) : null,
+  current: raceTotalsById(candidate),
+  carried,
+  reviews,
+  fetchedAt: candidate.fetchedAt,
+})
 
 const run = {
   ran_at: new Date().toISOString(),
@@ -143,12 +188,16 @@ writeFileSync(historyPath, JSON.stringify(next, null, 2) + '\n')
 
 const lines = [
   '## Verification',
+  ...raceFlags.map((f) => `- FLAG ${f.raceId}: total dropped ${f.dropPct}% ($${f.drop}) from ${f.prior} to ${f.now}; held out as incomplete data`),
   ...checks.map((c) => `- ${c.pass ? 'PASS' : c.blocking ? 'FAIL (blocking)' : 'FAIL (advisory)'} ${c.id}: ${c.summary}`),
   `- shares_ready: ${next.shares_ready} (${next.runs.length} run${next.runs.length === 1 ? '' : 's'} on record; ${next.shares_ready_rule})`,
 ]
 console.log(lines.join('\n'))
 if (process.env.GITHUB_STEP_SUMMARY) writeFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join('\n') + '\n', { flag: 'a' })
 if (run.blocked) {
-  console.error('A blocking check failed. spending.json was not replaced.')
+  console.error('A blocking check failed. spending.json and the methodology figures were not replaced.')
   process.exitCode = 1
+} else {
+  writeFileSync(new URL('data/methodology-figures.json', root), JSON.stringify(figures, null, 2) + '\n')
+  writeFileSync(new URL('data/race-flags.json', root), JSON.stringify({ fetchedAt: candidate.fetchedAt, flags: raceFlags } satisfies RaceFlagsFile, null, 2) + '\n')
 }
