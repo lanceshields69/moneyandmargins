@@ -7,7 +7,7 @@ import usStatesData from '../data/us-states.json'
 import { parseCsv } from './csv'
 import { buildAllRaces } from './computeSpending'
 import { buildAllCallouts, latestSnapshot } from './computeCallout'
-import { buildResultsByRace, type ResultsRaceRow, type ResultsVoteRow } from './results'
+import { buildResultsByRace, latestResultsAsOf, type ResultsRaceRow, type ResultsVoteRow } from './results'
 import type { RaceFlagsFile } from './raceFlags'
 import type { NomineesFile, Party, SpendingFile } from './types'
 import type { SeatForecastEntry } from './seatForecastSources'
@@ -47,6 +47,8 @@ export const resultsByRace = buildResultsByRace(
   parseCsv(resultsVotesRaw) as unknown as ResultsVoteRow[],
   nomineesJson as unknown as NomineesFile,
 )
+
+export const resultsAsOf = latestResultsAsOf(resultsByRace)
 
 export const callouts = buildAllCallouts(allRaces.races, forecastSnapshot, resultsByRace, seatHoldersJson.holders as Record<string, Party>)
 

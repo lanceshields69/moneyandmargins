@@ -3,6 +3,8 @@
 import type { NomineesFile } from './types'
 import type { ResultsRaceRow, ResultsVoteRow, ResultStatus } from './results'
 
+export const CIVICAPI_URL = 'https://civicapi.org/decision-2026'
+
 export interface CivicCandidate {
   name: string
   votes: number
@@ -84,7 +86,7 @@ export function feedRows(raceId: string, civic: CivicRace, nominees: NomineesFil
         status,
         percent_reporting: String(civic.percent_reporting),
         note: '',
-        source_url: officialUrl ?? 'https://civicapi.org/decision-2026',
+        source_url: officialUrl ?? CIVICAPI_URL,
         as_of: asOf,
         winner,
       },

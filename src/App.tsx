@@ -12,14 +12,15 @@ import ShareMenu from './components/ShareMenu'
 import UsStatesMap, { rampColor } from './components/UsStatesMap'
 import StateMarks, { buildStateMarks, marksFromCallouts } from './components/StateMarks'
 import { buildNationalCard } from './computeNational'
-import { allRaces, callouts, forecastSnapshot, labelPoints, mapViewBox, methodologyFigures, seatForecastSources, stateNames } from './data'
+import { allRaces, callouts, forecastSnapshot, labelPoints, mapViewBox, methodologyFigures, resultsAsOf, seatForecastSources, stateNames } from './data'
 import SeatForecastCarousel from './components/SeatForecastCarousel'
 import logo from '../images/logo.png'
 import { DATA_VERIFIED, SHARES_VERIFIED } from './config'
 import { DATA_CHECK_NOTICE, FINAL_FORECAST_TAG, forecastPhrase } from './copy'
 import corrections from '../data/corrections.json'
 import { correctionsBlocks, isCorrectionsHash, type CorrectionEntry } from './corrections'
-import { formatDate, formatDateOnly, formatMoney, formatMonthDay } from './format'
+import { formatDate, formatDateOnly, formatDateTime, formatMoney, formatMonthDay } from './format'
+import { CIVICAPI_URL } from './civicapi'
 import { initialSelection, parseHashState } from './defaultState'
 import verification from '../data/verification.json'
 import { dedupShortfallSentence, doubleCountSentence, fillMethodology, incompleteRacesSentence, isHowHash, methodologySource, parseMethodology } from './methodology'
@@ -279,6 +280,15 @@ export default function App() {
             </a>{' '}
             forecast, {forecastPhrase(forecastSnapshot.tag)} {formatMonthDay(forecastSnapshot.fetchedAt)}.
           </p>
+          {resultsAsOf && (
+            <p>
+              Source:{' '}
+              <a href={CIVICAPI_URL} target="_blank" rel="noopener noreferrer">
+                civicAPI
+              </a>
+              , {formatDateTime(resultsAsOf)}.
+            </p>
+          )}
         </div>
         <div className="vote411-wrap">
           <Vote411Banner />

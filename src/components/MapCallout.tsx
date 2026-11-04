@@ -4,7 +4,6 @@ import infoIcon from '../assets/info.svg'
 import { hasOtherForecasts } from '../otherForecasts'
 import { OTHER_FORECASTS_TITLE, otherForecastsUrl } from '../votepredictor'
 import { PARTIAL_CALLOUT_NOTICE, SHARES_PENDING_LEAD, SHARES_PENDING_LINK } from '../copy'
-import { formatDateTime } from '../format'
 import { useEffect, useState, type ReactNode } from 'react'
 import leaderUrl from '../assets/callout-leader.svg'
 import type { Callout, CalloutSide } from '../computeCallout'
@@ -97,23 +96,11 @@ function ResultRow({ sides, result }: { sides: CalloutSide[]; result: Callout['r
 /** Percent reporting to a whole number. A count short of 100 never reads as 100: 99.6 shows as 99%. */
 export const wholePercentReporting = (pct: number): number => (pct >= 100 ? 100 : Math.min(99, Math.round(pct)))
 
-/** "Source: civicAPI, [as-of time]." with the percent reporting while a race is still being counted. */
+/** The percent reporting while a race is still being counted. The civicAPI source line is once for the whole page,
+ * under the map, not on every card. */
 function ResultNote({ result }: { result: Callout['result'] }) {
-  if (result.stage === 'none' || !result.asOf) return null
-  return (
-    <p className="cc-note cc-result-note">
-      {result.stage === 'reporting' && result.percentReporting !== null && `${wholePercentReporting(result.percentReporting)}% reporting. `}
-      {'Source: '}
-      {result.sourceUrl ? (
-        <a href={result.sourceUrl} target="_blank" rel="noopener noreferrer">
-          civicAPI
-        </a>
-      ) : (
-        'civicAPI'
-      )}
-      {`, ${formatDateTime(result.asOf)}.`}
-    </p>
-  )
+  if (result.stage !== 'reporting' || result.percentReporting === null) return null
+  return <p className="cc-note cc-result-note">{wholePercentReporting(result.percentReporting)}% reporting.</p>
 }
 
 /** A plain link out to VotePredictor's own page for the race. Nothing from that page is copied here. */

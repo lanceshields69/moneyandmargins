@@ -191,6 +191,12 @@ export function buildResultCallout(
   }
 }
 
+/** When the newest result was pulled from civicAPI (ISO), or null when there are none. */
+export function latestResultsAsOf(results: ReadonlyMap<string, RaceResultData>): string | null {
+  const times = [...results.values()].map((r) => r.asOf).filter(Boolean).sort()
+  return times.length > 0 ? times[times.length - 1] : null
+}
+
 /** The Result row's heading, from the one status. Reporting never appears for a race with a Win or Flip status. */
 export const RESULT_HEADING: Record<ResultStage, string> = {
   none: 'Results:',

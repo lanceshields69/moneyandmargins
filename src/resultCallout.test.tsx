@@ -4,7 +4,7 @@ import MapCallout, { wholePercentReporting } from './components/MapCallout'
 import StateMarks, { buildStateMarks, marksFromCallouts } from './components/StateMarks'
 import { buildCallout, type Callout } from './computeCallout'
 import { allRaces, callouts, labelPoints, mapViewBox, stateNames } from './data'
-import { buildResultCallout, RESULT_HEADING, type RaceResultData, type ResultCallout, type ResultStage } from './results'
+import { buildResultCallout, latestResultsAsOf, RESULT_HEADING, type RaceResultData, type ResultCallout, type ResultStage } from './results'
 import type { Party } from './types'
 
 window.matchMedia = ((q: string) => ({
@@ -81,14 +81,18 @@ describe('the four statuses in the callout', () => {
     for (const [, result] of STAGES) expect(render(withResult(result))).not.toContain('cc-lead-col')
   })
 
-  it('every status that has data shows "Source: civicAPI, [as-of time]." and keeps "Predicted to win"', () => {
-    for (const [stage, result] of STAGES) {
+  it('no card carries the civicAPI source line (it is once under the map), and every card keeps "Predicted to win"', () => {
+    for (const [, result] of STAGES) {
       const html = render(withResult(result))
       expect(html).toContain('Predicted to win:')
-      if (stage === 'none') continue
-      expect(html).toContain('Source: ')
-      expect(html).toMatch(/>civicAPI<\/a>, [A-Z][a-z]{2} \d{1,2}, /)
+      expect(html).not.toContain('Source: ')
+      expect(html).not.toContain('civicAPI')
     }
+  })
+
+  it('the percent reporting stays on a Reporting card only', () => {
+    expect(render(withResult(reporting))).toContain('41% reporting.')
+    for (const result of [none, win(demId, 'D'), flip(demId, 'D')]) expect(render(withResult(result))).not.toContain('% reporting')
   })
 
   it('the checkmark is in the card only, inside the winner\'s color square, for Win and Flip', () => {
@@ -253,5 +257,13 @@ describe('percent reporting has no decimals', () => {
     const html = render(withResult({ ...reporting, percentReporting: 73.7 }))
     expect(html).toContain('74% reporting')
     expect(html).not.toContain('73.7')
+  })
+})
+
+describe('the civicAPI source line under the map', () => {
+  it('uses the newest as-of time among the results, and none when there are no results', () => {
+    const mk = (asOf: string): RaceResultData => ({ status: 'Reporting', percentReporting: 5, note: null, sourceUrl: 'x', asOf, winnerCandidateId: null, votesByCandidate: new Map() })
+    expect(latestResultsAsOf(new Map([['A', mk('2026-11-04T01:00:00Z')], ['B', mk('2026-11-04T09:30:00Z')]]))).toBe('2026-11-04T09:30:00Z')
+    expect(latestResultsAsOf(new Map())).toBeNull()
   })
 })
