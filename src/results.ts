@@ -2,11 +2,11 @@
 // party except to carry it through from nominees.json. No automatic publishing, admin page, or outside feed here.
 import type { NomineesFile, Party } from './types'
 
-// civicAPI's own status for a race. Reporting: votes are in and no candidate is flagged winner. Called: civicAPI
+// civicAPI's own status for a race. Reporting: votes are in and no candidate is flagged winner. Win: civicAPI
 // flags exactly one candidate as winner. A status is never inferred from vote counts. Win vs Flip is then decided
 // by comparing the winner's party with the party that held the seat before the election (data/seat-holders.json).
-export type ResultStatus = 'Reporting' | 'Called'
-const VALID_STATUSES: readonly ResultStatus[] = ['Reporting', 'Called']
+export type ResultStatus = 'Reporting' | 'Win'
+const VALID_STATUSES: readonly ResultStatus[] = ['Reporting', 'Win']
 
 export interface ResultsRaceRow {
   race_id: string
@@ -15,7 +15,7 @@ export interface ResultsRaceRow {
   note: string
   source_url: string
   as_of: string
-  /** The candidate civicAPI flags as winner, exactly as named in nominees.json. Blank unless status is Called. */
+  /** The candidate civicAPI flags as winner, exactly as named in nominees.json. Blank unless status is Win. */
   winner?: string
 }
 
@@ -49,9 +49,9 @@ export function validateResults(raceRows: ResultsRaceRow[], voteRows: ResultsVot
       continue
     }
     raceRowIds.add(row.race_id)
-    if (!VALID_STATUSES.includes(row.status as ResultStatus)) errors.push(`${label}: invalid status "${row.status}" (must be Reporting or Called)`)
+    if (!VALID_STATUSES.includes(row.status as ResultStatus)) errors.push(`${label}: invalid status "${row.status}" (must be Reporting or Win)`)
     const winner = (row.winner ?? '').trim()
-    if (row.status === 'Called' && !winner) errors.push(`${label}: status Called needs a winner`)
+    if (row.status === 'Win' && !winner) errors.push(`${label}: status Win needs a winner`)
     if (row.status === 'Reporting' && winner) errors.push(`${label}: status Reporting must not name a winner`)
     if (winner && !candidateNamesByRace.get(row.race_id)?.has(winner)) errors.push(`${label}: winner "${winner}" is not in nominees.json for this race`)
     const pct = Number(row.percent_reporting)
@@ -149,7 +149,7 @@ export interface ResultCallout {
 /**
  * Builds the Result row for one race's displayed candidates. The pair and its order come from the caller (the same
  * as the callout's squares). `seatHolder` is the party that held the seat before the election; with it unknown, a
- * called race cannot be told Win from Flip, so it is held as reporting rather than guessed.
+ * race with a winner cannot be told Win from Flip, so it is held as reporting rather than guessed.
  */
 export function buildResultCallout(
   pairCandidateIds: readonly string[],
@@ -174,7 +174,7 @@ export function buildResultCallout(
   const pct = totalVotes > 0 ? wholePercentsN([...raceResult.votesByCandidate.entries()].map(([id, votes]) => ({ id, value: votes / totalVotes }))) : new Map<string, number>()
   const shares = Object.fromEntries(pairCandidateIds.map((id) => [id, pct.get(id) ?? null]))
 
-  const winnerId = raceResult.status === 'Called' ? raceResult.winnerCandidateId : null
+  const winnerId = raceResult.status === 'Win' ? raceResult.winnerCandidateId : null
   const winnerParty = winnerId ? (partyOfCandidate.get(winnerId) ?? null) : null
   const decided = winnerId !== null && winnerParty !== null && seatHolder !== null
   const stage: ResultStage = decided ? (winnerParty === seatHolder ? 'win' : 'flip') : 'reporting'

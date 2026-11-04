@@ -1685,7 +1685,7 @@ details h4 {
   width: 18px;
   height: 18px;
   border-radius: 4px;
-  background: var(--color-dem);
+  background: var(--blue-lean, #85a4de);
 }
 .status-swatch-flip {
   border: 2px dashed #000;

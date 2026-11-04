@@ -25,7 +25,7 @@ export interface RaceRows {
 export type FeedResult = { ok: true; rows: RaceRows } | { ok: false; reason: string }
 
 /**
- * civicAPI's own call and nothing else: Called when it flags exactly one candidate as winner, Reporting when votes
+ * civicAPI's own call and nothing else: Win when it flags exactly one candidate as winner, Reporting when votes
  * are in and no one is flagged. Never inferred from the counts or the percent reporting. Two winner flags
  * disagree with themselves, so that race is held (null) rather than guessed.
  */
@@ -34,7 +34,7 @@ export function feedStatus(race: CivicRace): ResultStatus | null {
   if (race.candidates.every((c) => c.votes === 0)) return null
   const winners = race.candidates.filter((c) => c.winner === true).length
   if (winners > 1) return null
-  return winners === 1 ? 'Called' : 'Reporting'
+  return winners === 1 ? 'Win' : 'Reporting'
 }
 
 function nameTokens(name: string): string[] {
@@ -68,7 +68,7 @@ export function feedRows(raceId: string, civic: CivicRace, nominees: NomineesFil
     votes.push({ race_id: raceId, candidate: nominee.name, party: nominee.party, votes: String(match.votes) })
     if (match.winner === true) winner = nominee.name
   }
-  if (status === 'Called' && !winner) return { ok: false, reason: 'civicAPI flags a winner who is not one of our nominees' }
+  if (status === 'Win' && !winner) return { ok: false, reason: 'civicAPI flags a winner who is not one of our nominees' }
   return {
     ok: true,
     rows: {

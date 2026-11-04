@@ -35,8 +35,8 @@ describe('feedStatus', () => {
   it('is Reporting while no candidate is flagged winner, at any percent reporting', () => {
     for (const pct of [10, 99.9, 100]) expect(feedStatus(race({ percent_reporting: pct }))).toBe('Reporting')
   })
-  it('is Called once exactly one candidate is flagged winner, even before every precinct reports', () => {
-    expect(feedStatus(race({ percent_reporting: 76.8, candidates: [{ name: 'Andy Barr', votes: 600, winner: true }, { name: 'Charles Booker', votes: 400 }] }))).toBe('Called')
+  it('is Win once exactly one candidate is flagged winner, even before every precinct reports', () => {
+    expect(feedStatus(race({ percent_reporting: 76.8, candidates: [{ name: 'Andy Barr', votes: 600, winner: true }, { name: 'Charles Booker', votes: 400 }] }))).toBe('Win')
   })
 })
 
@@ -78,11 +78,11 @@ describe('feedRows', () => {
     expect(fallback.ok && fallback.rows.race.source_url).toBe('https://civicapi.org/decision-2026')
   })
 
-  it('sets Called and names the winner only when civicAPI flags exactly one candidate as winner', () => {
+  it('sets Win and names the winner only when civicAPI flags exactly one candidate as winner', () => {
     const called = race({ percent_reporting: 76, candidates: [{ name: 'Andy Barr', votes: 600, winner: true }, { name: 'Charles Booker', votes: 400 }, { name: 'Christopher Campbell', votes: 20 }] })
     const result = feedRows('XX-2026', called, nominees, null, asOf)
     if (!result.ok) throw new Error('expected a row')
-    expect(result.rows.race).toMatchObject({ status: 'Called', winner: 'Andy Barr', percent_reporting: '76' })
+    expect(result.rows.race).toMatchObject({ status: 'Win', winner: 'Andy Barr', percent_reporting: '76' })
   })
 
   it('never infers a winner from the counts or from 100 percent reporting', () => {

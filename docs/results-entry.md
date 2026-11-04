@@ -9,12 +9,12 @@ before every build.
 | Column | Meaning |
 |---|---|
 | `race_id` | A race id in `data/nominees.json`, e.g. `TX-2026`. |
-| `status` | `Reporting` (votes in, no winner flagged) or `Called` (civicAPI flags exactly one winner). |
+| `status` | `Reporting` (votes in, no winner flagged) or `Win` (civicAPI flags exactly one winner). A `Win` row is shown as Win or Flip, by the seat's prior holder (below). |
 | `percent_reporting` | 0 to 100. |
 | `note` | Optional. |
 | `source_url` | civicAPI's page, or the state's page when one is set in `data/results-feed-map.json`. |
 | `as_of` | When the row was pulled, an ISO timestamp. |
-| `winner` | The flagged winner, named as in `nominees.json`. Required when `Called`, blank when `Reporting`. |
+| `winner` | The flagged winner, named as in `nominees.json`. Required when `Win`, blank when `Reporting`. |
 
 ## data/results-votes.csv
 
@@ -24,9 +24,9 @@ One row per nominee per race: `race_id`, `candidate`, `party` (reference only; t
 
 One status per race, read from these files and `data/seat-holders.json` (the party that held each seat before the election):
 
-- **Win:** `Called`, and the winner's party held the seat. Solid party-color chip with a black checkmark.
-- **Flip:** `Called`, and the winner's party did not hold the seat. Party-color chip with a 2px dashed border.
+- **Win:** status `Win`, and the winner's party held the seat. Solid party-color chip with a black checkmark.
+- **Flip:** status `Win`, and the winner's party did not hold the seat (derived, never stored). Party-color chip with a 2px dashed border.
 - **Reporting:** `Reporting`. Off-white chip, no party color.
 - **None:** no row. No chip; the race keeps its forecast circle.
 
-A status is never inferred from vote counts. A `Called` race whose seat holder is unknown is held as Reporting.
+A status is never inferred from vote counts. A `Win` row whose seat holder is unknown is held as Reporting.

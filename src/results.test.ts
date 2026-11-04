@@ -27,7 +27,7 @@ const nominees: NomineesFile = {
 
 const raceRow = (over: Partial<ResultsRaceRow> = {}): ResultsRaceRow => ({
   race_id: 'XX-2026',
-  status: 'Called',
+  status: 'Win',
   percent_reporting: '98',
   note: '',
   source_url: 'https://x.test/results',
@@ -86,7 +86,7 @@ describe('validateResults', () => {
     expect(validateResults([raceRow({ status: 'Counting' })], [], nominees).errors[0]).toMatch(/invalid status/)
   })
 
-  it('needs a winner when Called, none when Reporting, and a winner who is a nominee in the race', () => {
+  it('needs a winner when Win, none when Reporting, and a winner who is a nominee in the race', () => {
     expect(validateResults([raceRow({ winner: '' })], [], nominees).errors[0]).toMatch(/needs a winner/)
     expect(validateResults([raceRow({ status: 'Reporting', winner: 'A Dem' })], [], nominees).errors[0]).toMatch(/must not name a winner/)
     expect(validateResults([raceRow({ status: 'Reporting', winner: '' })], [], nominees).errors).toEqual([])
@@ -143,7 +143,7 @@ describe('buildResultCallout statuses', () => {
     expect(out.winnerCandidateId).toBeNull()
   })
 
-  it('called: the winner is the candidate civicAPI flagged, win or flip by the seat holder', () => {
+  it('win: the winner is the candidate civicAPI flagged, win or flip by the seat holder', () => {
     const results = buildResultsByRace([raceRow()], votes, nominees)
     expect(buildResultCallout(pair, results.get('XX-2026'), parties, 'D').stage).toBe('win')
     const flipped = buildResultCallout(pair, results.get('XX-2026'), parties, 'R')

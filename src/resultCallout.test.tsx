@@ -153,7 +153,7 @@ describe('the map chip for each status', () => {
 })
 
 describe('Win or Flip comes from the seat\'s prior holder', () => {
-  const race: RaceResultData = { status: 'Called', percentReporting: 100, note: null, sourceUrl: 'https://x.test', asOf: '2026-11-04T01:00:00Z', winnerCandidateId: demId, votesByCandidate: new Map([[demId, 55], [repId, 45]]) }
+  const race: RaceResultData = { status: 'Win', percentReporting: 100, note: null, sourceUrl: 'https://x.test', asOf: '2026-11-04T01:00:00Z', winnerCandidateId: demId, votesByCandidate: new Map([[demId, 55], [repId, 45]]) }
   const parties = new Map<string, Party>([[demId, 'D'], [repId, 'R']])
   const stageFor = (winner: string, holder: Party | null) => buildResultCallout([demId, repId], { ...race, winnerCandidateId: winner }, parties, holder).stage
 
@@ -167,7 +167,7 @@ describe('Win or Flip comes from the seat\'s prior holder', () => {
     expect(stageFor(repId, 'R')).toBe('win')
   })
 
-  it('a called race with an unknown prior holder is held as Reporting, never guessed', () => {
+  it('a race with a winner and an unknown prior holder is held as Reporting, never guessed', () => {
     expect(stageFor(demId, null)).toBe('reporting')
   })
 
@@ -221,7 +221,7 @@ describe('swapping party labels mirrors every chip and value, except the fixed o
   it('a Republican win in a Democratic-held seat mirrors a Democratic win in a Republican-held one', () => {
     const parties = new Map<string, Party>([[demId, 'D'], [repId, 'R']])
     const swapped = new Map<string, Party>([[demId, 'R'], [repId, 'D']])
-    const base: RaceResultData = { status: 'Called', percentReporting: 100, note: null, sourceUrl: 'https://x.test', asOf: '2026-11-04T01:00:00Z', winnerCandidateId: demId, votesByCandidate: new Map([[demId, 61], [repId, 39]]) }
+    const base: RaceResultData = { status: 'Win', percentReporting: 100, note: null, sourceUrl: 'https://x.test', asOf: '2026-11-04T01:00:00Z', winnerCandidateId: demId, votesByCandidate: new Map([[demId, 61], [repId, 39]]) }
     const a = buildResultCallout([demId, repId], base, parties, 'R')
     const b = buildResultCallout([demId, repId], base, swapped, 'D')
     expect(b.stage).toBe(a.stage)
