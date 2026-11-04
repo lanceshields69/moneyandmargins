@@ -39,9 +39,10 @@ const STAGES: [ResultStage, ResultCallout][] = [['none', none], ['reporting', re
 const checks = (html: string) => html.match(/chip-check/g)?.length ?? 0
 
 describe('the four statuses in the callout', () => {
-  it('none: "Results (not added)" with "--" placeholders and the Other forecasts link', () => {
+  it('none: "Results" with "--" only where civicAPI has no data, and the Other forecasts link', () => {
     const html = render(withResult(none))
-    expect(html).toContain('Results (not added):')
+    expect(html).toContain('Results:')
+    expect(html).not.toContain('not added')
     expect(html).toContain('--')
     expect(html).toContain('Other forecasts')
     expect(html).not.toContain('Source: ')
@@ -130,7 +131,7 @@ describe('the map chip for each status', () => {
 
   it('a race never shows two statuses: the chip, heading and checkmark all read the one status', () => {
     const expected: Record<ResultStage, { kind: string; heading: string }> = {
-      none: { kind: 'circle', heading: 'Results (not added):' },
+      none: { kind: 'circle', heading: 'Results:' },
       reporting: { kind: 'reporting', heading: 'Reporting:' },
       win: { kind: 'win', heading: 'Results (win):' },
       flip: { kind: 'flip', heading: 'Results (flip):' },

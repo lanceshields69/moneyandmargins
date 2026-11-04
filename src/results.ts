@@ -193,7 +193,7 @@ export function buildResultCallout(
 
 /** The Result row's heading, from the one status. Reporting never appears for a race with a Win or Flip status. */
 export const RESULT_HEADING: Record<ResultStage, string> = {
-  none: 'Results (not added):',
+  none: 'Results:',
   reporting: 'Reporting:',
   win: 'Results (win):',
   flip: 'Results (flip):',
