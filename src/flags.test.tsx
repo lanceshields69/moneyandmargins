@@ -10,7 +10,8 @@ import PreviewBadge from './components/PreviewBadge'
 import RacePanel from './components/RacePanel'
 import { forecastPhrase } from './copy'
 import { formatMoney } from './format'
-import { fillMethodology } from './methodology'
+import verification from '../data/verification.json'
+import { doubleCountSentence, fillMethodology } from './methodology'
 import { AMOUNTS_PENDING_LEAD, PARTIAL_CALLOUT_NOTICE, SHARES_PENDING_LEAD, SHARES_PENDING_LINK } from './copy'
 import { allRaces, callouts, stateNames } from './data'
 import verifiedMd from '../docs/methodology.md?raw'
@@ -164,7 +165,10 @@ describe('each flag combination on the whole page', () => {
       expect(body).toContain(`Those rows total ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(allRaces.approxTotal as number)}.`)
     }
     expect(body).toContain("Totals and shares include primary-season spending as labeled by the filer, which can count toward the other side's share. I'm moving the shares to general-election spending only.")
-    expect(body).toContain('Nationally this is at most about 3.4%.')
+    // The figure is whatever the latest verification run recorded, read the way the page reads it.
+    const doubleCount = doubleCountSentence(verification)
+    expect(doubleCount, 'a double-count figure in data/verification.json').not.toBeNull()
+    expect(body).toContain(doubleCount as string)
     // The names come from the data the page renders from (races with incomplete nominees or a held-out total), never a fixed list.
     const incompleteNames = allRaces.races.filter((r) => r.incompleteCount > 0).map((r) => stateNames.get(r.state) ?? r.state)
     const listed = /Races with incomplete data \(([^)]*)\) are left out of the national card\./.exec(body)?.[1]
