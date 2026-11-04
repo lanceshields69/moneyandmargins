@@ -7,7 +7,7 @@ import {
   type ResultsRaceRow,
   type ResultsVoteRow,
 } from './results'
-import type { NomineesFile } from './types'
+import type { NomineesFile, Party } from './types'
 
 const nominees: NomineesFile = {
   fetchedAt: '2026-10-01T00:00:00Z',
@@ -27,11 +27,12 @@ const nominees: NomineesFile = {
 
 const raceRow = (over: Partial<ResultsRaceRow> = {}): ResultsRaceRow => ({
   race_id: 'XX-2026',
-  status: 'Unofficial',
+  status: 'Win',
   percent_reporting: '98',
   note: '',
   source_url: 'https://x.test/results',
   as_of: '2026-11-03T21:00:00Z',
+  winner: 'A Dem',
   ...over,
 })
 const voteRow = (over: Partial<ResultsVoteRow> = {}): ResultsVoteRow => ({
@@ -82,6 +83,14 @@ describe('validateResults', () => {
   it('flags an invalid status', () => {
     const { errors } = validateResults([raceRow({ status: 'Leading' })], [], nominees)
     expect(errors[0]).toMatch(/invalid status/)
+    expect(validateResults([raceRow({ status: 'Counting' })], [], nominees).errors[0]).toMatch(/invalid status/)
+  })
+
+  it('needs a winner when Win, none when Reporting, and a winner who is a nominee in the race', () => {
+    expect(validateResults([raceRow({ winner: '' })], [], nominees).errors[0]).toMatch(/needs a winner/)
+    expect(validateResults([raceRow({ status: 'Reporting', winner: 'A Dem' })], [], nominees).errors[0]).toMatch(/must not name a winner/)
+    expect(validateResults([raceRow({ status: 'Reporting', winner: '' })], [], nominees).errors).toEqual([])
+    expect(validateResults([raceRow({ winner: 'D Dem' })], [], nominees).errors[0]).toMatch(/not in nominees.json for this race/)
   })
 
   it('flags percent_reporting outside 0 to 100, and a non-numeric value', () => {
@@ -115,56 +124,79 @@ describe('validateResults', () => {
   })
 })
 
-describe('buildResultCallout stages', () => {
+describe('buildResultCallout statuses', () => {
   const pair = ['XX-2026--A-DEM', 'XX-2026--B-REP']
+  const parties = new Map<string, Party>([['XX-2026--A-DEM', 'D'], ['XX-2026--B-REP', 'R'], ['XX-2026--C-IND', 'I']])
+  const votes = [voteRow({ votes: '600' }), voteRow({ candidate: 'B Rep', votes: '400' })]
 
-  it('not-added: no race row at all', () => {
+  it('none: no race row at all', () => {
     const out = buildResultCallout(pair, undefined)
-    expect(out).toEqual({ stage: 'not-added', percentReporting: null, shares: { 'XX-2026--A-DEM': null, 'XX-2026--B-REP': null }, leadingCandidateId: null, asOf: null, sourceUrl: null, note: null })
+    expect(out).toEqual({ stage: 'none', percentReporting: null, shares: { 'XX-2026--A-DEM': null, 'XX-2026--B-REP': null }, winnerCandidateId: null, winnerParty: null, asOf: null, sourceUrl: null, note: null })
   })
 
-  it('counting: shares show, no leader', () => {
-    const results = buildResultsByRace([raceRow({ status: 'Counting', percent_reporting: '41' })], [voteRow({ votes: '600' }), voteRow({ candidate: 'B Rep', votes: '400' })], nominees)
-    const out = buildResultCallout(pair, results.get('XX-2026'))
-    expect(out.stage).toBe('counting')
+  it('reporting: shares show, no winner is named', () => {
+    const results = buildResultsByRace([raceRow({ status: 'Reporting', winner: '', percent_reporting: '41' })], votes, nominees)
+    const out = buildResultCallout(pair, results.get('XX-2026'), parties, 'R')
+    expect(out.stage).toBe('reporting')
     expect(out.percentReporting).toBe(41)
     expect(out.shares).toEqual({ 'XX-2026--A-DEM': 60, 'XX-2026--B-REP': 40 })
-    expect(out.leadingCandidateId).toBeNull()
+    expect(out.winnerCandidateId).toBeNull()
   })
 
-  it('unofficial: shares show, with a leader', () => {
-    const results = buildResultsByRace([raceRow({ status: 'Unofficial' })], [voteRow({ votes: '600' }), voteRow({ candidate: 'B Rep', votes: '400' })], nominees)
-    const out = buildResultCallout(pair, results.get('XX-2026'))
-    expect(out.stage).toBe('unofficial')
-    expect(out.leadingCandidateId).toBe('XX-2026--A-DEM')
+  it('win: the winner is the candidate civicAPI flagged, win or flip by the seat holder', () => {
+    const results = buildResultsByRace([raceRow()], votes, nominees)
+    expect(buildResultCallout(pair, results.get('XX-2026'), parties, 'D').stage).toBe('win')
+    const flipped = buildResultCallout(pair, results.get('XX-2026'), parties, 'R')
+    expect(flipped.stage).toBe('flip')
+    expect(flipped.winnerCandidateId).toBe('XX-2026--A-DEM')
+    expect(flipped.winnerParty).toBe('D')
   })
 
-  it('certified: shares show, with a leader, same as unofficial but for the stage', () => {
-    const results = buildResultsByRace([raceRow({ status: 'Certified' })], [voteRow({ votes: '600' }), voteRow({ candidate: 'B Rep', votes: '400' })], nominees)
-    const out = buildResultCallout(pair, results.get('XX-2026'))
-    expect(out.stage).toBe('certified')
-    expect(out.leadingCandidateId).toBe('XX-2026--A-DEM')
-  })
-
-  it('an independent winning a race with no vote row for the pair leaves the pair with no leader', () => {
-    const results = buildResultsByRace([raceRow({ status: 'Certified' })], [voteRow({ candidate: 'C Ind', votes: '900' }), voteRow({ votes: '100' })], nominees)
-    const out = buildResultCallout(pair, results.get('XX-2026'))
-    expect(out.leadingCandidateId).toBe('XX-2026--C-IND') // outside the displayed pair; the UI shows no box for either side
+  it('the winner is civicAPI\'s flag, not whoever has more votes', () => {
+    const results = buildResultsByRace([raceRow({ winner: 'B Rep' })], votes, nominees)
+    expect(buildResultCallout(pair, results.get('XX-2026'), parties, 'R').winnerCandidateId).toBe('XX-2026--B-REP')
   })
 })
 
-describe('symmetry: swapping the two parties mirrors every share and the leader, nothing else', () => {
-  const pair = ['XX-2026--A-DEM', 'XX-2026--B-REP']
-  const swappedNominees: NomineesFile = {
-    ...nominees,
-    candidates: nominees.candidates.map((c) => (c.id === 'XX-2026--A-DEM' ? { ...c, party: 'R' } : c.id === 'XX-2026--B-REP' ? { ...c, party: 'D' } : c)),
+describe('shares total 100 in every race', () => {
+  const total = (shares: { id: string; value: number }[]) => [...wholePercentsN(shares).values()].reduce((a, b) => a + b, 0)
+  const fromVotes = (votes: number[]) => {
+    const sum = votes.reduce((a, b) => a + b, 0)
+    return votes.map((v, i) => ({ id: `c${i}`, value: v / sum }))
   }
 
-  it('gives the same shares and leader whichever party each candidate carries', () => {
-    const races = [raceRow({ status: 'Unofficial' })]
-    const votes = [voteRow({ candidate: 'A Dem', votes: '700' }), voteRow({ candidate: 'B Rep', votes: '300' })]
-    const a = buildResultCallout(pair, buildResultsByRace(races, votes, nominees).get('XX-2026'))
-    const b = buildResultCallout(pair, buildResultsByRace(races, votes, swappedNominees).get('XX-2026'))
-    expect(a).toEqual(b) // the shares are keyed by candidate id, not party, so swapping the party column changes nothing here
+  it('on exact ties and thirds', () => {
+    expect(total(fromVotes([1, 1]))).toBe(100)
+    expect(total(fromVotes([1, 1, 1]))).toBe(100)
+    expect(total(fromVotes([1, 1, 1, 1, 1, 1, 1]))).toBe(100)
+  })
+
+  it('on rounding edges where every share ends in .5 or just under', () => {
+    expect(total(fromVotes([1, 3]))).toBe(100) // 25 / 75
+    expect(total(fromVotes([1, 199]))).toBe(100) // 0.5 / 99.5
+    expect(total(fromVotes([333, 333, 334]))).toBe(100)
+    expect(total(fromVotes([1005, 995]))).toBe(100)
+  })
+
+  it('on a zero-vote candidate and a one-candidate race', () => {
+    expect(total(fromVotes([1000, 0]))).toBe(100)
+    expect(total(fromVotes([42]))).toBe(100)
+  })
+
+  it('on 2,000 random races of two to six candidates', () => {
+    let seed = 7
+    const rand = () => ((seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296)
+    for (let n = 0; n < 2000; n += 1) {
+      const k = 2 + Math.floor(rand() * 5)
+      const votes = Array.from({ length: k }, () => Math.floor(rand() * 5_000_000))
+      if (votes.every((v) => v === 0)) continue
+      expect(total(fromVotes(votes))).toBe(100)
+    }
+  })
+
+  it('and the displayed pair shares come from the same rounding', () => {
+    const results = buildResultsByRace([raceRow()], [voteRow({ votes: '1' }), voteRow({ candidate: 'B Rep', votes: '1' }), voteRow({ candidate: 'C Ind', party: 'I', votes: '1' })], nominees)
+    const out = buildResultCallout(['XX-2026--A-DEM', 'XX-2026--B-REP'], results.get('XX-2026'), new Map([['XX-2026--A-DEM', 'D' as Party]]), 'D')
+    expect(Object.values(out.shares)).toEqual([34, 33]) // 34 + 33 + 33 across all three candidates
   })
 })

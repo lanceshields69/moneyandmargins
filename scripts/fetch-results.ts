@@ -18,7 +18,7 @@ const quote = (value: string) => (/[",\n\r]/.test(value) ? `"${value.replace(/"/
 const toCsv = (headers: readonly string[], rows: Record<string, string>[]) =>
   [headers.join(','), ...rows.map((row) => headers.map((h) => quote(row[h] ?? '')).join(','))].join('\n') + '\n'
 
-const RACE_HEADERS = ['race_id', 'status', 'percent_reporting', 'note', 'source_url', 'as_of'] as const
+const RACE_HEADERS = ['race_id', 'status', 'percent_reporting', 'note', 'source_url', 'as_of', 'winner'] as const
 const VOTE_HEADERS = ['race_id', 'candidate', 'party', 'votes'] as const
 
 const nominees = JSON.parse(read('data/nominees.json')) as NomineesFile

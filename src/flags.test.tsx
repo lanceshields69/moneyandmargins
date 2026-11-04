@@ -330,6 +330,13 @@ describe('panel, labels and header fixes', () => {
     // the map legend note, and the fetch time nowhere on the page outside the modal
     const notes = host.querySelector('.map-notes p')?.textContent
     expect(notes).toBe('Support plus oppose, all candidates in the race. Dark states have no 2026 Senate race.')
+    // the civicAPI source line sits right under the VotePredictor line, in the same wording the cards used
+    const mapNotes = [...host.querySelectorAll('.map-notes p')]
+    const forecastIndex = mapNotes.findIndex((p) => p.textContent?.startsWith('Predicted to win'))
+    expect(forecastIndex).toBeGreaterThan(-1)
+    expect(mapNotes[forecastIndex + 1]?.textContent).toMatch(/^Source: civicAPI, [A-Z][a-z]{2} \d{1,2}, /)
+    expect(mapNotes[forecastIndex + 1]?.querySelector('a')?.textContent).toBe('civicAPI')
+    expect(host.querySelector('.cc-card')?.textContent ?? '').not.toContain('civicAPI')
     act(() => root.unmount())
     host.remove()
     vi.doUnmock('./config')

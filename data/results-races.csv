@@ -1,1 +1,36 @@
-race_id,status,percent_reporting,note,source_url,as_of
+race_id,status,percent_reporting,note,source_url,as_of,winner
+AK-2026,Reporting,73.7,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,
+AL-2026,Win,97.7,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Barry Moore
+AR-2026,Win,100,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Tom Cotton
+CO-2026,Win,76.8,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,John Hickenlooper
+DE-2026,Win,100,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Chris Coons
+FL-2026,Win,100,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Ashley Moody
+GA-2026,Win,89.4,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Jon Ossoff
+IA-2026,Win,99,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Josh Turek
+ID-2026,Win,96.1,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Jim Risch
+IL-2026,Win,78.5,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Juliana Stratton
+KS-2026,Win,95.5,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Adam Hamilton
+KY-2026,Win,86,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Andy Barr
+LA-2026,Win,100,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Julia Letlow
+MA-2026,Win,83,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Ed Markey
+ME-2026,Win,91.1,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Troy Jackson
+MI-2026,Win,96,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Abdul El-Sayed
+MN-2026,Win,100,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Peggy Flanagan
+MS-2026,Reporting,97.3,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,
+MT-2026,Win,80.2,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Kurt Alme
+NC-2026,Win,100,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Roy Cooper
+NE-2026,Win,95.1,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Pete Ricketts
+NH-2026,Win,59.3,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Chris Pappas
+NJ-2026,Win,80.4,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Cory Booker
+NM-2026,Win,88,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Ben Ray Luján
+OH-2026,Win,96.6,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Sherrod Brown
+OK-2026,Win,85,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Kevin Hern
+OR-2026,Win,74.3,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Jeff Merkley
+RI-2026,Win,82.9,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Jack Reed
+SC-2026,Win,100,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Annie Andrews
+SD-2026,Win,100,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Mike Rounds
+TN-2026,Win,89.3,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Bill Hagerty
+TX-2026,Win,99,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,James Talarico
+VA-2026,Win,100,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Mark Warner
+WV-2026,Win,74.9,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Shelley Moore Capito
+WY-2026,Win,86.3,,https://civicapi.org/decision-2026,2026-11-04T16:43:26.820Z,Harriet Hageman

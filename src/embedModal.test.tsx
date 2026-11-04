@@ -41,9 +41,11 @@ describe('the share and embed modal', () => {
     const states = [...new Set(allRaces.races.map((r) => r.state))]
     for (const state of states) {
       const html = render(state)
-      for (const label of ['Spent on ads:', 'Predicted', ' to win:', 'Results', 'Spending aligned with each party', 'Money &amp; Margins', 'moneyandmargins.app', 'Download PNG', 'Copy code']) {
+      for (const label of ['Spent on ads:', 'Predicted', ' to win:', 'Spending aligned with each party', 'Money &amp; Margins', 'moneyandmargins.app', 'Download PNG', 'Copy code']) {
         expect(html, `${state}: ${label}`).toContain(label)
       }
+      // The result heading follows the race's one status, so it is "Results" or, while counting, "Reporting".
+      expect(html.includes('Results') || html.includes('Reporting:'), `${state}: result heading`).toBe(true)
     }
   })
 
@@ -51,7 +53,7 @@ describe('the share and embed modal', () => {
     const html = render('TX')
     expect(html).toContain('Predicted')
     expect(html).toContain(' to win:')
-    expect(html).toContain('Results')
+    expect(html.includes('Results') || html.includes('Reporting:')).toBe(true)
   })
 
   it('carries the close button and the download and copy controls', () => {

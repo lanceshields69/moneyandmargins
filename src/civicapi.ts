@@ -3,9 +3,13 @@
 import type { NomineesFile } from './types'
 import type { ResultsRaceRow, ResultsVoteRow, ResultStatus } from './results'
 
+export const CIVICAPI_URL = 'https://civicapi.org/decision-2026'
+
 export interface CivicCandidate {
   name: string
   votes: number
+  /** civicAPI's own flag that this candidate won. */
+  winner?: boolean
 }
 
 export interface CivicRace {
@@ -22,21 +26,34 @@ export interface RaceRows {
 
 export type FeedResult = { ok: true; rows: RaceRows } | { ok: false; reason: string }
 
-/** Counting until every precinct reports; Unofficial at 100. Certified is never set from the feed. */
+/**
+ * civicAPI's own call and nothing else: Win when it flags exactly one candidate as winner, Reporting when votes
+ * are in and no one is flagged. Never inferred from the counts or the percent reporting. Two winner flags
+ * disagree with themselves, so that race is held (null) rather than guessed.
+ */
 export function feedStatus(race: CivicRace): ResultStatus | null {
   if (race.test_data) return null
   if (race.candidates.every((c) => c.votes === 0)) return null
-  return race.percent_reporting >= 100 ? 'Unofficial' : 'Counting'
+  const winners = race.candidates.filter((c) => c.winner === true).length
+  if (winners > 1) return null
+  return winners === 1 ? 'Win' : 'Reporting'
 }
 
+const SUFFIXES = new Set(['jr', 'sr', 'ii', 'iii', 'iv'])
+/** Common short forms of a first name, so "Ed Markey" matches "Edward J. Markey". Name equivalences only; nothing here reads a party. */
+const FIRST_NAME_FORMS: Record<string, string> = { ed: 'edward', eddie: 'edward', bill: 'william', billy: 'william', jack: 'john', jon: 'john', bob: 'robert', bobby: 'robert', jim: 'james', tom: 'thomas', mike: 'michael', dave: 'david', chris: 'christopher', pete: 'peter', ben: 'benjamin', tim: 'timothy', steve: 'stephen' }
+
 function nameTokens(name: string): string[] {
-  return name
+  const tokens = name
     .normalize('NFD')
     .replace(/[̀-ͯ]/g, '')
     .toLowerCase()
     .replace(/[^a-z ]/g, ' ')
     .split(/\s+/)
     .filter(Boolean)
+    .filter((t, i, all) => !(SUFFIXES.has(t) && i > 0 && i === all.length - 1))
+  if (tokens.length > 0) tokens[0] = FIRST_NAME_FORMS[tokens[0]] ?? tokens[0]
+  return tokens
 }
 
 /** Exact match, or the same first and last name with a middle name on one side only (e.g. "Christopher Campbell"). */
@@ -50,14 +67,17 @@ export function matchesNominee(civicName: string, nomineeName: string): boolean 
 
 export function feedRows(raceId: string, civic: CivicRace, nominees: NomineesFile, officialUrl: string | null, asOf: string): FeedResult {
   const status = feedStatus(civic)
-  if (status === null) return { ok: false, reason: civic.test_data ? 'civicAPI marks this race as test data' : 'no votes reported yet' }
+  if (status === null) return { ok: false, reason: civic.test_data ? 'civicAPI marks this race as test data' : civic.candidates.filter((c) => c.winner === true).length > 1 ? 'civicAPI flags more than one winner' : 'no votes reported yet' }
   const nomineeList = nominees.candidates.filter((c) => c.raceId === raceId)
   const votes: ResultsVoteRow[] = []
+  let winner = ''
   for (const nominee of nomineeList) {
     const match = civic.candidates.find((c) => matchesNominee(c.name, nominee.name))
     if (!match) return { ok: false, reason: `no civicAPI candidate matches ${nominee.name}` }
     votes.push({ race_id: raceId, candidate: nominee.name, party: nominee.party, votes: String(match.votes) })
+    if (match.winner === true) winner = nominee.name
   }
+  if (status === 'Win' && !winner) return { ok: false, reason: 'civicAPI flags a winner who is not one of our nominees' }
   return {
     ok: true,
     rows: {
@@ -66,8 +86,9 @@ export function feedRows(raceId: string, civic: CivicRace, nominees: NomineesFil
         status,
         percent_reporting: String(civic.percent_reporting),
         note: '',
-        source_url: officialUrl ?? 'https://civicapi.org/decision-2026',
+        source_url: officialUrl ?? CIVICAPI_URL,
         as_of: asOf,
+        winner,
       },
       votes,
     },

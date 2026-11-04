@@ -1,10 +1,11 @@
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
-import MapCallout from './components/MapCallout'
-import { buildStateMarks, marksFromCallouts } from './components/StateMarks'
-import type { Callout } from './computeCallout'
+import MapCallout, { wholePercentReporting } from './components/MapCallout'
+import StateMarks, { buildStateMarks, marksFromCallouts } from './components/StateMarks'
+import { buildCallout, type Callout } from './computeCallout'
 import { allRaces, callouts, labelPoints, mapViewBox, stateNames } from './data'
-import type { ResultCallout } from './results'
+import { buildResultCallout, latestResultsAsOf, RESULT_HEADING, type RaceResultData, type ResultCallout, type ResultStage } from './results'
+import type { Party } from './types'
 
 window.matchMedia = ((q: string) => ({
   matches: false,
@@ -18,150 +19,253 @@ window.matchMedia = ((q: string) => ({
 })) as typeof window.matchMedia
 
 const tx = callouts.get('TX')!
-const [demId, repId] = tx.sides.map((s) => s.candidateId) // alphabetical by party label: Democratic, then Republican
+const [demId, repId] = tx.sides.map((s) => s.candidateId) // fixed order: Democrats left, Republicans right
 
 const withResult = (result: ResultCallout): Callout => ({ ...tx, result })
 const render = (callout: Callout) => renderToStaticMarkup(<MapCallout callout={callout} stateName="Texas" anchor={{ x: 0.5, y: 0.5 }} isDefault={false} onClose={() => {}} onOpenHow={() => {}} sharesVerified />)
+const stateName = (st: string) => stateNames.get(st) ?? st
+const marksFor = (callout: Callout) => {
+  const marked = new Map(callouts)
+  marked.set('TX', callout)
+  return buildStateMarks(marksFromCallouts(marked, stateName), (st) => labelPoints.get(st), mapViewBox).find((m) => m.state === 'TX')!
+}
 
-const notAdded: ResultCallout = { stage: 'not-added', percentReporting: null, shares: { [demId]: null, [repId]: null }, leadingCandidateId: null, asOf: null, sourceUrl: null, note: null }
-const counting: ResultCallout = { stage: 'counting', percentReporting: 41, shares: { [demId]: 58, [repId]: 42 }, leadingCandidateId: null, asOf: '2026-11-03T20:00:00Z', sourceUrl: 'https://x.test/tx', note: null }
-const unofficial: ResultCallout = { stage: 'unofficial', percentReporting: 98, shares: { [demId]: 55, [repId]: 45 }, leadingCandidateId: demId, asOf: '2026-11-03T21:00:00Z', sourceUrl: 'https://x.test/tx', note: null }
-const certified: ResultCallout = { stage: 'certified', percentReporting: 100, shares: { [demId]: 55, [repId]: 45 }, leadingCandidateId: demId, asOf: '2026-11-10T12:00:00Z', sourceUrl: 'https://x.test/tx', note: null }
+const none: ResultCallout = { stage: 'none', percentReporting: null, shares: { [demId]: null, [repId]: null }, winnerCandidateId: null, winnerParty: null, asOf: null, sourceUrl: null, note: null }
+const reporting: ResultCallout = { stage: 'reporting', percentReporting: 41, shares: { [demId]: 58, [repId]: 42 }, winnerCandidateId: null, winnerParty: null, asOf: '2026-11-03T20:00:00Z', sourceUrl: 'https://civicapi.org/decision-2026', note: null }
+const win = (winner: string, party: Party): ResultCallout => ({ stage: 'win', percentReporting: 100, shares: { [demId]: 55, [repId]: 45 }, winnerCandidateId: winner, winnerParty: party, asOf: '2026-11-04T01:00:00Z', sourceUrl: 'https://civicapi.org/decision-2026', note: null })
+const flip = (winner: string, party: Party): ResultCallout => ({ ...win(winner, party), stage: 'flip' })
+const STAGES: [ResultStage, ResultCallout][] = [['none', none], ['reporting', reporting], ['win', win(demId, 'D')], ['flip', flip(demId, 'D')]]
 
-describe('the four Result stages', () => {
-  it('not-added: the heading, "--" placeholders, and the Other forecasts link', () => {
-    const html = render(withResult(notAdded))
-    expect(html).toContain('Results (not added)')
-    expect(html.match(/--%/g) ?? []).toHaveLength(0)
-    expect(html).toContain('--') // placeholders, not percentages
-    expect(html).not.toMatch(/\d+%<\/span><\/div>\s*$/) // no stray percent in the result row
+const checks = (html: string) => html.match(/chip-check/g)?.length ?? 0
+
+describe('the four statuses in the callout', () => {
+  it('none: "Results" with "--" only where civicAPI has no data, and the Other forecasts link', () => {
+    const html = render(withResult(none))
+    expect(html).toContain('Results:')
+    expect(html).not.toContain('not added')
+    expect(html).toContain('--')
     expect(html).toContain('Other forecasts')
+    expect(html).not.toContain('Source: ')
+    expect(checks(html)).toBe(0)
   })
 
-  it('counting: the heading with percent reporting, shares, and no leader mark, no Other forecasts link', () => {
-    const html = render(withResult(counting))
-    expect(html).toContain('Results (counting)')
-    expect(html).toContain('41% reporting')
+  it('reporting: the "Reporting" heading with the current counts, no checkmark, no party-color result', () => {
+    const html = render(withResult(reporting))
+    expect(html).toContain('Reporting:')
+    expect(html).not.toContain('Results (win)')
     expect(html).toContain('58%')
     expect(html).toContain('42%')
-    expect(html).not.toContain('cc-lead-col-dashed')
-    expect(html).not.toContain('cc-lead-col-solid')
-    expect(html).not.toContain('✓')
+    expect(html).toContain('41% reporting')
+    expect(checks(html)).toBe(0)
     expect(html).not.toContain('Other forecasts')
   })
 
-  it('unofficial: the heading, shares, a dashed box on the leader, no checkmark, no Other forecasts link', () => {
-    const html = render(withResult(unofficial))
-    expect(html).toContain('Results (unofficial)')
+  it('win: the plain "Results" heading (no "(win)") and the black checkmark on the winner\'s square', () => {
+    const html = render(withResult(win(demId, 'D')))
+    expect(html).toContain('Results:')
+    expect(html).not.toContain('(win)')
+    expect(html).not.toContain('Reporting:')
+    expect(checks(html)).toBe(1)
+    expect(html).toContain('stroke="#000"') // black, not a party color
     expect(html).toContain('55%')
-    expect(html).toContain('45%')
-    expect(html).toContain('cc-lead-col-dashed')
-    expect(html).not.toContain('cc-lead-col-solid')
-    expect(html).not.toContain('✓')
-    expect(html).not.toContain('Other forecasts')
   })
 
-  it('certified: the heading, shares, a solid box and a checkmark on the leader, no Other forecasts link', () => {
-    const html = render(withResult(certified))
-    expect(html).toContain('Results (certified)')
-    expect(html).toContain('cc-lead-col-solid')
-    expect(html).not.toContain('cc-lead-col-dashed')
-    expect(html).toContain('✓')
-    expect(html.match(/✓/g) ?? []).toHaveLength(1) // the checkmark marks only the leader, never both sides
-    expect(html).not.toContain('Other forecasts')
+  it('flip: the plain "Results" heading (no "(flip)") and the checkmark on the winner\'s square, as in the design capture', () => {
+    const html = render(withResult(flip(demId, 'D')))
+    expect(html).toContain('Results:')
+    expect(html).not.toContain('(flip)')
+    expect(html).not.toContain('Reporting:')
+    expect(checks(html)).toBe(1)
   })
 
-  it('the checkmark appears in no other stage', () => {
-    for (const result of [notAdded, counting, unofficial]) expect(render(withResult(result))).not.toContain('✓')
+  it('has no outline box around a result, in any status', () => {
+    for (const [, result] of STAGES) expect(render(withResult(result))).not.toContain('cc-lead-col')
   })
 
-  it('the Other forecasts link appears only at not-added', () => {
-    for (const result of [counting, unofficial, certified]) expect(render(withResult(result))).not.toContain('Other forecasts')
-    expect(render(withResult(notAdded))).toContain('Other forecasts')
-  })
-
-  it('every stage shows an as-of time and a source line, except not-added', () => {
-    expect(render(withResult(notAdded))).not.toContain('Source')
-    for (const result of [counting, unofficial, certified]) expect(render(withResult(result))).toContain('Source')
-  })
-
-  it('the forecast row ("Predicted to win") stays visible in every stage', () => {
-    for (const result of [notAdded, counting, unofficial, certified]) expect(render(withResult(result))).toContain('Predicted to win')
-  })
-
-  it('swapping which side is leading mirrors the dashed/solid box and the checkmark, with no party branch', () => {
-    const demLeads = render(withResult({ ...certified, leadingCandidateId: demId }))
-    const repLeads = render(withResult({ ...certified, leadingCandidateId: repId }))
-    expect(demLeads.split('cc-lead-col-solid').length).toBe(repLeads.split('cc-lead-col-solid').length)
-    expect(demLeads.split('✓').length).toBe(repLeads.split('✓').length)
-  })
-})
-
-describe('headings and shapes use the same rule for every race', () => {
-  it('shows the same heading text for every race at the same stage, and the same layout', () => {
-    const headings = new Set<string>()
-    for (const [state, callout] of callouts) {
-      const html = render({ ...callout, result: counting })
-      const m = /Results \(counting\)/.exec(html)
-      expect(m).not.toBeNull()
-      headings.add(state ? 'Results (counting)' : '')
+  it('no card carries the civicAPI source line (it is once under the map), and every card keeps "Predicted to win"', () => {
+    for (const [, result] of STAGES) {
+      const html = render(withResult(result))
+      expect(html).toContain('Predicted to win:')
+      expect(html).not.toContain('Source: ')
+      expect(html).not.toContain('civicAPI')
     }
-    expect(headings.size).toBe(1)
+  })
+
+  it('the percent reporting stays on a Reporting card only', () => {
+    expect(render(withResult(reporting))).toContain('41% reporting.')
+    for (const result of [none, win(demId, 'D'), flip(demId, 'D')]) expect(render(withResult(result))).not.toContain('% reporting')
+  })
+
+  it('the checkmark is in the card only, inside the winner\'s color square, for Win and Flip', () => {
+    for (const [stage, result] of STAGES) expect(checks(render(withResult(result)))).toBe(stage === 'win' || stage === 'flip' ? 1 : 0)
+    // it sits in the winner's square, not the other side's
+    const demWins = render(withResult(win(demId, 'D')))
+    const repWins = render(withResult(win(repId, 'R')))
+    const squares = (html: string) => [...html.matchAll(/<span class="cc-square"[^>]*aria-label="(Democratic|Republican)[^"]*">(.*?)<\/span>/g)].map((m) => [m[1], m[2].includes('chip-check')])
+    expect(squares(demWins)).toEqual([['Democratic', true], ['Republican', false]])
+    expect(squares(repWins)).toEqual([['Democratic', false], ['Republican', true]])
+  })
+
+  it('the checkmark is never on the map', () => {
+    for (const [, result] of STAGES) expect(renderToStaticMarkup(<StateMarks marks={[marksFor(withResult(result))]} />)).not.toContain('chip-check')
   })
 })
 
-describe('state marks: circle, ring, square', () => {
-  const stateName = (st: string) => stateNames.get(st) ?? st
-
-  it('draws a ring while counting, with an aria-label naming the percent reporting, not a party', () => {
-    const marked = new Map(callouts)
-    marked.set('TX', withResult(counting))
-    const marks = buildStateMarks(marksFromCallouts(marked, stateName), (st) => labelPoints.get(st), mapViewBox)
-    const tx = marks.find((m) => m.state === 'TX')!
-    expect(tx.kind).toBe('ring')
-    expect(tx.color).toBeNull()
-    expect(tx.ariaLabel).toContain('41 percent reporting')
-    expect(tx.ariaLabel).not.toMatch(/Democratic|Republican/)
+describe('the map chip for each status', () => {
+  it('win: solid party color, the state code, no checkmark, and the accessible label "[State]: [party], Win."', () => {
+    const m = marksFor(withResult(win(demId, 'D')))
+    expect(m).toMatchObject({ kind: 'win', code: 'TX', ariaLabel: 'Texas: Democratic, Win.' })
+    expect(m.color).not.toBeNull()
   })
 
-  it('draws a square with the party letter and a dashed outline at unofficial, solid at certified', () => {
-    const marked = new Map(callouts)
-    marked.set('TX', withResult(unofficial))
-    let marks = buildStateMarks(marksFromCallouts(marked, stateName), (st) => labelPoints.get(st), mapViewBox)
-    let tx = marks.find((m) => m.state === 'TX')!
-    expect(tx.kind).toBe('square')
-    expect(tx.outline).toBe('dashed')
-    expect(tx.letter).not.toBeNull()
-
-    marked.set('TX', withResult(certified))
-    marks = buildStateMarks(marksFromCallouts(marked, stateName), (st) => labelPoints.get(st), mapViewBox)
-    tx = marks.find((m) => m.state === 'TX')!
-    expect(tx.outline).toBe('solid')
+  it('flip: party color with the dashed border class, no checkmark, label ends ", Flip."', () => {
+    const m = marksFor(withResult(flip(demId, 'D')))
+    expect(m).toMatchObject({ kind: 'flip', code: 'TX', ariaLabel: 'Texas: Democratic, Flip.' })
+    expect(m.color).not.toBeNull()
+    const html = renderToStaticMarkup(<StateMarks marks={[m]} />)
+    expect(html).toContain('state-chip-flip')
+    expect(html).toContain('role="img"')
+    expect(html).toContain('aria-label="Texas: Democratic, Flip."')
+    expect(checks(html)).toBe(0)
   })
 
-  it('draws a party-tinted circle before counting, when the forecast covers the race', () => {
+  it('reporting: off-white, no party color, no checkmark, no party in the label', () => {
+    const m = marksFor(withResult(reporting))
+    expect(m).toMatchObject({ kind: 'reporting', code: 'TX', color: null, ariaLabel: 'Texas: Reporting.' })
+    expect(m.ariaLabel).not.toMatch(/Democratic|Republican/)
+  })
+
+  it('none: no chip; the race keeps its forecast circle', () => {
+    const m = marksFor(withResult(none))
+    expect(m.kind).toBe('circle')
+    expect(m.code).toBeNull()
+    const html = renderToStaticMarkup(<StateMarks marks={[m]} />)
+    expect(html).not.toContain('state-chip-result')
+  })
+
+  it('a race never shows two statuses: the chip, heading and checkmark all read the one status', () => {
+    const expected: Record<ResultStage, { kind: string; heading: string }> = {
+      none: { kind: 'circle', heading: 'Results:' },
+      reporting: { kind: 'reporting', heading: 'Reporting:' },
+      win: { kind: 'win', heading: 'Results:' },
+      flip: { kind: 'flip', heading: 'Results:' },
+    }
+    for (const [stage, result] of STAGES) {
+      const callout = withResult(result)
+      const html = render(callout)
+      expect(marksFor(callout).kind).toBe(expected[stage].kind)
+      expect(RESULT_HEADING[stage]).toBe(expected[stage].heading)
+      // none and win share the plain "Results:" heading, so compare the distinct headings the card shows
+      const headings = [...new Set(Object.values(RESULT_HEADING).filter((h) => html.includes(h)))]
+      expect(headings).toEqual([expected[stage].heading])
+    }
+  })
+
+  it('every mark covers a real race, with one mark per state', () => {
     const marks = buildStateMarks(marksFromCallouts(callouts, stateName), (st) => labelPoints.get(st), mapViewBox)
-    const tx = marks.find((m) => m.state === 'TX')!
-    expect(tx.kind).toBe('circle')
-    expect(tx.color).not.toBeNull()
-  })
-
-  it('every mark covers a real race, and every race with a known outcome has a mark', () => {
-    const marks = buildStateMarks(marksFromCallouts(callouts, stateName), (st) => labelPoints.get(st), mapViewBox)
-    const states = new Set(marks.map((m) => m.state))
     for (const m of marks) expect(allRaces.races.some((r) => r.state === m.state)).toBe(true)
-    expect(states.size).toBe(marks.length) // one mark per state
+    expect(new Set(marks.map((m) => m.state)).size).toBe(marks.length)
+  })
+})
+
+describe('Win or Flip comes from the seat\'s prior holder', () => {
+  const race: RaceResultData = { status: 'Win', percentReporting: 100, note: null, sourceUrl: 'https://x.test', asOf: '2026-11-04T01:00:00Z', winnerCandidateId: demId, votesByCandidate: new Map([[demId, 55], [repId, 45]]) }
+  const parties = new Map<string, Party>([[demId, 'D'], [repId, 'R']])
+  const stageFor = (winner: string, holder: Party | null) => buildResultCallout([demId, repId], { ...race, winnerCandidateId: winner }, parties, holder).stage
+
+  it('a Democratic win in a Republican-held seat is Flip, and the reverse holds', () => {
+    expect(stageFor(demId, 'R')).toBe('flip')
+    expect(stageFor(repId, 'D')).toBe('flip')
   })
 
-  it('swapping the leading party swaps the mark color and letter, symmetrically', () => {
-    const demLeads = new Map(callouts)
-    demLeads.set('TX', withResult({ ...certified, leadingCandidateId: demId }))
-    const repLeads = new Map(callouts)
-    repLeads.set('TX', withResult({ ...certified, leadingCandidateId: repId }))
-    const a = buildStateMarks(marksFromCallouts(demLeads, stateName), (st) => labelPoints.get(st), mapViewBox).find((m) => m.state === 'TX')!
-    const b = buildStateMarks(marksFromCallouts(repLeads, stateName), (st) => labelPoints.get(st), mapViewBox).find((m) => m.state === 'TX')!
-    expect(a.letter).not.toBe(b.letter)
+  it('a win by the party that held the seat is Win, for either party', () => {
+    expect(stageFor(demId, 'D')).toBe('win')
+    expect(stageFor(repId, 'R')).toBe('win')
+  })
+
+  it('a race with a winner and an unknown prior holder is held as Reporting, never guessed', () => {
+    expect(stageFor(demId, null)).toBe('reporting')
+  })
+
+  it('no winner flag from civicAPI means Reporting, whatever the votes say', () => {
+    const out = buildResultCallout([demId, repId], { ...race, status: 'Reporting', winnerCandidateId: null, votesByCandidate: new Map([[demId, 99], [repId, 1]]) }, parties, 'R')
+    expect(out.stage).toBe('reporting')
+    expect(out.winnerCandidateId).toBeNull()
+  })
+
+  it('the seven flipped seats in the data are Flip when a Democrat wins, and Win when the holder wins', () => {
+    const holders = Object.fromEntries(['TX', 'KS', 'OH', 'ME', 'IA', 'NC', 'SC'].map((s) => [s, 'R' as Party]))
+    const stages = Object.keys(holders).map((st) => {
+      const c = callouts.get(st)!
+      const d = c.sides.find((s) => s.party === 'D')!.candidateId
+      const result = buildResultCallout(c.sides.map((s) => s.candidateId), { ...race, winnerCandidateId: d, votesByCandidate: new Map(c.sides.map((s, i) => [s.candidateId, i === 0 ? 55 : 45])) }, new Map(c.sides.map((s) => [s.candidateId, s.party])), holders[st])
+      return result.stage
+    })
+    expect(stages.every((s) => s === 'flip')).toBe(true)
+  })
+})
+
+describe('the callout order is fixed by party', () => {
+  it('Democrats left, Republicans right, whichever side leads', () => {
+    const demWins = render(withResult(win(demId, 'D')))
+    const repWins = render(withResult(win(repId, 'R')))
+    const order = (html: string) => [...html.matchAll(/aria-label="(Democratic|Republican)[^"]*"/g)].map((m) => m[1])
+    expect(order(demWins)).toEqual(['Democratic', 'Republican'])
+    expect(order(repWins)).toEqual(['Democratic', 'Republican'])
+    expect(tx.sides.map((s) => s.party)).toEqual(['D', 'R'])
+  })
+
+  it('puts an independent after the Democrat or the Republican, never before', () => {
+    const ne = callouts.get('NE')!
+    expect(ne.sides.map((s) => s.party)).toEqual(['R', 'I'])
+    const rows = allRaces.races.find((r) => r.state === 'NE')!
+    expect(buildCallout(rows, undefined).sides.map((s) => s.party)).toEqual(['R', 'I'])
+  })
+})
+
+describe('swapping party labels mirrors every chip and value, except the fixed order', () => {
+  it('the same status, the mirrored party color, and the same shares', () => {
+    const a = marksFor(withResult(flip(demId, 'D')))
+    const b = marksFor(withResult(flip(repId, 'R')))
+    expect(a.kind).toBe(b.kind)
     expect(a.color).not.toBe(b.color)
-    expect(a.outline).toBe(b.outline)
+    expect(a.ariaLabel.replace('Democratic', 'X')).toBe(b.ariaLabel.replace('Republican', 'X'))
+    expect(tx.sides.map((s) => s.party)).toEqual(['D', 'R']) // the order does not mirror
+  })
+
+  it('a Republican win in a Democratic-held seat mirrors a Democratic win in a Republican-held one', () => {
+    const parties = new Map<string, Party>([[demId, 'D'], [repId, 'R']])
+    const swapped = new Map<string, Party>([[demId, 'R'], [repId, 'D']])
+    const base: RaceResultData = { status: 'Win', percentReporting: 100, note: null, sourceUrl: 'https://x.test', asOf: '2026-11-04T01:00:00Z', winnerCandidateId: demId, votesByCandidate: new Map([[demId, 61], [repId, 39]]) }
+    const a = buildResultCallout([demId, repId], base, parties, 'R')
+    const b = buildResultCallout([demId, repId], base, swapped, 'D')
+    expect(b.stage).toBe(a.stage)
+    expect(b.shares).toEqual(a.shares)
+    expect(b.winnerParty).toBe('R')
+    expect(a.winnerParty).toBe('D')
+  })
+})
+
+describe('percent reporting has no decimals', () => {
+  it('rounds to a whole number, and never reads 100% before the count is complete', () => {
+    expect(wholePercentReporting(73.7)).toBe(74)
+    expect(wholePercentReporting(97.3)).toBe(97)
+    expect(wholePercentReporting(99.6)).toBe(99)
+    expect(wholePercentReporting(100)).toBe(100)
+    expect(wholePercentReporting(0.2)).toBe(0)
+  })
+
+  it('shows "74% reporting" for a race that is 73.7 percent in', () => {
+    const html = render(withResult({ ...reporting, percentReporting: 73.7 }))
+    expect(html).toContain('74% reporting')
+    expect(html).not.toContain('73.7')
+  })
+})
+
+describe('the civicAPI source line under the map', () => {
+  it('uses the newest as-of time among the results, and none when there are no results', () => {
+    const mk = (asOf: string): RaceResultData => ({ status: 'Reporting', percentReporting: 5, note: null, sourceUrl: 'x', asOf, winnerCandidateId: null, votesByCandidate: new Map() })
+    expect(latestResultsAsOf(new Map([['A', mk('2026-11-04T01:00:00Z')], ['B', mk('2026-11-04T09:30:00Z')]]))).toBe('2026-11-04T09:30:00Z')
+    expect(latestResultsAsOf(new Map())).toBeNull()
   })
 })

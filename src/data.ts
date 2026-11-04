@@ -1,4 +1,5 @@
 import resultsRacesRaw from '../data/results-races.csv?raw'
+import seatHoldersJson from '../data/seat-holders.json'
 import resultsVotesRaw from '../data/results-votes.csv?raw'
 import nomineesJson from '../data/nominees.json'
 import spendingJson from '../data/spending.json'
@@ -6,9 +7,9 @@ import usStatesData from '../data/us-states.json'
 import { parseCsv } from './csv'
 import { buildAllRaces } from './computeSpending'
 import { buildAllCallouts, latestSnapshot } from './computeCallout'
-import { buildResultsByRace, type ResultsRaceRow, type ResultsVoteRow } from './results'
+import { buildResultsByRace, latestResultsAsOf, type ResultsRaceRow, type ResultsVoteRow } from './results'
 import type { RaceFlagsFile } from './raceFlags'
-import type { NomineesFile, SpendingFile } from './types'
+import type { NomineesFile, Party, SpendingFile } from './types'
 import type { SeatForecastEntry } from './seatForecastSources'
 
 const snapshotFiles = import.meta.glob('../data/frozen/*/snapshot.json', { eager: true })
@@ -47,7 +48,9 @@ export const resultsByRace = buildResultsByRace(
   nomineesJson as unknown as NomineesFile,
 )
 
-export const callouts = buildAllCallouts(allRaces.races, forecastSnapshot, resultsByRace)
+export const resultsAsOf = latestResultsAsOf(resultsByRace)
+
+export const callouts = buildAllCallouts(allRaces.races, forecastSnapshot, resultsByRace, seatHoldersJson.holders as Record<string, Party>)
 
 export const stateNames = new Map(
   (usStatesData as { states: { usps: string; name: string }[] }).states.map((s) => [s.usps, s.name]),

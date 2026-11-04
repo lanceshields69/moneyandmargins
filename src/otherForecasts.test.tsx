@@ -4,7 +4,13 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import pagesJson from '../data/votepredictor-pages.json'
 import MapCallout from './components/MapCallout'
-import { allRaces, callouts } from './data'
+import { allRaces, callouts as liveCallouts } from './data'
+import type { Callout as CalloutData } from './computeCallout'
+
+// The link shows only for a race with no result yet, so these tests pin every race to "no status" instead of
+// depending on what civicAPI has reported by the time they run.
+const noResult: CalloutData['result'] = { stage: 'none', percentReporting: null, shares: {}, winnerCandidateId: null, winnerParty: null, asOf: null, sourceUrl: null, note: null }
+const callouts = new Map([...liveCallouts].map(([state, c]) => [state, { ...c, result: { ...noResult, shares: Object.fromEntries(c.sides.map((s) => [s.candidateId, null])) } }]))
 import { hasOtherForecasts } from './otherForecasts'
 import { OTHER_FORECASTS_TITLE, otherForecastsUrl, VOTEPREDICTOR } from './votepredictor'
 
