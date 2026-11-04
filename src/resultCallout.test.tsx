@@ -70,11 +70,11 @@ describe('the four statuses in the callout', () => {
     expect(html).toContain('55%')
   })
 
-  it('flip: "Results (flip)" and no checkmark', () => {
+  it('flip: "Results (flip)" and the checkmark on the winner\'s square, as in the design capture', () => {
     const html = render(withResult(flip(demId, 'D')))
     expect(html).toContain('Results (flip):')
     expect(html).not.toContain('Reporting:')
-    expect(checks(html)).toBe(0)
+    expect(checks(html)).toBe(1)
   })
 
   it('has no outline box around a result, in any status', () => {
@@ -91,21 +91,31 @@ describe('the four statuses in the callout', () => {
     }
   })
 
-  it('the checkmark appears on Win only', () => {
-    for (const [stage, result] of STAGES) expect(checks(render(withResult(result)))).toBe(stage === 'win' ? 1 : 0)
+  it('the checkmark is in the card only, inside the winner\'s color square, for Win and Flip', () => {
+    for (const [stage, result] of STAGES) expect(checks(render(withResult(result)))).toBe(stage === 'win' || stage === 'flip' ? 1 : 0)
+    // it sits in the winner's square, not the other side's
+    const demWins = render(withResult(win(demId, 'D')))
+    const repWins = render(withResult(win(repId, 'R')))
+    const squares = (html: string) => [...html.matchAll(/<span class="cc-square"[^>]*aria-label="(Democratic|Republican)[^"]*">(.*?)<\/span>/g)].map((m) => [m[1], m[2].includes('chip-check')])
+    expect(squares(demWins)).toEqual([['Democratic', true], ['Republican', false]])
+    expect(squares(repWins)).toEqual([['Democratic', false], ['Republican', true]])
+  })
+
+  it('the checkmark is never on the map', () => {
+    for (const [, result] of STAGES) expect(renderToStaticMarkup(<StateMarks marks={[marksFor(withResult(result))]} />)).not.toContain('chip-check')
   })
 })
 
 describe('the map chip for each status', () => {
-  it('win: solid party color, the state code, a checkmark, and the accessible label "[State]: [party], Win."', () => {
+  it('win: solid party color, the state code, no checkmark, and the accessible label "[State]: [party], Win."', () => {
     const m = marksFor(withResult(win(demId, 'D')))
-    expect(m).toMatchObject({ kind: 'win', code: 'TX', check: true, ariaLabel: 'Texas: Democratic, Win.' })
+    expect(m).toMatchObject({ kind: 'win', code: 'TX', ariaLabel: 'Texas: Democratic, Win.' })
     expect(m.color).not.toBeNull()
   })
 
   it('flip: party color with the dashed border class, no checkmark, label ends ", Flip."', () => {
     const m = marksFor(withResult(flip(demId, 'D')))
-    expect(m).toMatchObject({ kind: 'flip', code: 'TX', check: false, ariaLabel: 'Texas: Democratic, Flip.' })
+    expect(m).toMatchObject({ kind: 'flip', code: 'TX', ariaLabel: 'Texas: Democratic, Flip.' })
     expect(m.color).not.toBeNull()
     const html = renderToStaticMarkup(<StateMarks marks={[m]} />)
     expect(html).toContain('state-chip-flip')
@@ -116,7 +126,7 @@ describe('the map chip for each status', () => {
 
   it('reporting: off-white, no party color, no checkmark, no party in the label', () => {
     const m = marksFor(withResult(reporting))
-    expect(m).toMatchObject({ kind: 'reporting', code: 'TX', color: null, check: false, ariaLabel: 'Texas: Reporting.' })
+    expect(m).toMatchObject({ kind: 'reporting', code: 'TX', color: null, ariaLabel: 'Texas: Reporting.' })
     expect(m.ariaLabel).not.toMatch(/Democratic|Republican/)
   })
 
@@ -124,7 +134,6 @@ describe('the map chip for each status', () => {
     const m = marksFor(withResult(none))
     expect(m.kind).toBe('circle')
     expect(m.code).toBeNull()
-    expect(m.check).toBe(false)
     const html = renderToStaticMarkup(<StateMarks marks={[m]} />)
     expect(html).not.toContain('state-chip-result')
   })
@@ -213,7 +222,6 @@ describe('swapping party labels mirrors every chip and value, except the fixed o
     const a = marksFor(withResult(flip(demId, 'D')))
     const b = marksFor(withResult(flip(repId, 'R')))
     expect(a.kind).toBe(b.kind)
-    expect(a.check).toBe(b.check)
     expect(a.color).not.toBe(b.color)
     expect(a.ariaLabel.replace('Democratic', 'X')).toBe(b.ariaLabel.replace('Republican', 'X'))
     expect(tx.sides.map((s) => s.party)).toEqual(['D', 'R']) // the order does not mirror

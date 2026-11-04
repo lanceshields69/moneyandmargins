@@ -5,8 +5,9 @@ import type { Party } from '../types'
 
 /**
  * One mark per race, read from the race's single status:
- * - win:       solid party color, a black checkmark, the state code
- * - flip:      the party color with a 2px dashed border, the state code, no checkmark
+ * - win:       solid party color and the state code
+ * - flip:      the party color with a 2px dashed border and the state code
+ * The checkmark is never on the map: it sits only in the callout, inside the winner's color square.
  * - reporting: off-white, no party color, the state code
  * - none:      no chip; the race keeps its forecast circle
  */
@@ -21,8 +22,6 @@ export interface StateMark {
   color: string | null
   /** Standard two-letter state code, shown inside a result chip. Null for the forecast circle. */
   code: string | null
-  /** True on win only. */
-  check: boolean
   /** "[State name]: [party], [status]." e.g. "Texas: Democratic, Flip." */
   ariaLabel: string
   /** Extra downward offset in px, for a label point too close to the state's top edge. */
@@ -58,7 +57,7 @@ export function buildStateMarks(
     const { stage, winnerParty } = race.result
 
     if (stage === 'reporting') {
-      return [{ ...base, kind: 'reporting', color: null, code: race.state, check: false, ariaLabel: `${race.stateName}: ${STATUS_WORD.reporting}.` }]
+      return [{ ...base, kind: 'reporting', color: null, code: race.state, ariaLabel: `${race.stateName}: ${STATUS_WORD.reporting}.` }]
     }
     if ((stage === 'win' || stage === 'flip') && winnerParty) {
       return [{
@@ -66,7 +65,6 @@ export function buildStateMarks(
         kind: stage,
         color: PARTY_DISPLAY[winnerParty].color,
         code: race.state,
-        check: stage === 'win',
         ariaLabel: `${race.stateName}: ${PARTY_DISPLAY[winnerParty].label}, ${STATUS_WORD[stage]}.`,
       }]
     }
@@ -76,7 +74,6 @@ export function buildStateMarks(
       kind: 'circle',
       color: PARTY_DISPLAY[race.favoredParty].color,
       code: null,
-      check: false,
       ariaLabel: `${race.stateName}: forecast favors ${PARTY_DISPLAY[race.favoredParty].label}.`,
     }]
   })
@@ -96,14 +93,13 @@ export default function StateMarks({ marks }: { marks: StateMark[] }) {
           aria-label={m.ariaLabel}
         >
           {m.code}
-          {m.check && <CheckIcon />}
         </span>
       ))}
     </>
   )
 }
 
-/** The black checkmark, on Win only. Black, not a party color, so it adds no second party signal. */
+/** The black checkmark inside the winner's color square in the callout, for Win and Flip. Black, not a party color, so it adds no second party signal. */
 export function CheckIcon({ size = 8 }: { size?: number }) {
   return (
     <svg className="chip-check" width={size} height={size} viewBox="0 0 8 8" aria-hidden="true" focusable="false">

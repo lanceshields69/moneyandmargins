@@ -202,7 +202,7 @@ export default function MapCallout({ callout, stateName, anchor, isDefault, deta
             const wonHere = side.candidateId === callout.result.winnerCandidateId
             return (
               <span key={side.candidateId} className="cc-head-cell">
-                <Square side={side} checked={wonHere && callout.result.stage === 'win'} />
+                <Square side={side} checked={wonHere} />
               </span>
             )
           })}

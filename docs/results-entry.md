@@ -24,9 +24,11 @@ One row per nominee per race: `race_id`, `candidate`, `party` (reference only; t
 
 One status per race, read from these files and `data/seat-holders.json` (the party that held each seat before the election):
 
-- **Win:** status `Win`, and the winner's party held the seat. Solid party-color chip with a black checkmark.
+- **Win:** status `Win`, and the winner's party held the seat. Solid party-color chip.
 - **Flip:** status `Win`, and the winner's party did not hold the seat (derived, never stored). Party-color chip with a 2px dashed border.
 - **Reporting:** `Reporting`. Off-white chip, no party color.
 - **None:** no row. No chip; the race keeps its forecast circle.
 
 A status is never inferred from vote counts. A `Win` row whose seat holder is unknown is held as Reporting.
+
+The card puts a black checkmark inside the winner's color square, for Win and Flip. It never appears on the map chips.
