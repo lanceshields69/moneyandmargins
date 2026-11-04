@@ -508,8 +508,7 @@ strong {
   border-radius: 6px;
   padding: 12px 14px;
 }
-/* "Forecast to win the Senate" carousel (Figma node 77:1812). Crossfades every 3s between sources; see
-   src/components/SeatForecastCarousel.tsx and scripts/freeze-seat-forecasts.ts. */
+/* The Senate image (Figma node 77:1792): one image, no carousel. See src/components/SenateResultsImage.tsx. */
 .seat-forecast {
   position: relative;
   flex: 0 0 auto;
@@ -517,40 +516,6 @@ strong {
   max-width: 100%;
   margin-inline: auto;
   aspect-ratio: 664 / 511;
-}
-.seat-forecast-card {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 700ms ease;
-}
-.seat-forecast-card a {
-  pointer-events: auto;
-}
-.seat-forecast-card-active {
-  opacity: 1;
-  pointer-events: auto;
-}
-.seat-forecast-dots {
-  position: absolute;
-  left: 50%;
-  top: 93.9%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  align-items: center;
-  gap: 3.2px;
-  pointer-events: none;
-}
-.seat-forecast-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: #d9d9d9;
-  transition: width 200ms ease;
-}
-.seat-forecast-dot-active {
-  width: 15.2px;
 }
 .national-head {
   display: flex;

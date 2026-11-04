@@ -11,8 +11,10 @@ import ShareMenu from './components/ShareMenu'
 import UsStatesMap, { rampColor } from './components/UsStatesMap'
 import StateMarks, { buildStateMarks, marksFromCallouts } from './components/StateMarks'
 import { buildNationalCard } from './computeNational'
-import { allRaces, callouts, forecastSnapshot, labelPoints, mapViewBox, methodologyFigures, resultsAsOf, seatForecastSources, stateNames } from './data'
-import SeatForecastCarousel from './components/SeatForecastCarousel'
+import { allRaces, callouts, forecastSnapshot, labelPoints, mapViewBox, methodologyFigures, resultsAsOf, stateNames } from './data'
+import SenateResultsImage from './components/SenateResultsImage'
+import { SENATE_BASELINE } from '../scripts/data/senate-baseline-source'
+import { buildSenateTally } from './senateResults'
 import logo from '../images/logo.png'
 import { DATA_VERIFIED, SHARES_VERIFIED } from './config'
 import { DATA_CHECK_NOTICE, FINAL_FORECAST_TAG, forecastPhrase } from './copy'
@@ -120,7 +122,14 @@ export default function App() {
     () => buildStateMarks(marksFromCallouts(callouts, (st) => stateNames.get(st) ?? st), (st) => labelPoints.get(st), mapViewBox),
     [],
   )
-  // Figma node 74:1669's card is 664x511; keep this ratio in sync with SeatForecastCarousel's own SVG viewBox.
+  // The Senate image (Figma node 77:1792): seats from the civicAPI statuses, spending from the national card.
+  const senateTally = useMemo(() => buildSenateTally(callouts, SENATE_BASELINE), [])
+  const senateSpent = useMemo(() => {
+    const groups = buildNationalCard(allRaces.races, null).groups
+    const of = (party: 'D' | 'R') => groups.find((g) => g.party === party)?.total ?? null
+    return { D: SHARES_VERIFIED ? of('D') : null, R: SHARES_VERIFIED ? of('R') : null }
+  }, [])
+  // Figma's card is 664x511; keep this ratio in sync with SenateResultsImage's own SVG viewBox.
   const carouselSize = useMemo(() => (carouselHeight ? { width: carouselHeight * (664 / 511), height: carouselHeight } : null), [carouselHeight])
   const point = active ? labelPoints.get(active) : undefined
   const [vx, vy, vw, vh] = mapViewBox
@@ -189,7 +198,8 @@ export default function App() {
               ))}
             </select>
           </label>
-            {seatForecastSources.length > 0 && <SeatForecastCarousel sources={seatForecastSources} sizePx={carouselSize} />}
+            <SenateResultsImage tally={senateTally} spent={senateSpent} sizePx={carouselSize} />
+
             {SHARES_VERIFIED && <NationalCard card={national} stateName={active ? (stateNames.get(active) ?? active) : null} />}
           </div>
 
