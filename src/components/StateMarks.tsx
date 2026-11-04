@@ -1,21 +1,29 @@
 import type { Callout } from '../computeCallout'
 import { PARTY_DISPLAY } from '../computeSpending'
+import type { ResultStage } from '../results'
 import type { Party } from '../types'
 
-export type MarkKind = 'circle' | 'ring' | 'square'
+/**
+ * One mark per race, read from the race's single status:
+ * - win:       solid party color, a black checkmark, the state code
+ * - flip:      the party color with a 2px dashed border, the state code, no checkmark
+ * - reporting: off-white, no party color, the state code
+ * - none:      no chip; the race keeps its forecast circle
+ */
+export type MarkKind = 'circle' | 'win' | 'flip' | 'reporting'
 
 export interface StateMark {
   state: string
   x: number
   y: number
   kind: MarkKind
-  /** Fill color: the favored party's token for a circle, the leader's for a square. Null for the neutral ring. */
+  /** Fill color: the winner's party token for win and flip, the favored party's for the forecast circle. Null for reporting. */
   color: string | null
-  /** The party letter shown in a square mark. Null for circle and ring. */
-  letter: Party | null
-  /** Dashed at Unofficial, solid at Certified. Null everywhere else. */
-  outline: 'dashed' | 'solid' | null
-  /** e.g. "Texas: Republican, unofficial, 52 percent." */
+  /** Standard two-letter state code, shown inside a result chip. Null for the forecast circle. */
+  code: string | null
+  /** True on win only. */
+  check: boolean
+  /** "[State name]: [party], [status]." e.g. "Texas: Democratic, Flip." */
   ariaLabel: string
   /** Extra downward offset in px, for a label point too close to the state's top edge. */
   nudgePx: number
@@ -30,13 +38,13 @@ export interface MarkRaceInput {
   /** Set only for a two-major-party forecast (NE, ID, SD and any no-forecast race pass null). */
   favoredParty: Party | null
   result: {
-    stage: 'not-added' | 'counting' | 'unofficial' | 'certified'
-    percentReporting: number | null
-    leadingParty: Party | null
+    stage: ResultStage
+    winnerParty: Party | null
   }
 }
 
-/** One mark per race: a square once there is a result past counting, a ring while counting, else a forecast circle. */
+const STATUS_WORD: Record<'win' | 'flip' | 'reporting', string> = { win: 'Win', flip: 'Flip', reporting: 'Reporting' }
+
 export function buildStateMarks(
   races: MarkRaceInput[],
   labelPoint: (state: string) => [number, number] | undefined,
@@ -46,68 +54,61 @@ export function buildStateMarks(
   return races.flatMap((race): StateMark[] => {
     const point = labelPoint(race.state)
     if (!point) return []
-    const x = (point[0] - vx) / vw
-    const y = (point[1] - vy) / vh
-    const nudgePx = MARK_NUDGE_PX[race.state] ?? 0
+    const base = { state: race.state, x: (point[0] - vx) / vw, y: (point[1] - vy) / vh, nudgePx: MARK_NUDGE_PX[race.state] ?? 0 }
+    const { stage, winnerParty } = race.result
 
-    if (race.result.stage === 'counting') {
-      const pct = race.result.percentReporting
-      return [{
-        state: race.state,
-        x,
-        y,
-        nudgePx,
-        kind: 'ring' as const,
-        color: null,
-        letter: null,
-        outline: null,
-        ariaLabel: `${race.stateName}: counting${pct !== null ? `, ${pct} percent reporting` : ''}.`,
-      }]
+    if (stage === 'reporting') {
+      return [{ ...base, kind: 'reporting', color: null, code: race.state, check: false, ariaLabel: `${race.stateName}: ${STATUS_WORD.reporting}.` }]
     }
-    if (race.result.stage === 'unofficial' || race.result.stage === 'certified') {
-      if (!race.result.leadingParty) return []
-      const pct = race.result.percentReporting
+    if ((stage === 'win' || stage === 'flip') && winnerParty) {
       return [{
-        state: race.state,
-        x,
-        y,
-        nudgePx,
-        kind: 'square' as const,
-        color: PARTY_DISPLAY[race.result.leadingParty].color,
-        letter: race.result.leadingParty,
-        outline: race.result.stage === 'unofficial' ? ('dashed' as const) : ('solid' as const),
-        ariaLabel: `${race.stateName}: ${PARTY_DISPLAY[race.result.leadingParty].label}, ${race.result.stage}${pct !== null ? `, ${pct} percent` : ''}.`,
+        ...base,
+        kind: stage,
+        color: PARTY_DISPLAY[winnerParty].color,
+        code: race.state,
+        check: stage === 'win',
+        ariaLabel: `${race.stateName}: ${PARTY_DISPLAY[winnerParty].label}, ${STATUS_WORD[stage]}.`,
       }]
     }
     if (race.favoredParty === null) return []
     return [{
-      state: race.state,
-      x,
-      y,
-      nudgePx,
-      kind: 'circle' as const,
+      ...base,
+      kind: 'circle',
       color: PARTY_DISPLAY[race.favoredParty].color,
-      letter: null,
-      outline: null,
+      code: null,
+      check: false,
       ariaLabel: `${race.stateName}: forecast favors ${PARTY_DISPLAY[race.favoredParty].label}.`,
     }]
   })
 }
 
-/** A plain 15px chip per state in its party color, like the swatches in the race panel. Decorative: the state
- * shape underneath handles selection, so the chip is hidden from assistive tech and carries no focus of its own. */
+/** A result chip, or the plain forecast chip when the race has no status. Not focusable: the state shape underneath
+ * handles selection. It is announced with its own label, "[State name]: [party], [status]." */
 export default function StateMarks({ marks }: { marks: StateMark[] }) {
   return (
     <>
       {marks.map((m) => (
         <span
           key={m.state}
-          className="state-chip"
-          style={{ left: `${m.x * 100}%`, top: `calc(${m.y * 100}% + ${m.nudgePx}px)`, background: m.color ?? 'var(--color-muted)' }}
-          aria-hidden="true"
-        />
+          className={m.kind === 'circle' ? 'state-chip' : `state-chip state-chip-result state-chip-${m.kind}`}
+          style={{ left: `${m.x * 100}%`, top: `calc(${m.y * 100}% + ${m.nudgePx}px)`, ...(m.color ? { background: m.color } : {}) }}
+          role="img"
+          aria-label={m.ariaLabel}
+        >
+          {m.code}
+          {m.check && <CheckIcon />}
+        </span>
       ))}
     </>
+  )
+}
+
+/** The black checkmark, on Win only. Black, not a party color, so it adds no second party signal. */
+export function CheckIcon({ size = 8 }: { size?: number }) {
+  return (
+    <svg className="chip-check" width={size} height={size} viewBox="0 0 8 8" aria-hidden="true" focusable="false">
+      <path d="M1 4.2 3.1 6.3 7 1.7" fill="none" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   )
 }
 
@@ -117,16 +118,11 @@ export function marksFromCallouts(callouts: Map<string, Callout>, stateName: (st
     const favoredSide = callout.sides
       .filter((s) => s.winPct !== null && (s.party === 'D' || s.party === 'R'))
       .sort((a, b) => (b.winPct ?? 0) - (a.winPct ?? 0))[0]
-    const leadingSide = callout.sides.find((s) => s.candidateId === callout.result.leadingCandidateId)
     return {
       state,
       stateName: stateName(state),
       favoredParty: favoredSide ? favoredSide.party : null,
-      result: {
-        stage: callout.result.stage,
-        percentReporting: callout.result.percentReporting,
-        leadingParty: leadingSide ? leadingSide.party : null,
-      },
+      result: { stage: callout.result.stage, winnerParty: callout.result.winnerParty },
     }
   })
 }

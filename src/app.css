@@ -203,7 +203,7 @@ strong {
 }
 .cc-card {
   position: relative;
-  /* Widened from the original 171px (Figma node 4:2) so "Results (unofficial):", the longest Result heading, fits
+  /* Widened from the original 171px (Figma node 4:2) so "Results (win):", the longest Result heading, fits
      on one line with its two values, matching src/components/MapCallout.tsx's CARD_WIDTH. */
   width: 195px;
   background: var(--color-callout);
@@ -249,33 +249,8 @@ strong {
   font-weight: 700;
   line-height: 1;
 }
-/* The leading side's highlight (Figma node 4:2): a rounded box over that side's whole column — the square and
-   every percentage below it — not just the square. Sized to the fixed 28px value columns (see .cc-row), so it
-   lines up with every row without those rows needing to know about it. Dashed at unofficial, solid at certified;
-   its color is the leading side's own party color, so the highlight never favors a fixed party regardless of
-   who leads (CLAUDE.md rule 1). */
 .cc-body {
   position: relative;
-}
-.cc-lead-col {
-  position: absolute;
-  top: -4px;
-  bottom: -4px;
-  width: 28px;
-  border-radius: 4px;
-  pointer-events: none;
-}
-.cc-lead-col-0 {
-  right: 33px; /* the second column (28px) + the column gap (5px) */
-}
-.cc-lead-col-1 {
-  right: 0;
-}
-.cc-lead-col-dashed {
-  border: 1.5px dashed;
-}
-.cc-lead-col-solid {
-  border: 1.5px solid;
 }
 .cc-result-note {
   margin-top: 3px;
@@ -1648,6 +1623,68 @@ details h4 {
   border-radius: 2px;
   transform: translate(-50%, -50%);
   pointer-events: none;
+}
+
+/* Result chips (Figma 41-550): 22px, 4px corners, 11px black state code. Win: solid party color and a black
+   checkmark. Flip: the party color with a 2px dashed black border. Reporting: off-white, no party color. The chip
+   grows past 22px only when the checkmark needs the room. */
+.state-chip-result {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  box-sizing: border-box;
+  min-width: 22px;
+  width: auto;
+  height: 22px;
+  padding: 4px 2px;
+  border-radius: 4px;
+  color: #000;
+  font-size: 11px;
+  line-height: 12px;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+.state-chip-flip {
+  border: 2px dashed #000;
+}
+.state-chip-reporting {
+  background: var(--color-cream, #eae8e2);
+}
+.chip-check {
+  flex: none;
+}
+
+/* Legend under the map: Flip, Win, Reporting (Figma 88:50). */
+.status-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin: 12px auto 0;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: #44326e;
+  color: #fff;
+  font-size: 11px;
+  line-height: 12px;
+}
+.status-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+.status-swatch {
+  box-sizing: border-box;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background: var(--color-dem);
+}
+.status-swatch-flip {
+  border: 2px dashed #000;
+}
+.status-swatch-reporting {
+  background: var(--color-cream, #eae8e2);
 }
 
 .embed-scrim {

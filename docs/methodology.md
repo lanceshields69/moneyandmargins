@@ -28,6 +28,8 @@ Independent expenditures include TV and digital ads, mailers, and field work, no
 
 **Predicted to win.** Each nominee's chance of winning in VotePredictor's forecast. It is one model's estimate of a future event.
 
+**Results.** Results come from civicAPI, and its status calls (Win, Flip, Reporting) are reproduced here with attribution. They are not our own calls. A Win or a Flip appears only when civicAPI flags a winner; a Flip means the winner's party differs from the party that held the seat before the election.
+
 ## What it leaves out, in detail
 
 - Donations to groups. The map shows who spent, not who gave them money, and a donation to a group is not the same as money the group spent in a state.

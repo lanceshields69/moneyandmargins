@@ -3,6 +3,7 @@ import arrowRaw from '../assets/arrow-up-right.svg?raw'
 import type { Callout } from '../computeCallout'
 import type { NationalCard as NationalCardData, PartyAligned } from '../computeNational'
 import { formatMoney } from '../format'
+import { RESULT_HEADING } from '../results'
 
 export const CARD_WIDTH = 1200
 export const CARD_HEIGHT = 630
@@ -79,7 +80,6 @@ export default function ShareCard({ stateName, callout, national, shapePath, sha
   const lineGap = (36 * title.size) / 30
   const centerX = 170.5
   const centerY = T + 162.5
-  const resultSuffix = result.stage === 'not-added' ? ' (not added):' : ` (${result.stage}):`
   const adFlag = callout.adFlag?.label ?? null
   const winFlag = callout.winFlag?.label ?? null
   const valueRight = [621, 662.8] as const
@@ -93,7 +93,7 @@ export default function ShareCard({ stateName, callout, national, shapePath, sha
     const side = sides[index]
     if (kind === 'ad') return `${side.adPct}%`
     if (kind === 'win') return `${side.winPct}%`
-    return result.stage === 'not-added' ? '--' : `${result.shares[side.candidateId] ?? '--'}%`
+    return result.stage === 'none' ? '--' : `${result.shares[side.candidateId] ?? '--'}%`
   }
 
   return (
@@ -138,8 +138,14 @@ export default function ShareCard({ stateName, callout, national, shapePath, sha
             <tspan dy={5}> to win:</tspan>
           </text>
           <text x={564} y={rowBaselines[2]}>
-            Results<tspan fontSize={9.675} dy={-5}>2</tspan>
-            <tspan dy={5}>{resultSuffix}</tspan>
+            {result.stage === 'reporting' ? (
+              RESULT_HEADING.reporting
+            ) : (
+              <>
+                Results<tspan fontSize={9.675} dy={-5}>2</tspan>
+                <tspan dy={5}>{RESULT_HEADING[result.stage].replace('Results', '')}</tspan>
+              </>
+            )}
           </text>
           {(['ad', 'win', 'result'] as const).map((kind, r) => {
             const flag = kind === 'ad' ? adFlag : kind === 'win' ? winFlag : null

@@ -8,6 +8,8 @@ import { formatDateTime } from '../format'
 import { useEffect, useState, type ReactNode } from 'react'
 import leaderUrl from '../assets/callout-leader.svg'
 import type { Callout, CalloutSide } from '../computeCallout'
+import { RESULT_HEADING } from '../results'
+import { CheckIcon } from './StateMarks'
 import { usePhone } from '../usePhone'
 
 // Measurements from the Figma design (node 4:2). Widened from the original 171px so "Results (unofficial):", the
@@ -31,7 +33,7 @@ function Square({ side, checked }: { side: CalloutSide; checked?: boolean }) {
       role="img"
       aria-label={`${side.partyLabel}, ${side.name}`}
     >
-      {checked ? '✓' : side.chip}
+      {checked ? <CheckIcon /> : side.chip}
     </span>
   )
 }
@@ -74,26 +76,17 @@ function Row({ label, sides, pick, flag, onInfo }: {
 }
 
 /**
- * The Result row (MVP.md "Final callout design" / "Results row"). Four stages, same layout and column order as
- * the squares in every one. The checkmark appears only at certified; the dashed/solid box appears only on the
- * leading side's square, at unofficial and certified. Never names a leader in text.
+ * The Result row: one heading from the race's single status (RESULT_HEADING), the same layout and column order in
+ * every status. The columns are fixed by party, never by who leads, and no leader is named in text.
  */
 function ResultRow({ sides, result }: { sides: CalloutSide[]; result: Callout['result'] }) {
-  const headingText =
-    result.stage === 'not-added'
-      ? 'Results (not added):'
-      : result.stage === 'counting'
-        ? 'Results (counting):'
-        : result.stage === 'unofficial'
-          ? 'Results (unofficial):'
-          : 'Results (certified):'
   return (
     <>
       <div className="cc-row">
-        <span className="cc-label">{headingText}</span>
+        <span className="cc-label">{RESULT_HEADING[result.stage]}</span>
         {sides.map((side) => (
           <span key={side.candidateId} className="cc-value">
-            {result.stage === 'not-added' ? '--' : `${result.shares[side.candidateId] ?? '--'}%`}
+            {result.stage === 'none' ? '--' : `${result.shares[side.candidateId] ?? '--'}%`}
           </span>
         ))}
       </div>
@@ -101,20 +94,21 @@ function ResultRow({ sides, result }: { sides: CalloutSide[]; result: Callout['r
   )
 }
 
+/** "Source: civicAPI, [as-of time]." with the percent reporting while a race is still being counted. */
 function ResultNote({ result }: { result: Callout['result'] }) {
-  if (result.stage === 'not-added' || !result.asOf) return null
+  if (result.stage === 'none' || !result.asOf) return null
   return (
     <p className="cc-note cc-result-note">
-      {result.stage === 'counting' && result.percentReporting !== null && `${result.percentReporting}% reporting · `}
-      {formatDateTime(result.asOf)}
-      {result.sourceUrl && (
-        <>
-          {' · '}
-          <a href={result.sourceUrl} target="_blank" rel="noopener noreferrer">
-            Source
-          </a>
-        </>
+      {result.stage === 'reporting' && result.percentReporting !== null && `${result.percentReporting}% reporting. `}
+      {'Source: '}
+      {result.sourceUrl ? (
+        <a href={result.sourceUrl} target="_blank" rel="noopener noreferrer">
+          civicAPI
+        </a>
+      ) : (
+        'civicAPI'
       )}
+      {`, ${formatDateTime(result.asOf)}.`}
     </p>
   )
 }
@@ -196,28 +190,16 @@ export default function MapCallout({ callout, stateName, anchor, isDefault, deta
   }, [onClose])
 
   const notes = [callout.isSpecial ? 'Special election' : null, callout.incompleteNote].filter((n): n is string => n !== null)
-  // Figma (node 4:2) highlights the leading side's whole column — square plus every row below it — not just the
-  // square: a dashed box at unofficial, solid at certified. The box sits over the fixed-width value column, so one
-  // absolutely-positioned element lines up with every row without the rows needing to know about each other.
-  const leadingIndex = callout.sides.findIndex((s) => s.candidateId === callout.result.leadingCandidateId)
-  const leadingOutline = (callout.result.stage === 'unofficial' || callout.result.stage === 'certified') && leadingIndex !== -1 ? (callout.result.stage === 'unofficial' ? 'dashed' : 'solid') : null
   const card = (
     <div className="cc-card" role="group" aria-label={`${stateName} Senate race`}>
       <div className="cc-body">
-        {leadingOutline && (
-          <span
-            className={`cc-lead-col cc-lead-col-${leadingIndex} cc-lead-col-${leadingOutline}`}
-            style={{ borderColor: callout.sides[leadingIndex].partyColor }}
-            aria-hidden="true"
-          />
-        )}
         <div className="cc-head">
           <h2 className="cc-title">{stateName}</h2>
           {callout.sides.map((side) => {
-            const isLeading = side.candidateId === callout.result.leadingCandidateId
+            const wonHere = side.candidateId === callout.result.winnerCandidateId
             return (
               <span key={side.candidateId} className="cc-head-cell">
-                <Square side={side} checked={isLeading && callout.result.stage === 'certified'} />
+                <Square side={side} checked={wonHere && callout.result.stage === 'win'} />
               </span>
             )
           })}
@@ -242,7 +224,7 @@ export default function MapCallout({ callout, stateName, anchor, isDefault, deta
         </p>
       ))}
       {sharesVerified && globalPartialNotice && <p className="cc-partial">{PARTIAL_CALLOUT_NOTICE}</p>}
-      {!sheet && callout.result.stage === 'not-added' && <OtherForecasts state={callout.state} />}
+      {!sheet && callout.result.stage === 'none' && <OtherForecasts state={callout.state} />}
     </div>
   )
   const live = <p className="sr-only" aria-live="polite">{summary(stateName, callout, sharesVerified)}</p>
@@ -262,7 +244,7 @@ export default function MapCallout({ callout, stateName, anchor, isDefault, deta
                 ) : (
                   <span />
                 )}
-                {callout.result.stage === 'not-added' && <OtherForecasts state={callout.state} pill />}
+                {callout.result.stage === 'none' && <OtherForecasts state={callout.state} pill />}
               </div>
               {expanded && detail && <div className="cc-detail">{detail}</div>}
             </div>

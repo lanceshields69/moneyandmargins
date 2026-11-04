@@ -241,6 +241,20 @@ export default function App() {
               </button>
             </p>
           </div>
+          <div className="status-legend" role="group" aria-label="Result chips">
+            <span className="status-legend-item">
+              <span className="status-swatch status-swatch-flip" aria-hidden="true" />
+              Flip
+            </span>
+            <span className="status-legend-item">
+              <span className="status-swatch status-swatch-win" aria-hidden="true" />
+              Win
+            </span>
+            <span className="status-legend-item">
+              <span className="status-swatch status-swatch-reporting" aria-hidden="true" />
+              Reporting
+            </span>
+          </div>
         </div>
 
         {!active && <p className="map-hint muted">Tap a highlighted state to see its race.</p>}
