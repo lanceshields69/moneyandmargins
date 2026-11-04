@@ -7,7 +7,6 @@ import RacePanel from './components/RacePanel'
 import ContactFooter from './components/ContactFooter'
 import PreviewBadge from './components/PreviewBadge'
 import infoIcon from './assets/info.svg'
-import Vote411Banner from './components/Vote411Banner'
 import ShareMenu from './components/ShareMenu'
 import UsStatesMap, { rampColor } from './components/UsStatesMap'
 import StateMarks, { buildStateMarks, marksFromCallouts } from './components/StateMarks'
@@ -289,9 +288,6 @@ export default function App() {
               , {formatDateTime(resultsAsOf)}.
             </p>
           )}
-        </div>
-        <div className="vote411-wrap">
-          <Vote411Banner />
         </div>
         </div>
 
