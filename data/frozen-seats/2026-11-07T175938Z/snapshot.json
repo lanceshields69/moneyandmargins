@@ -1,0 +1,41 @@
+{
+  "fetchedAt": "2026-11-07T17:59:38.526Z",
+  "sources": [
+    {
+      "key": "votepredictor",
+      "sourceName": "VotePredictor",
+      "sourceUrl": "https://votepredictor.com/senate",
+      "homeUrl": "https://votepredictor.com",
+      "asOf": "2026-11-07",
+      "dSeats": 52,
+      "rSeats": 48
+    },
+    {
+      "key": "callthemap",
+      "sourceName": "CallTheMap",
+      "sourceUrl": "https://www.callthemap.com/senate",
+      "homeUrl": "https://www.callthemap.com",
+      "asOf": "2026-11-02",
+      "dSeats": 51,
+      "rSeats": 49
+    },
+    {
+      "key": "pollingforecast",
+      "sourceName": "PollingForecast",
+      "sourceUrl": "https://www.pollingforecast.com/us/senate",
+      "homeUrl": "https://www.pollingforecast.com",
+      "asOf": "2026-11-02",
+      "dSeats": 53,
+      "rSeats": 47
+    },
+    {
+      "key": "bellwether",
+      "sourceName": "Bellwether",
+      "sourceUrl": "https://bellwether-zak.vercel.app",
+      "homeUrl": "https://bellwether-zak.vercel.app",
+      "asOf": "2026-11-07T17:59:38.526Z",
+      "dSeats": 53,
+      "rSeats": 47
+    }
+  ]
+}
