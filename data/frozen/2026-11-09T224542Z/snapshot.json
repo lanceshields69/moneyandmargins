@@ -1,0 +1,974 @@
+{
+  "source_name": "VotePredictor",
+  "source_url": "https://votepredictor.com",
+  "api_base": "https://votepredictor.com/api/v1",
+  "fetched_at": "2026-11-09T22:45:42.907Z",
+  "content_hash": "08c31c0629e541403495cf62bccc5a90d915ef445277ee42e0223599f5b33a85",
+  "model_version": "historical-honest-v2",
+  "tag": null,
+  "note": "p_dem_win is the Democratic nominee's win probability, clamped by the source to 0.01-0.99. The other side is its complement.",
+  "races": [
+    {
+      "race_id": "2026_SEN_AK",
+      "office": "SEN",
+      "location": "AK",
+      "state_name": "Alaska",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.4783857215,
+        "rating": "Toss-up",
+        "pred_margin": -0.1624322299,
+        "source": "polls",
+        "n_polls": 17,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "Mary Peltola",
+        "republican": "Dan S. Sullivan"
+      },
+      "movement": {
+        "delta_points": 15.7,
+        "from": "2026-09-25",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_AK/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_AK/history",
+      "url": "https://votepredictor.com/senate/ak"
+    },
+    {
+      "race_id": "2026_SEN_AL",
+      "office": "SEN",
+      "location": "AL",
+      "state_name": "Alabama",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.01,
+        "rating": "Safe R",
+        "pred_margin": -20.5092221196,
+        "source": "polls",
+        "n_polls": 4,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "Everett Wess",
+        "republican": "Barry Moore"
+      },
+      "movement": {
+        "delta_points": 0,
+        "from": "2026-09-25",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_AL/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_AL/history",
+      "url": "https://votepredictor.com/senate/al"
+    },
+    {
+      "race_id": "2026_SEN_AR",
+      "office": "SEN",
+      "location": "AR",
+      "state_name": "Arkansas",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.01,
+        "rating": "Safe R",
+        "pred_margin": -19.1181883819,
+        "source": "polls",
+        "n_polls": 3,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "Hallie Shoffner",
+        "republican": "Tom Cotton"
+      },
+      "movement": {
+        "delta_points": 0,
+        "from": "2026-09-25",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_AR/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_AR/history",
+      "url": "https://votepredictor.com/senate/ar"
+    },
+    {
+      "race_id": "2026_SEN_CO",
+      "office": "SEN",
+      "location": "CO",
+      "state_name": "Colorado",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.99,
+        "rating": "Safe D",
+        "pred_margin": 18.9078830183,
+        "source": "polls",
+        "n_polls": 4,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "John Hickenlooper",
+        "republican": "Mark Baisley"
+      },
+      "movement": {
+        "delta_points": 0,
+        "from": "2026-11-02",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_CO/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_CO/history",
+      "url": "https://votepredictor.com/senate/co"
+    },
+    {
+      "race_id": "2026_SEN_DE",
+      "office": "SEN",
+      "location": "DE",
+      "state_name": "Delaware",
+      "as_of": "2026-11-09",
+      "model_version": "senate_fundamentals_2026",
+      "forecast": {
+        "p_dem_win": 0.976,
+        "rating": "Safe D",
+        "pred_margin": 20.54,
+        "source": "fundamentals",
+        "n_polls": 0,
+        "p_basis": "fundamentals"
+      },
+      "candidates": {
+        "democrat": null,
+        "republican": null
+      },
+      "movement": null,
+      "movement_note": "Under two days of the current model on file for this race; the full as-published record is at history.",
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_DE/history",
+      "url": "https://votepredictor.com/senate/de"
+    },
+    {
+      "race_id": "2026_SEN_FL",
+      "office": "SEN",
+      "location": "FL",
+      "state_name": "Florida",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.01,
+        "rating": "Safe R",
+        "pred_margin": -8.9066500318,
+        "source": "polls",
+        "n_polls": 14,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "Angie Nixon",
+        "republican": "Ashley Moody"
+      },
+      "movement": {
+        "delta_points": 0,
+        "from": "2026-09-28",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_FL/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_FL/history",
+      "url": "https://votepredictor.com/senate/fl"
+    },
+    {
+      "race_id": "2026_SEN_GA",
+      "office": "SEN",
+      "location": "GA",
+      "state_name": "Georgia",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.99,
+        "rating": "Safe D",
+        "pred_margin": 8.9073405746,
+        "source": "polls",
+        "n_polls": 13,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "Jon Ossoff",
+        "republican": "Mike Collins"
+      },
+      "movement": {
+        "delta_points": 0,
+        "from": "2026-09-25",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_GA/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_GA/history",
+      "url": "https://votepredictor.com/senate/ga"
+    },
+    {
+      "race_id": "2026_SEN_IA",
+      "office": "SEN",
+      "location": "IA",
+      "state_name": "Iowa",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.4218281221,
+        "rating": "Toss-up",
+        "pred_margin": -0.5909863057,
+        "source": "polls",
+        "n_polls": 27,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "Josh Turek",
+        "republican": "Ashley Hinson"
+      },
+      "movement": {
+        "delta_points": -1.4,
+        "from": "2026-09-25",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_IA/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_IA/history",
+      "url": "https://votepredictor.com/senate/ia"
+    },
+    {
+      "race_id": "2026_SEN_ID",
+      "office": "SEN",
+      "location": "ID",
+      "state_name": "Idaho",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.01,
+        "rating": "Safe R",
+        "pred_margin": -32.153247989,
+        "source": "polls",
+        "n_polls": 3,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "David Roth",
+        "republican": "Jim Risch"
+      },
+      "movement": {
+        "delta_points": 0,
+        "from": "2026-09-25",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_ID/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_ID/history",
+      "url": "https://votepredictor.com/senate/id"
+    },
+    {
+      "race_id": "2026_SEN_IL",
+      "office": "SEN",
+      "location": "IL",
+      "state_name": "Illinois",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.99,
+        "rating": "Safe D",
+        "pred_margin": 13.4308035095,
+        "source": "polls",
+        "n_polls": 4,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "Juliana Stratton",
+        "republican": "Don Tracy"
+      },
+      "movement": {
+        "delta_points": 0,
+        "from": "2026-10-07",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_IL/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_IL/history",
+      "url": "https://votepredictor.com/senate/il"
+    },
+    {
+      "race_id": "2026_SEN_KS",
+      "office": "SEN",
+      "location": "KS",
+      "state_name": "Kansas",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.6238657631,
+        "rating": "Toss-up",
+        "pred_margin": 0.9458758971,
+        "source": "polls",
+        "n_polls": 18,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "Adam Hamilton",
+        "republican": "Roger Marshall"
+      },
+      "movement": {
+        "delta_points": 46.8,
+        "from": "2026-09-28",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_KS/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_KS/history",
+      "url": "https://votepredictor.com/senate/ks"
+    },
+    {
+      "race_id": "2026_SEN_KY",
+      "office": "SEN",
+      "location": "KY",
+      "state_name": "Kentucky",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.01,
+        "rating": "Safe R",
+        "pred_margin": -16.4129768535,
+        "source": "polls",
+        "n_polls": 1,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "Charles Booker",
+        "republican": "Andy Barr"
+      },
+      "movement": {
+        "delta_points": 0,
+        "from": "2026-09-25",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_KY/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_KY/history",
+      "url": "https://votepredictor.com/senate/ky"
+    },
+    {
+      "race_id": "2026_SEN_LA",
+      "office": "SEN",
+      "location": "LA",
+      "state_name": "Louisiana",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.073196201,
+        "rating": "Likely R",
+        "pred_margin": -4.3522416238,
+        "source": "polls",
+        "n_polls": 3,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "Jamie Davis",
+        "republican": "Julia Letlow"
+      },
+      "movement": {
+        "delta_points": 6.3,
+        "from": "2026-09-25",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_LA/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_LA/history",
+      "url": "https://votepredictor.com/senate/la"
+    },
+    {
+      "race_id": "2026_SEN_MA",
+      "office": "SEN",
+      "location": "MA",
+      "state_name": "Massachusetts",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.99,
+        "rating": "Safe D",
+        "pred_margin": 25.0568356273,
+        "source": "polls",
+        "n_polls": 6,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "Ed Markey",
+        "republican": "John Deaton"
+      },
+      "movement": {
+        "delta_points": 0,
+        "from": "2026-09-25",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_MA/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_MA/history",
+      "url": "https://votepredictor.com/senate/ma"
+    },
+    {
+      "race_id": "2026_SEN_ME",
+      "office": "SEN",
+      "location": "ME",
+      "state_name": "Maine",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.8181761791,
+        "rating": "Lean D",
+        "pred_margin": 2.7222216031,
+        "source": "polls",
+        "n_polls": 29,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "Troy Jackson",
+        "republican": "Susan Collins"
+      },
+      "movement": {
+        "delta_points": 45.4,
+        "from": "2026-09-25",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_ME/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_ME/history",
+      "url": "https://votepredictor.com/senate/me"
+    },
+    {
+      "race_id": "2026_SEN_MI",
+      "office": "SEN",
+      "location": "MI",
+      "state_name": "Michigan",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.9203543458,
+        "rating": "Likely D",
+        "pred_margin": 4.2175929827,
+        "source": "polls",
+        "n_polls": 42,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "Abdul El-Sayed",
+        "republican": "Mike Rogers"
+      },
+      "movement": {
+        "delta_points": 22.3,
+        "from": "2026-09-25",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_MI/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_MI/history",
+      "url": "https://votepredictor.com/senate/mi"
+    },
+    {
+      "race_id": "2026_SEN_MN",
+      "office": "SEN",
+      "location": "MN",
+      "state_name": "Minnesota",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.9785926313,
+        "rating": "Safe D",
+        "pred_margin": 6.069653268,
+        "source": "polls",
+        "n_polls": 19,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "Peggy Flanagan",
+        "republican": "Michele Tafoya"
+      },
+      "movement": {
+        "delta_points": 12.5,
+        "from": "2026-09-25",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_MN/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_MN/history",
+      "url": "https://votepredictor.com/senate/mn"
+    },
+    {
+      "race_id": "2026_SEN_MS",
+      "office": "SEN",
+      "location": "MS",
+      "state_name": "Mississippi",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.01,
+        "rating": "Safe R",
+        "pred_margin": -9.575570187,
+        "source": "polls",
+        "n_polls": 3,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "Scott Colom",
+        "republican": "Cindy Hyde-Smith"
+      },
+      "movement": {
+        "delta_points": 0,
+        "from": "2026-09-25",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_MS/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_MS/history",
+      "url": "https://votepredictor.com/senate/ms"
+    },
+    {
+      "race_id": "2026_SEN_MT",
+      "office": "SEN",
+      "location": "MT",
+      "state_name": "Montana",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.01,
+        "rating": "Safe R",
+        "pred_margin": -24.295813361,
+        "source": "polls",
+        "n_polls": 8,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "Alani Bankhead",
+        "republican": "Kurt Alme"
+      },
+      "movement": {
+        "delta_points": 0,
+        "from": "2026-09-30",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_MT/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_MT/history",
+      "url": "https://votepredictor.com/senate/mt"
+    },
+    {
+      "race_id": "2026_SEN_NC",
+      "office": "SEN",
+      "location": "NC",
+      "state_name": "North Carolina",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.99,
+        "rating": "Safe D",
+        "pred_margin": 10.6634614253,
+        "source": "polls",
+        "n_polls": 23,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "Roy Cooper",
+        "republican": "Michael Whatley"
+      },
+      "movement": {
+        "delta_points": 2.4,
+        "from": "2026-09-25",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_NC/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_NC/history",
+      "url": "https://votepredictor.com/senate/nc"
+    },
+    {
+      "race_id": "2026_SEN_NE",
+      "office": "SEN",
+      "location": "NE",
+      "state_name": "Nebraska",
+      "as_of": null,
+      "model_version": null,
+      "forecast": null,
+      "candidates": null,
+      "movement": null,
+      "no_forecast": {
+        "reason": "independent_contender",
+        "headline": "No Democrat on the ballot — the race is Osborn (I) vs. Ricketts (R)",
+        "nominee": null,
+        "nominee_side": "dem",
+        "actual_matchup": "Dan Osborn (I) vs. Pete Ricketts (R)",
+        "since": "2026-07-17"
+      },
+      "url": "https://votepredictor.com/races/2026_SEN_NE"
+    },
+    {
+      "race_id": "2026_SEN_NH",
+      "office": "SEN",
+      "location": "NH",
+      "state_name": "New Hampshire",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.99,
+        "rating": "Safe D",
+        "pred_margin": 8.0385150953,
+        "source": "polls",
+        "n_polls": 16,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "Chris Pappas",
+        "republican": "John E. Sununu"
+      },
+      "movement": {
+        "delta_points": 6.1,
+        "from": "2026-09-25",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_NH/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_NH/history",
+      "url": "https://votepredictor.com/senate/nh"
+    },
+    {
+      "race_id": "2026_SEN_NJ",
+      "office": "SEN",
+      "location": "NJ",
+      "state_name": "New Jersey",
+      "as_of": "2026-11-09",
+      "model_version": "senate_fundamentals_2026",
+      "forecast": {
+        "p_dem_win": 0.9155,
+        "rating": "Likely D",
+        "pred_margin": 14.29,
+        "source": "fundamentals",
+        "n_polls": 0,
+        "p_basis": "fundamentals"
+      },
+      "candidates": {
+        "democrat": null,
+        "republican": null
+      },
+      "movement": null,
+      "movement_note": "Under two days of the current model on file for this race; the full as-published record is at history.",
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_NJ/history",
+      "url": "https://votepredictor.com/senate/nj"
+    },
+    {
+      "race_id": "2026_SEN_NM",
+      "office": "SEN",
+      "location": "NM",
+      "state_name": "New Mexico",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.99,
+        "rating": "Safe D",
+        "pred_margin": 15.9586859503,
+        "source": "polls",
+        "n_polls": 3,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "Ben Ray Luján",
+        "republican": "Larry Marker"
+      },
+      "movement": {
+        "delta_points": 0,
+        "from": "2026-09-25",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_NM/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_NM/history",
+      "url": "https://votepredictor.com/senate/nm"
+    },
+    {
+      "race_id": "2026_SEN_OH",
+      "office": "SEN",
+      "location": "OH",
+      "state_name": "Ohio",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.7131825391,
+        "rating": "Lean D",
+        "pred_margin": 1.6862060375,
+        "source": "polls",
+        "n_polls": 35,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "Sherrod Brown",
+        "republican": "Jon Husted"
+      },
+      "movement": {
+        "delta_points": -3.8,
+        "from": "2026-09-25",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_OH/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_OH/history",
+      "url": "https://votepredictor.com/senate/oh"
+    },
+    {
+      "race_id": "2026_SEN_OK",
+      "office": "SEN",
+      "location": "OK",
+      "state_name": "Oklahoma",
+      "as_of": "2026-11-09",
+      "model_version": "senate_fundamentals_2026",
+      "forecast": {
+        "p_dem_win": 0.0282,
+        "rating": "Safe R",
+        "pred_margin": -19.82,
+        "source": "fundamentals",
+        "n_polls": 0,
+        "p_basis": "fundamentals"
+      },
+      "candidates": {
+        "democrat": null,
+        "republican": null
+      },
+      "movement": null,
+      "movement_note": "Under two days of the current model on file for this race; the full as-published record is at history.",
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_OK/history",
+      "url": "https://votepredictor.com/senate/ok"
+    },
+    {
+      "race_id": "2026_SEN_OR",
+      "office": "SEN",
+      "location": "OR",
+      "state_name": "Oregon",
+      "as_of": "2026-11-09",
+      "model_version": "senate_fundamentals_2026",
+      "forecast": {
+        "p_dem_win": 0.9676,
+        "rating": "Safe D",
+        "pred_margin": 19.18,
+        "source": "fundamentals",
+        "n_polls": 0,
+        "p_basis": "fundamentals"
+      },
+      "candidates": {
+        "democrat": null,
+        "republican": null
+      },
+      "movement": null,
+      "movement_note": "Under two days of the current model on file for this race; the full as-published record is at history.",
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_OR/history",
+      "url": "https://votepredictor.com/senate/or"
+    },
+    {
+      "race_id": "2026_SEN_RI",
+      "office": "SEN",
+      "location": "RI",
+      "state_name": "Rhode Island",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.99,
+        "rating": "Safe D",
+        "pred_margin": 27.1347327304,
+        "source": "polls",
+        "n_polls": 4,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "Jack Reed",
+        "republican": "Raymond McKay"
+      },
+      "movement": {
+        "delta_points": 0,
+        "from": "2026-09-25",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_RI/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_RI/history",
+      "url": "https://votepredictor.com/senate/ri"
+    },
+    {
+      "race_id": "2026_SEN_SC",
+      "office": "SEN",
+      "location": "SC",
+      "state_name": "South Carolina",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.1361517889,
+        "rating": "Likely R",
+        "pred_margin": -3.2895877932,
+        "source": "polls",
+        "n_polls": 15,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "Annie Andrews",
+        "republican": "Darline Graham"
+      },
+      "movement": {
+        "delta_points": 9,
+        "from": "2026-10-28",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_SC/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_SC/history",
+      "url": "https://votepredictor.com/senate/sc"
+    },
+    {
+      "race_id": "2026_SEN_SD",
+      "office": "SEN",
+      "location": "SD",
+      "state_name": "South Dakota",
+      "as_of": null,
+      "model_version": null,
+      "forecast": null,
+      "candidates": null,
+      "movement": null,
+      "no_forecast": {
+        "reason": "independent_contender",
+        "headline": "No Democrat on the ballot — the race is Bengs (I) vs. Rounds (R)",
+        "nominee": null,
+        "nominee_side": "dem",
+        "actual_matchup": "Brian Bengs (I) vs. Mike Rounds (R)",
+        "since": "2026-08-04"
+      },
+      "url": "https://votepredictor.com/races/2026_SEN_SD"
+    },
+    {
+      "race_id": "2026_SEN_TN",
+      "office": "SEN",
+      "location": "TN",
+      "state_name": "Tennessee",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.01,
+        "rating": "Safe R",
+        "pred_margin": -27.3013593132,
+        "source": "polls",
+        "n_polls": 2,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "Marquita Bradshaw",
+        "republican": "Bill Hagerty"
+      },
+      "movement": {
+        "delta_points": 0,
+        "from": "2026-09-25",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_TN/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_TN/history",
+      "url": "https://votepredictor.com/senate/tn"
+    },
+    {
+      "race_id": "2026_SEN_TX",
+      "office": "SEN",
+      "location": "TX",
+      "state_name": "Texas",
+      "as_of": "2026-11-09",
+      "model_version": "historical-honest-v2",
+      "forecast": {
+        "p_dem_win": 0.696290007,
+        "rating": "Lean D",
+        "pred_margin": 1.5395328293,
+        "source": "polls",
+        "n_polls": 53,
+        "p_basis": "polls"
+      },
+      "candidates": {
+        "democrat": "James Talarico",
+        "republican": "Ken Paxton"
+      },
+      "movement": {
+        "delta_points": 8.2,
+        "from": "2026-09-25",
+        "to": "2026-11-09",
+        "basis": "as published, since the current model began",
+        "as_published": "https://votepredictor.com/api/v1/race/2026_SEN_TX/history"
+      },
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_TX/history",
+      "url": "https://votepredictor.com/senate/tx"
+    },
+    {
+      "race_id": "2026_SEN_VA",
+      "office": "SEN",
+      "location": "VA",
+      "state_name": "Virginia",
+      "as_of": "2026-11-09",
+      "model_version": "senate_fundamentals_2026",
+      "forecast": {
+        "p_dem_win": 0.8943,
+        "rating": "Likely D",
+        "pred_margin": 12.98,
+        "source": "fundamentals",
+        "n_polls": 0,
+        "p_basis": "fundamentals"
+      },
+      "candidates": {
+        "democrat": null,
+        "republican": null
+      },
+      "movement": null,
+      "movement_note": "Under two days of the current model on file for this race; the full as-published record is at history.",
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_VA/history",
+      "url": "https://votepredictor.com/senate/va"
+    },
+    {
+      "race_id": "2026_SEN_WV",
+      "office": "SEN",
+      "location": "WV",
+      "state_name": "West Virginia",
+      "as_of": "2026-11-09",
+      "model_version": "senate_fundamentals_2026",
+      "forecast": {
+        "p_dem_win": 0.01,
+        "rating": "Safe R",
+        "pred_margin": -28.8,
+        "source": "fundamentals",
+        "n_polls": 0,
+        "p_basis": "fundamentals"
+      },
+      "candidates": {
+        "democrat": null,
+        "republican": null
+      },
+      "movement": null,
+      "movement_note": "Under two days of the current model on file for this race; the full as-published record is at history.",
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_WV/history",
+      "url": "https://votepredictor.com/senate/wv"
+    },
+    {
+      "race_id": "2026_SEN_WY",
+      "office": "SEN",
+      "location": "WY",
+      "state_name": "Wyoming",
+      "as_of": "2026-11-09",
+      "model_version": "senate_fundamentals_2026",
+      "forecast": {
+        "p_dem_win": 0.01,
+        "rating": "Safe R",
+        "pred_margin": -31.71,
+        "source": "fundamentals",
+        "n_polls": 0,
+        "p_basis": "fundamentals"
+      },
+      "candidates": {
+        "democrat": null,
+        "republican": null
+      },
+      "movement": null,
+      "movement_note": "Under two days of the current model on file for this race; the full as-published record is at history.",
+      "history": "https://votepredictor.com/api/v1/race/2026_SEN_WY/history",
+      "url": "https://votepredictor.com/senate/wy"
+    }
+  ]
+}
